@@ -1,0 +1,14 @@
+plugin.tx_cicregister {
+	view {
+		# cat=plugin.tx_cicregister/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:cicregister/Resources/Private/Templates/
+		# cat=plugin.tx_cicregister/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:cicregister/Resources/Private/Partials/
+		# cat=plugin.tx_cicregister/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:cicregister/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_cicregister//a; type=int+; label=Default storage PID
+		storagePid = 
+	}
+}

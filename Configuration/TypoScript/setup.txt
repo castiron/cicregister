@@ -1,0 +1,30 @@
+plugin.tx_cicregister {
+	view {
+		templateRootPath = {$plugin.tx_cicregister.view.templateRootPath}
+		partialRootPath = {$plugin.tx_cicregister.view.partialRootPath}
+		layoutRootPath = {$plugin.tx_cicregister.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
+	}
+}
+
+plugin.tx_cicregister._CSS_DEFAULT_STYLE (
+	input.f3-form-error {
+		background-color:#FF9F9F;
+		border: 1px #FF0000 solid;
+	}
+
+	.tx-cicregister table {
+		border-collapse:separate;
+		border-spacing:10px;
+	}
+
+	.tx-cicregister table th {
+		font-weight:bold;
+	}
+
+	.tx-cicregister table td {
+		vertical-align:top;
+	}
+)
