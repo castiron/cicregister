@@ -50,11 +50,13 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 //t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_' .recoverpass. '.xml');
 
 
-
-
-
-
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'CIC User Registration');
+
+// Add the type to fe_users!
+t3lib_div::loadTCA('fe_users');
+$TCA['fe_users']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register User', 'Tx_Cicregister_Domain_Model_FrontendUser');
+$TCA['fe_users']['types']['Tx_Cicregister_Domain_Model_FrontendUser'] = $TCA['fe_users']['types']['0'];
+
 
 
 ?>

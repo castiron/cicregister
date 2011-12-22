@@ -4,10 +4,40 @@ plugin.tx_cicregister {
 		partialRootPath = {$plugin.tx_cicregister.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_cicregister.view.layoutRootPath}
 	}
+	settings {
+		userModel = Tx_Cicregister_Domain_Model_FrontendUser
+	}
 	persistence {
 		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
+		storagePid = 4
 	}
 }
+
+config.tx_extbase {
+	persistence {
+		classes {
+			Tx_Extbase_Domain_Model_FrontendUser {
+				mapping {
+					tableName = fe_users
+					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					columns {
+						lockToDomain.mapOnProperty = lockToDomain
+					}
+					subclasses {
+						Tx_Cicregister_Domain_Model_FrontendUser = Tx_Cicregister_Domain_Model_FrontendUser
+					}
+				}
+			}
+			Tx_Cicregister_Domain_Model_FrontendUser {
+				mapping {
+					tableName = fe_users
+					recordType = Tx_Cicregister_Domain_Model_FrontendUser
+				}
+			}
+		}
+	}
+}
+
 
 plugin.tx_cicregister._CSS_DEFAULT_STYLE (
 	input.f3-form-error {

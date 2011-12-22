@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2011 Zachary Davis <zach@castironcoding.com>, Cast Iron Coding, Inc
- *  
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -32,16 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Model_FEUser extends Tx_Extbase_DomainObject_AbstractEntity {
-
-	/**
-	 * __construct
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-
-	}
+class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Persistence_Repository {
 
 }
 ?>

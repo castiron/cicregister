@@ -7,11 +7,11 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Create',
 	array(
-		
+		'FrontendUser' => 'new,create'
 	),
 	// non-cacheable actions
 	array(
-		
+		'FEUser' => 'new'
 	)
 );
 
@@ -19,11 +19,11 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Edit',
 	array(
-		
+
 	),
 	// non-cacheable actions
 	array(
-		
+
 	)
 );
 
@@ -31,11 +31,11 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Login',
 	array(
-		
+
 	),
 	// non-cacheable actions
 	array(
-		
+
 	)
 );
 
@@ -43,11 +43,11 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Recoverpass',
 	array(
-		
+
 	),
 	// non-cacheable actions
 	array(
-		
+
 	)
 );
 

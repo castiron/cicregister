@@ -1,0 +1,57 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+<h1>Create a New Account</h1>
+
+<f:flashMessages />
+
+<f:render partial="FormErrors" />
+
+<f:form method="post" action="create"  name="frontendUser" object="{frontendUser}">
+	<div class="clearfix">
+		<label for="cicregister-firstName">First Name: </label>
+		<div class="input">
+			<f:form.textfield id="cicregister-firstName" property="firstName"/>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<label for="cicregister-lastName">Last Name: </label>
+		<div class="input">
+			<f:form.textfield id="cicregister-lastName" property="lastName"/>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<label for="cicregister-usergroup">User Group: </label>
+		<div class="input">
+			<f:form.select id="cicregister-usergroup" options="{2: 'General', 3: 'Staff'}" property="usergroup"/>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<label for="cicregister-email">Email Address: </label>
+		<div class="input">
+			<f:form.textfield id="cicregister-email" property="email"/>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<label for="cicregister-password">Password: </label>
+		<div class="input">
+			<f:form.textfield id="cicregister-password" property="password"/>
+		</div>
+	</div>
+
+	<div class="clearfix">
+		<label for="cicregister-confirmPassword">Confirm Password: </label>
+		<div class="input">
+			<f:form.textfield id="cicregister-confirmPassword" name="confirmPassword"/>
+		</div>
+	</div>
+
+
+
+	<f:form.submit value="Create Account" />
+</f:form>
+</f:section>
