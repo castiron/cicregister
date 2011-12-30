@@ -42,6 +42,36 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	protected $signalSlotDispatcher;
 
 	/**
+	 * @var Tx_Cicregister_Service_Decorator
+	 */
+	protected $decoratorService;
+
+	/**
+	 * @var Tx_Extbase_Property_PropertyMapper
+	 */
+	protected $propertyMapper;
+
+	/**
+	 * inject the propertyMapper
+	 *
+	 * @param Tx_Extbase_Property_PropertyMapper propertyMapper
+	 * @return void
+	 */
+	public function injectPropertyMapper(Tx_Extbase_Property_PropertyMapper $propertyMapper) {
+		$this->propertyMapper = $propertyMapper;
+	}
+
+	/**
+	 * inject the decoratorService
+	 *
+	 * @param Tx_Cicregister_Service_Decorator decoratorService
+	 * @return void
+	 */
+	public function injectDecoratorService(Tx_Cicregister_Service_Decorator $decoratorService) {
+		$this->decoratorService = $decoratorService;
+	}
+
+	/**
 	 * Inject the signalSlotDispatcher
 	 *
 	 * @param Tx_Extbase_SignalSlot_Dispatcher signalSlotDispatcher
@@ -69,21 +99,23 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	/**
 	 * Renders the "new user" form.
 	 *
-	 * @param $frontendUser
-	 * @dontvalidate $frontendUser
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @return void
 	 */
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 		$this->view->assign('frontendUser', $frontendUser);
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 	}
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
-	 * @param null $confirmPassword
+	 * @param string $confirmPassword
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $confirmPassword = NULL) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'createAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
+		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['new'],$frontendUser);
+		#$this->frontendUserRepository->add($frontendUser);
+		$this->flashMessageContainer->add('Your account has been created.');
+		$this->redirect('new');
 	}
 
 	/**
@@ -105,9 +137,24 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	 */
 	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
-		$this->FrontendUserRepository->update($frontendUser);
+		#$this->FrontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your Frontend user was updated.');
 		$this->redirect('edit');
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getErrorFlashMessage() {
+		switch ($this->actionMethodName) {
+			default:
+				$msg = Tx_Extbase_Utility_Localization::translate('flash-frontendUserController-' . $this->actionMethodName . '-default', 'cicregister');
+			break;
+		}
+		if($msg == false) {
+			$msg = 'no error message set for '.$this->actionMethodName;
+		}
+		return $msg;
 	}
 
 }

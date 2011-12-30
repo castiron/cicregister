@@ -5,11 +5,22 @@ plugin.tx_cicregister {
 		layoutRootPath = {$plugin.tx_cicregister.view.layoutRootPath}
 	}
 	settings {
-		userModel = Tx_Cicregister_Domain_Model_FrontendUser
+		decorators {
+			frontendUser {
+				new {
+					Tx_Cicregister_Decorators_UsernameEqualsEmail = 1
+				}
+			}
+		}
+
 	}
 	persistence {
 		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
+		//TODO: remove at some point
 		storagePid = 4
+	}
+	features {
+		rewrittenPropertyMapper = 1
 	}
 }
 

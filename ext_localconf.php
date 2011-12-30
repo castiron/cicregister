@@ -7,11 +7,11 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Create',
 	array(
-		'FrontendUser' => 'new,create'
+		'FrontendUser' => 'new,create,save'
 	),
 	// non-cacheable actions
 	array(
-		'FEUser' => 'new'
+		'FrontendUser' => 'new,create,save'
 	)
 );
 

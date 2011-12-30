@@ -4,7 +4,7 @@
  *  Copyright notice
  *
  *  (c) 2011 Zachary Davis <zach@castironcoding.com>, Cast Iron Coding, Inc
- *  			
+ *
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -25,7 +25,7 @@
  ***************************************************************/
 
 /**
- * Test case for class Tx_Cicregister_Controller_FEUserController.
+ * Test case for class Tx_Cicregister_Domain_Model_FEUser.
  *
  * @version $Id$
  * @copyright Copyright belongs to the respective authors
@@ -36,14 +36,15 @@
  *
  * @author Zachary Davis <zach@castironcoding.com>
  */
-class Tx_Cicregister_Controller_FEUserControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class Tx_Cicregister_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+
 	/**
-	 * @var Tx_Cicregister_Domain_Model_FEUser
+	 * @var Tx_Cicregister_Domain_Model_FrontendUser
 	 */
 	protected $fixture;
 
 	public function setUp() {
-		$this->fixture = new Tx_Cicregister_Domain_Model_FEUser();
+		$this->fixture = new Tx_Cicregister_Domain_Model_FrontendUser();
 	}
 
 	public function tearDown() {
@@ -51,11 +52,15 @@ class Tx_Cicregister_Controller_FEUserControllerTest extends Tx_Extbase_Tests_Un
 	}
 
 	/**
+	 * Test if username can be set
+	 *
 	 * @test
+	 * @return void
 	 */
-	public function dummyMethod() {
-		$this->markTestIncomplete();
+	public function usernameCanBeSet() {
+		$username = 'aUsername';
+		$this->fixture->setUsername($username);
+		$this->assertEquals($username, $this->fixture->getUsername());
 	}
-
 }
 ?>
