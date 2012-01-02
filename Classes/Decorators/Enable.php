@@ -29,15 +29,13 @@
  *
  */
 
-class Tx_Cicregister_Decorators_UsernameEqualsEmail implements Tx_Cicregister_Decorators_DecoratorInterface {
+class Tx_Cicregister_Decorators_Enable implements Tx_Cicregister_Decorators_DecoratorInterface {
 
 	/**
-	 * Sets the username property to the value of the email property.
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $user
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $user) {
-		$user->setUsername($user->getEmail());
+	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+		$frontendUser->setDisable(false);
 	}
 
 }
-

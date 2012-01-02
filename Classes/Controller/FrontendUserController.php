@@ -52,6 +52,36 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	protected $propertyMapper;
 
 	/**
+	 * @var Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository
+	 */
+	protected $frontendUserGroupRepository;
+
+	/**
+	 * @var Tx_Cicregister_Service_Behavior
+	 */
+	protected $behaviorService;
+
+	/**
+	 * inject the behaviorService
+	 *
+	 * @param Tx_Cicregister_Service_Behavior behaviorService
+	 * @return void
+	 */
+	public function injectBehaviorService(Tx_Cicregister_Service_Behavior $behaviorService) {
+		$this->behaviorService = $behaviorService;
+	}
+
+	/**
+	 * inject the frontendUserGroupRepository
+	 *
+	 * @param Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository frontendUserGroupRepository
+	 * @return void
+	 */
+	public function injectFrontendUserGroupRepository(Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
+	}
+
+	/**
 	 * inject the propertyMapper
 	 *
 	 * @param Tx_Extbase_Property_PropertyMapper propertyMapper
@@ -92,8 +122,21 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	}
 
 	public function initializeAction() {
-		// An example of how to make dynamic changes to method arguments.
-		// $this->arguments->addNewArgument('frontendUser', $this->settings['userModel']);
+		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
+		// want to make sure that the replacement object is validated instead of the default cicregister object. Whereas the
+		// object manager does look at Extbase's objects Typoscript section, the argument validator does not.
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$replacementFrontendUserObject = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+		if($replacementFrontendUserObject) {
+			$frontendUserClass = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+			if($this->arguments->offsetExists('frontendUser')) {
+				$required = FALSE;
+				if($this->arguments->getArgument('frontendUser')->isRequired() === TRUE) $required = TRUE;
+				$this->arguments->addNewArgument('frontendUser', 'Tx_Dodgeuser_Domain_Model_FrontendUser', $required);
+				// perhaps there's a better way here, than to re-initialize all arguments
+				$this->initializeActionMethodValidators();
+			}
+		}
 	}
 
 	/**
@@ -109,13 +152,58 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
-	 * @param string $confirmPassword
 	 */
-	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $confirmPassword = NULL) {
-		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['new'],$frontendUser);
-		#$this->frontendUserRepository->add($frontendUser);
+	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+
+		// add the user to the default group
+		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
+		if($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
+
+		// decorate the new user
+		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['created'],$frontendUser);
+
+		// add the user to the repository
+		$this->frontendUserRepository->add($frontendUser);
 		$this->flashMessageContainer->add('Your account has been created.');
-		$this->redirect('new');
+
+		// persist the user
+		$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		$persistenceManager->persistAll();
+
+		// execute behaviors and forward (a redirect would be nice here, but it's tricky because the user object is still disabled!)
+		$forwardAction = $this->behaviorService->executeBehaviors($this->settings['behaviors']['frontendUser']['created'],$frontendUser);
+		if($forwardAction == false || $forwardAction == '') $forwardAction = 'createConfirmation';
+		$this->forward($forwardAction,NULL,NULL,array('frontendUser' => $frontendUser));
+
+	}
+
+	/**
+	 * @param string $key
+	 */
+	public function validateUserAction($key) {
+		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_EmailValidator');
+		$frontendUser = $emailValidatorService->validateKey($key);
+		if($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
+			$frontendUser->setDisable(false);
+			$this->frontendUserRepository->update($frontendUser);
+			$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+			$persistenceManager->persistAll();
+		}
+		// TODO: Handle forwards and confirmations.
+	}
+
+	/**
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 */
+	public function createConfirmationAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+
+	}
+
+	/**
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 */
+	public function createConfirmationMustValidateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+
 	}
 
 	/**

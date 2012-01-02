@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,40 +23,45 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  *
- *
- * @package cicregister
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {
+
+class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 
 	/**
-	 * Finds an object matching the given identifier.
-	 *
-	 * @param int $uid The identifier of the object to find
-	 * @return object The matching object if found, otherwise NULL
-	 * @api
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
-	public function findByUid($uid) {
-		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
-			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
-		} else {
-			$query = $this->createQuery();
-			$query->getQuerySettings()->setRespectEnableFields(FALSE);
-			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$object = $query
-					->matching(
-				$query->equals('uid', $uid)
-			)
-					->execute()
-					->getFirst();
+	protected $objectManager;
+
+	/**
+	 * Inject the objectManager
+	 *
+	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @param array $decorators a list of decorators
+	 * @param $object the object to be decorated
+	 */
+	public function executeBehaviors(array $behaviors, $object) {
+		$redirectAction = false;
+		foreach($behaviors as $behaviorClassName => $enabled) {
+			if($enabled == true) {
+				$behavior = $this->objectManager->create($behaviorClassName);
+				$result = $behavior->execute($object);
+				if($result) {
+					$redirectAction == $result;
+				}
+			}
 		}
-		return $object;
+		return $redirectAction;
 	}
 
 }
-?>

@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,40 +23,19 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  *
- *
- * @package cicregister
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {
+
+class Tx_Cicregister_Behaviors_AuthenticateUser implements Tx_Cicregister_Behaviors_BehaviorInterface {
 
 	/**
-	 * Finds an object matching the given identifier.
-	 *
-	 * @param int $uid The identifier of the object to find
-	 * @return object The matching object if found, otherwise NULL
-	 * @api
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
-	public function findByUid($uid) {
-		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
-			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
-		} else {
-			$query = $this->createQuery();
-			$query->getQuerySettings()->setRespectEnableFields(FALSE);
-			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
-			$object = $query
-					->matching(
-				$query->equals('uid', $uid)
-			)
-					->execute()
-					->getFirst();
-		}
-		return $object;
+	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+		t3lib_div::debug('called authenticate');
 	}
 
 }
-?>

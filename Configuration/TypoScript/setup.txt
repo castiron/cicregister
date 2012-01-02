@@ -5,14 +5,39 @@ plugin.tx_cicregister {
 		layoutRootPath = {$plugin.tx_cicregister.view.layoutRootPath}
 	}
 	settings {
-		decorators {
+		defaults {
+			groupUid = 2
+		}
+		email {
+			senderEmail = zach@castironcoding.com
+			senderName = Main Dish & Son
+			validateSubject = Main Dish & Son: Please confirm your registration
+			variables {
+				siteName = MainDish & Son
+				validatePid = 80
+			}
+		}
+		behaviors {
 			frontendUser {
-				new {
-					Tx_Cicregister_Decorators_UsernameEqualsEmail = 1
+				created {
+					Tx_Cicregister_Behaviors_SendValidationEmail = 1
+					Tx_Cicregister_Behaviors_AuthenticateUser = 0
 				}
 			}
 		}
+		decorators {
+			frontendUser {
+				created {
+					Tx_Cicregister_Decorators_Disable = 1
+				}
+				emailValidated {
+					Tx_Cicregister_Decorators_Enable = 1
+				}
+				edited {
 
+				}
+			}
+		}
 	}
 	persistence {
 		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
@@ -25,8 +50,22 @@ plugin.tx_cicregister {
 }
 
 config.tx_extbase {
+	objects {
+		Tx_Extbase_Domain_Repository_FrontendUserRepository {
+			className = Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository
+		}
+	}
 	persistence {
 		classes {
+			Tx_Extbase_Domain_Model_FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+				}
+				subclasses {
+					Tx_Cicregister_Domain_Model_FrontendUserGroup = Tx_Cicregister_Domain_Model_FrontendUserGroup
+				}
+			}
 			Tx_Extbase_Domain_Model_FrontendUser {
 				mapping {
 					tableName = fe_users
@@ -34,9 +73,15 @@ config.tx_extbase {
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}
-					subclasses {
-						Tx_Cicregister_Domain_Model_FrontendUser = Tx_Cicregister_Domain_Model_FrontendUser
-					}
+				}
+				subclasses {
+					Tx_Cicregister_Domain_Model_FrontendUser = Tx_Cicregister_Domain_Model_FrontendUser
+				}
+			}
+			Tx_Cicregister_Domain_Model_FrontendUserGroup {
+				mapping {
+					tableName = fe_groups
+					recordType = Tx_Cicregister_Domain_Model_FrontendUserGroup
 				}
 			}
 			Tx_Cicregister_Domain_Model_FrontendUser {
@@ -49,6 +94,33 @@ config.tx_extbase {
 	}
 }
 
+Tx_Cicregister_JSON_RequestPage = PAGE
+Tx_Cicregister_JSON_RequestPage {
+    typeNum = 1325527064
+    config {
+        disableAllHeaderCode = 1
+        xhtml_cleaning = 0
+        admPanel = 0
+            debug = 0
+            no_cache = 1
+        additionalHeaders = Content-type:application/json
+    }
+	10 = USER_INT
+	10 {
+		userFunc = tx_extbase_core_bootstrap->run
+		extensionName = Cicregister
+		pluginName = Create
+		switchableControllerActions {
+			FrontendUserJSON {
+				1 = create
+			}
+		}
+	}
+}
+
+page.includeJSFooter {
+	99 = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
+}
 
 plugin.tx_cicregister._CSS_DEFAULT_STYLE (
 	input.f3-form-error {

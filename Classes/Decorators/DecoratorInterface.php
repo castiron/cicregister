@@ -32,8 +32,8 @@
 interface Tx_Cicregister_Decorators_DecoratorInterface {
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $object
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $user);
+	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser);
 
 }

@@ -38,6 +38,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @var string
 	 * @validate String
 	 * @validate NotEmpty
+	 * @validate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Extbase_Domain_Repository_FrontendUserRepository, property = username)
 	 */
 	protected $username;
 
@@ -71,88 +72,26 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 
 	/**
 	 * @var string
-	 */
-	protected $middleName;
-
-	/**
-	 * @var string
 	 * @validate NotEmpty
 	 */
 	protected $lastName;
 
 	/**
-	 * @var string
-	 */
-	protected $address = '';
-
-	/**
-	 * @var string
-	 */
-	protected $telephone = '';
-
-	/**
-	 * @var string
-	 */
-	protected $fax = '';
-
-	/**
+	 * It's important to note that in the unique validator below, we're validating against all frontend users that Extbase
+	 * knows about; we do that by using the global user repository.
+	 *
 	 * @var string
 	 * @validate NotEmpty
 	 * @validate EmailAddress
 	 * @validate StringLength(minimum = 3,maximum = 50)
-	 * @validate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Extbase_Domain_Repository_FrontendUserRepository, property = email)
+	 * @validate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository, property = email)
 	 */
 	protected $email = '';
 
 	/**
-	 * @var string
+	 * @var bool
 	 */
-	protected $lockToDomain = '';
-
-	/**
-	 * @var string
-	 */
-	protected $title = '';
-
-	/**
-	 * @var string
-	 */
-	protected $zip = '';
-
-	/**
-	 * @var string
-	 */
-	protected $city = '';
-
-	/**
-	 * @var string
-	 */
-	protected $country = '';
-
-	/**
-	 * @var string
-	 */
-	protected $www = '';
-
-	/**
-	 * @var string
-	 */
-	protected $company = '';
-
-	/**
-	 * @var string
-	 */
-	protected $image = '';
-
-	/**
-	 * @var DateTime
-	 */
-	protected $lastlogin = '';
-
-	/**
-	 * @var DateTime
-	 */
-	protected $isOnline = '';
+	protected $disable = false;
 
 	/**
 	 * Called when the object is reconstituted.
@@ -161,7 +100,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	}
 
 	/**
-	 * An example of how to force email and username to be equal
+	 * username == email
 	 * @param $email
 	 */
 	public function setEmail($email) {
@@ -170,7 +109,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	}
 
 	/**
-	 * An example of how to force email and username to be equal
+	 * username == email
 	 * @param $username
 	 */
 	public function setUsername($username) {
@@ -190,6 +129,24 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 */
 	public function getConfirmPassword() {
 		return $this->confirmPassword;
+	}
+
+	/**
+	 * @param boolean $disable
+	 */
+	public function setDisable($disable) {
+		$this->disable = $disable;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getDisable() {
+		return $this->disable;
+	}
+
+	public function getName() {
+		return $this->getFirstName().' '.$this->getLastName();
 	}
 }
 ?>

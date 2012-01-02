@@ -7,13 +7,16 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Create',
 	array(
-		'FrontendUser' => 'new,create,save'
+		'FrontendUser' => 'new,create,createConfirmation,createConfirmationMustValidate,validateUser',
+		'FrontendUserJSON' => 'create'
 	),
 	// non-cacheable actions
 	array(
-		'FrontendUser' => 'new,create,save'
+		'FrontendUser' => 'new,create,createConfirmation,createConfirmationMustValidate,validateUser',
+		'FrontendUserJSON' => 'create'
 	)
 );
+
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,

@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -24,30 +23,34 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-
 /**
  *
- *
- * @package cicregister
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {
+
+class Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository extends Tx_Extbase_Persistence_Repository {
 
 	/**
-	 * Finds an object matching the given identifier.
+	 * Returns the class name of this class.
 	 *
-	 * @param int $uid The identifier of the object to find
-	 * @return object The matching object if found, otherwise NULL
-	 * @api
+	 * @return string Class name of the repository.
 	 */
+	protected function getRepositoryClassName() {
+		// we want to be able to build out this repository without changing the extbase core feuser repository.
+		// Because we tell the persistence layer that the classname is Tx_Extbase_Domain_Repository_FrontendUserRepository,
+		// it understands this repository as handling all objects handled by that repository. A bit of a hack, but
+		// it seems to work.
+		return 'Tx_Extbase_Domain_Repository_FrontendUserRepository';
+	}
+
 	public function findByUid($uid) {
 		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
 			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
 		} else {
 			$query = $this->createQuery();
-			$query->getQuerySettings()->setRespectEnableFields(FALSE);
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
+			$query->getQuerySettings()->setRespectEnableFields(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$object = $query
 					->matching(
@@ -59,5 +62,12 @@ class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase
 		return $object;
 	}
 
+	public function countByEmail($email) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$result = $query->matching($query->logicalAnd($query->equals('email', $email), $query->equals('deleted', 0)))
+				->execute()
+				->count();
+		return $result;
+	}
 }
-?>
