@@ -32,9 +32,26 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Extbase_MV
 	protected $frontendUserRepository;
 
 	/**
+	 * @var Tx_Extbase_Reflection_Service
+	 */
+	protected $reflectionService;
+
+	/**
+	 * inject the reflectionService
+	 *
+	 * @param Tx_Extbase_Reflection_Service reflectionService
+	 * @return void
+	 */
+	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
+		$this->reflectionService = $reflectionService;
+	}
+
+	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+
+
 
 		// add the user to the default group
 #		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
@@ -57,25 +74,26 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Extbase_MV
 #		$this->forward($forwardAction, NULL, NULL, array('frontendUser' => $frontendUser));
 	}
 
+
+	/**
+	 */
 	protected function errorAction() {
-		$this->view->setFormat('json');
-t3lib_utility_Debug::debug($this->view->getTemplatePathAndFilename(),__FILE__ . " " . __LINE__);
-#		$this->clearCacheOnError();
-
-		#$errorFlashMessage = $this->getErrorFlashMessage();
-		#if ($errorFlashMessage !== FALSE) {
-		#	$this->flashMessageContainer->add($errorFlashMessage, '', t3lib_FlashMessage::ERROR);
-		#}
-
-		#$message = 'An error occurred while trying to call ' . get_class($this) . '->' . $this->actionMethodName . '().' . PHP_EOL;
-		#foreach ($this->arguments->getValidationResults()->getFlattenedErrors() as $propertyPath => $errors) {
-		#	foreach ($errors as $error) {
-		#		$message .= 'Error for ' . $propertyPath . ':  ' . $error->getMessage() . PHP_EOL;
-		#	}
-		#}
-
-		#return $message;
-
+		$results = new stdClass;
+		$results->success = false;
+		$errorResults = $this->arguments->getValidationResults()->forProperty('frontendUser');
+		$results->errors = new stdClass();
+		$results->errors->byProperty = array();
+		foreach($errorResults->getFlattenedErrors() as $property => $error) {
+			$errorDetails = $errorResults->forProperty($property)->getErrors();
+			foreach($errorDetails as $error) {
+				$errorObj = new stdClass;
+				$errorObj->code = $error->getCode();
+				$errorObj->property = $property;
+				$errorObj->message = $error->getMessage();
+				$results->errors->byProperty[$property][] = $errorObj;
+			}
+		}
+		$this->view->assign('results',json_encode($results));
 	}
 
 }

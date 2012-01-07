@@ -1,0 +1,12 @@
+$linkColor: #ABCABC;
+a {
+	text-decoration: none;
+	color: $linkColor;
+	&:hover {
+		text-decoration: underline;
+	}
+	&.apply {
+		padding: 10px 20px 10px 0;
+	display: block;
+	}
+}

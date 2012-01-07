@@ -1,45 +1,70 @@
-(function ($) {
+(function() {
+  var CicregisterForm;
 
-	var model = {
-		element: false,
-		data: false,
+  CicregisterForm = (function() {
 
-		init : function( options ) {
-			// setup model element and data
-			model.element = $(this);
-			data = model.element.data('Cicregister');
-			if(!data) {
-				model.element.data('Cicregister', {
-					errors: {}
-				})
-			}
-			model.data = data;
+    function CicregisterForm(element) {
+      this.element = element;
+      this.postURL = '?type=1325527064&tx_cicregister_create[action]=create&tx_cicregister_create[format]=json';
+      this.element = $(this.element);
+      this.initEvents();
+    }
 
-			// bind events
-			model.element.bind('submit.Cicregister', model.onSubmit);
+    CicregisterForm.prototype.log = function(msg, label) {
+      if (label == null) label = 'debug';
+      console.log(msg, label);
+      return false;
+    };
 
-			return model.element
-		},
+    CicregisterForm.prototype.initEvents = function() {
+      var _this = this;
+      return this.element.bind("submit", function(event) {
+        return _this.submitForm(event);
+      });
+    };
 
-		onSubmit : function ( ) {
-			url = '?type=1325527064';
-			data = model.element.serialize();
+    CicregisterForm.prototype.serializeForm = function() {
+      return this.element.serialize();
+    };
 
-			$.ajax({
-				url : url,
-				dataType : 'json',
-				data : data,
-				success: function() {
-					console.log(data);
-				}
-			});
-			return false;
-		}
-	}
+    CicregisterForm.prototype.submitFormError = function(response) {
+      this.log(response, 'error');
+      return response.success;
+    };
 
-	$.fn.Cicregister = function () {
-		return model.init.apply(this, arguments);
-	};
-})(jQuery);
+    CicregisterForm.prototype.submitFormSuccess = function(response) {
+      this.log(response, 'success');
+      return response.success;
+    };
 
-$('#Cicregister-New').Cicregister({foo: 'barr'});
+    CicregisterForm.prototype.submitForm = function(event) {
+      var result,
+        _this = this;
+      result = false;
+      $.ajax(this.postURL, {
+        dataType: 'JSON',
+        data: this.serializeForm(),
+        success: function(response) {
+          return result = _this.submitFormSuccess(response);
+        },
+        error: function(response) {
+          return result = _this.submitFormError(response);
+        }
+      });
+      this.log(result);
+      return result;
+    };
+
+    return CicregisterForm;
+
+  })();
+
+  $(function() {
+    var forms;
+    forms = [];
+    return $('.CicregisterForm-New').each(function() {
+      return forms.push(new CicregisterForm(this));
+    });
+  });
+
+}).call(this);
