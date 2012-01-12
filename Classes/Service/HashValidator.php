@@ -29,7 +29,7 @@
  *
  */
 
-class Tx_Cicregister_Service_EmailValidator implements t3lib_Singleton {
+class Tx_Cicregister_Service_HashValidator implements t3lib_Singleton {
 
 	/**
 	 * @var string
@@ -89,6 +89,46 @@ class Tx_Cicregister_Service_EmailValidator implements t3lib_Singleton {
 		$hash = md5($base);
 		$key = $hash . '-' . $frontendUser->getUid().'-'.$rand;
 		return $key;
+	}
+
+	/**
+	 * @param integer $frontendUserUid
+	 * @param null $rand
+	 * @param null $timestamp
+	 * @return string
+	 */
+	public function generateShortLivedKey($frontendUserUid, $rand = NULL, $timestamp = NULL) {
+		if (!$rand) {
+			$rand = mt_rand();
+		}
+		if (!$timestamp) {
+			$timestamp = time();
+		}
+		$base = $this->salt . $frontendUserUid . $rand . $timestamp;
+		$hash = md5($base);
+		$key = $hash . '-' . $frontendUserUid . '-' . $rand . '-' . $timestamp;
+		return $key;
+	}
+
+	/**
+	 * @param $key
+	 * @return bool
+	 */
+	public function validateShortLivedKey($key) {
+		$parts = explode('-', $key);
+		$hash = $parts[0];
+		$uid = $parts[1];
+		$rand = $parts[2];
+		$timestamp = $parts[3];
+		if ($uid && $rand && $timestamp) {
+			$confirmKey = $this->generateShortLivedKey($uid, $rand, $timestamp);
+			if ($confirmKey == $key && (time() - $timestamp) <= 18000) {
+				return $uid;
+			}
+		} else {
+			return false;
+		}
+		return false;
 	}
 
 

@@ -47,21 +47,35 @@ class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param array $decorators a list of decorators
-	 * @param $object the object to be decorated
+	 * @param array $behaviors
+	 * @param $object
+	 * @param $controllerContext
+	 * @param $default
+	 * @return mixed
 	 */
-	public function executeBehaviors(array $behaviors, $object) {
-		$redirectAction = false;
-		foreach($behaviors as $behaviorClassName => $enabled) {
-			if($enabled == true) {
+	public function executeBehaviors(array $behaviors, $object, $controllerContext, $default) {
+		$behaviorResponse = false;
+		foreach ($behaviors as $behaviorClassName => $enabled) {
+			if ($enabled == true || (is_array($enabled) && $enabled['_typoScriptNodeValue'] == true)) {
+				if (is_array($enabled)) {
+					$conf = $enabled;
+				} else {
+					$conf = array();
+				}
 				$behavior = $this->objectManager->create($behaviorClassName);
-				$result = $behavior->execute($object);
-				if($result) {
-					$redirectAction == $result;
+				$behavior->setControllerContext($controllerContext);
+				$result = $behavior->execute($object, $conf);
+				if ($result) {
+					$behaviorResponse = $result;
 				}
 			}
 		}
-		return $redirectAction;
+
+		if ($behaviorResponse == false) {
+			$behaviorResponse = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RenderAction');
+			$behaviorResponse->setValue($default);
+		}
+		return $behaviorResponse;
 	}
 
 }

@@ -3,53 +3,44 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-<h1>Create a New Account</h1>
+	<div class="Cicregister">
+		<h1>Create a New Account</h1>
 
+		<f:flashMessages class="flash-messages"/>
 
-<f:flashMessages />
+		<!-- add class "CicregisterForm-New-Ajax" to form for asynch rendering -->
+		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New" id=""
+				object="{frontendUser}">
 
-<f:form method="post" action="create" name="frontendUser" class="CicregisterForm-New" id="" object="{frontendUser}">
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
+				</div>
+				<div class="form-second-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
+				</div>
+			</div>
 
-	<div class="clearfix">
-		<label for="cicregister-firstName">First Name: </label>
-		<f:render partial="FieldError.html" arguments="{property: 'frontendUser.firstName'}" />
-		<div class="input">
-			<f:form.textfield id="cicregister-firstName" property="firstName"/>
-		</div>
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="PasswordInput" arguments="{propertyName: 'password', propertyLabel: 'Password'}"/>
+				</div>
+
+				<div class="form-second-col">
+					<f:render partial="PasswordInput" arguments="{propertyName: 'confirmPassword', propertyLabel: 'Confirm Password'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
+			</div>
+
+			<div class="form-row clearfix">
+				<div class="input">
+					<f:form.submit class="submit" value="Create Account"/>
+				</div>
+			</div>
+		</f:form>
 	</div>
 
-	<div class="clearfix">
-		<label for="cicregister-lastName">Last Name: </label>
-		<f:render partial="FieldError.html" arguments="{property: 'frontendUser.lastName'}" />
-		<div class="input">
-			<f:form.textfield id="cicregister-lastName" property="lastName"/>
-		</div>
-	</div>
-
-	<div class="clearfix">
-		<label for="cicregister-email">Email Address: </label>
-		<f:render partial="FieldError.html" arguments="{property: 'frontendUser.email'}" />
-		<div class="input">
-			<f:form.textfield id="cicregister-email" property="email"/>
-		</div>
-	</div>
-
-	<div class="clearfix">
-		<label for="cicregister-password">Password: </label>
-		<f:render partial="FieldError.html" arguments="{property: 'frontendUser.password'}" />
-		<div class="input">
-			<f:form.textfield id="cicregister-password" property="password"/>
-		</div>
-	</div>
-
-	<div class="clearfix">
-		<label for="cicregister-password">Confirm Password: </label>
-		<f:render partial="FieldError.html" arguments="{property: 'frontendUser.confirmPassword'}"/>
-		<div class="input">
-			<f:form.textfield id="cicregister-confirmPassword" property="confirmPassword"/>
-		</div>
-	</div>
-
-	<f:form.submit value="Create Account" />
-</f:form>
 </f:section>

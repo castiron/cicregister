@@ -1,14 +1,27 @@
 plugin.tx_cicregister {
-	view {
-		# cat=plugin.tx_cicregister/file; type=string; label=Path to template root (FE)
-		templateRootPath = EXT:cicregister/Resources/Private/Templates/
-		# cat=plugin.tx_cicregister/file; type=string; label=Path to template partials (FE)
-		partialRootPath = EXT:cicregister/Resources/Private/Partials/
-		# cat=plugin.tx_cicregister/file; type=string; label=Path to template layouts (FE)
-		layoutRootPath = EXT:cicregister/Resources/Private/Layouts/
-	}
-	persistence {
-		# cat=plugin.tx_cicregister//a; type=int+; label=Default storage PID
-		storagePid = 
-	}
-}
+ 	view {
+ 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template root (FE)
+ 		templateRootPath = EXT:cicregister/Resources/Private/Templates/
+ 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template partials (FE)
+ 		partialRootPath = EXT:cicregister/Resources/Private/Partials/
+ 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template layouts (FE)
+ 		layoutRootPath = EXT:cicregister/Resources/Private/Layouts/
+ 	}
+ 	settings {
+ 		defaults {
+ 			groupUid = 2
+ 		}
+		pids {
+			editView = 80
+		}
+ 	}
+ 	decorators {
+ 		created.addToGroup.groupUid = 5
+ 		emailValidated.addToGroup.groupUid = 4
+ 		emailValidate.removeFromGroup.groupUid = 5
+ 	}
+ 	persistence {
+ 		# cat=plugin.tx_cicregister//a; type=int+; label=Default storage PID
+ 		storagePid = 4
+ 	}
+ }

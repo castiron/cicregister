@@ -29,11 +29,13 @@
  *
  */
 
-interface Tx_Cicregister_Behaviors_BehaviorInterface {
+	interface Tx_Cicregister_Behaviors_BehaviorInterface {
 
 	/**
+	 * @abstract
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $conf
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser);
+	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf);
 
 }

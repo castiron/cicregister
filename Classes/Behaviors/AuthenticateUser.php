@@ -29,13 +29,52 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_AuthenticateUser implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class Tx_Cicregister_Behaviors_AuthenticateUser extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+
+	/**
+	 * @var Tx_Extbase_Object_Manager
+	 */
+	protected $objectManager;
+
+	/**
+	 * inject the objectManager
+	 *
+	 * @param Tx_Extbase_Object_Manager objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
+		$this->objectManager = $objectManager;
+	}
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $conf
+	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-		t3lib_div::debug('called authenticate');
+	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+
+		// This method generates a login hash, which gets validated in the authentication service.
+		// The login hash is part of a query string that the user is redirected to.
+		$hashValidator = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
+		$loginHash = $hashValidator->generateShortLivedKey($frontendUser->getUid());
+
+		$uriBuilder = $this->controllerContext->getUriBuilder();
+		$uri = $uriBuilder
+				->reset()
+				->setTargetPageUid($conf['forwardPid'])
+				->setNoCache(false)
+				->setUseCacheHash(false)
+				->setArguments(array(
+					'logintype' => 'login',
+					'pid' => $conf['feuserPid'],
+					'loginHash' => $loginHash
+				))
+				->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
+
+		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RedirectURI');
+		$response->setValue($uri);
+		return $response;
+
 	}
 
 }

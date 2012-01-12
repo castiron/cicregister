@@ -1,12 +1,78 @@
-$linkColor: #ABCABC;
-a {
-	text-decoration: none;
-	color: $linkColor;
-	&:hover {
-		text-decoration: underline;
+$error_color: #C40F08;
+$error_color_bg: #f6d7d3;
+$highlight_color_bg: #0AA9AA;
+$highlight_color_fg: #ffffff;
+
+.Cicregister {
+	.flash-messages {
+	    color: $error_color;
+		padding: 0;
+		li {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
 	}
-	&.apply {
-		padding: 10px 20px 10px 0;
-	display: block;
+	form.CicregisterForm {
+
+		.clearfix {
+			clear: both;
+		}
+		.form-two-col {
+			width: 600px;
+			.form-first-col {
+				width: 300px;
+				float: left;
+			}
+			.form-second-col {
+				width: 300px;
+				float: left;
+			}
+		}
+		.form-row {
+			margin: 5px 0px 20px 0px;
+			.input {
+			    input.submit {
+					display: block;
+					padding: 10px;
+					outline: medium none;
+					border-radius: 8px;
+					width: auto;
+					font-size: 1.25em;
+					background-color: $highlight_color_bg;
+					color: $highlight_color_fg;
+					border: none;
+					color: #fefdfc;
+  					text-shadow: 2px 2px 0 #098a8a;
+			    }
+				input, select, textarea {
+				    border: 1px solid #7B7772;
+                 	background-color: #FFF;
+					width: 275px;
+					&.f3-form-error {
+     					border: 1px solid $error_color;
+     					background-color: $error_color_bg;
+     				}
+     				color: #000;
+     				padding: 5px;
+				}
+				margin-bottom: 5px;
+			}
+			label {
+				display: block;
+				color: #333;
+				font-weight: 500;
+				font-size: 1.2em;
+				margin: 0 0 3px 0;
+			}
+			span.error, div.error {
+				font-weight: normal;
+			}
+			.error {
+				color: $error_color;
+			}
+
+		}
 	}
 }
+

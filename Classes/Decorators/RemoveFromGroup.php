@@ -29,14 +29,33 @@
  *
  */
 
-class Tx_Cicregister_Decorators_Enable implements Tx_Cicregister_Decorators_DecoratorInterface {
+class Tx_Cicregister_Decorators_RemoveFromGroup implements Tx_Cicregister_Decorators_DecoratorInterface {
+
+	/**
+	 * @var Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository
+	 */
+	protected $frontendUserGroupRepository;
+
+	/**
+	 * inject the frontendUserGroupRepository
+	 *
+	 * @param Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository frontendUserGroupRepository
+	 * @return void
+	 */
+	public function injectFrontendUserGroupRepository(Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
+	}
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @param array $conf
 	 */
 	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
-		$frontendUser->setDisable(false);
+		$groupUid = $conf['groupUid'];
+		if($groupUid) {
+			$group = $this->frontendUserGroupRepository->findByUid($groupUid);
+			if ($group instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->removeUsergroup($group);
+		}
 	}
 
 }

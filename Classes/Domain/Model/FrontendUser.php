@@ -38,7 +38,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @var string
 	 * @validate String
 	 * @validate NotEmpty
-	 * @validate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Extbase_Domain_Repository_FrontendUserRepository, property = username)
+	 * @zzzvalidate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Extbase_Domain_Repository_FrontendUserRepository, property = username)
 	 */
 	protected $username;
 
@@ -84,7 +84,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @validate NotEmpty
 	 * @validate EmailAddress
 	 * @validate StringLength(minimum = 3,maximum = 50)
-	 * @validate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository, property = email)
+	 * @ZZZvalidate Tx_Cicregister_Validation_Validator_UniqueValidator(repository = Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository, property = email)
 	 */
 	protected $email = '';
 
@@ -128,6 +128,9 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @return string
 	 */
 	public function getConfirmPassword() {
+		if($this->confirmPassword == false) {
+			return $this->getPassword();
+		}
 		return $this->confirmPassword;
 	}
 

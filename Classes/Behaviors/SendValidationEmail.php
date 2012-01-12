@@ -37,17 +37,14 @@ class Tx_Cicregister_Behaviors_SendValidationEmail extends Tx_Cicregister_Behavi
 	protected $settings;
 
 	/**
-	 * @var Tx_Cicregister_Service_EmailValidator
+	 * @var Tx_Cicregister_Service_HashValidator
 	 */
 	protected $emailValidator;
 
 	/**
-	 * inject the emailValidator
-	 *
-	 * @param Tx_Cicregister_Service_EmailValidator emailValidator
-	 * @return void
+	 * @param Tx_Cicregister_Service_HashValidator $emailValidator
 	 */
-	public function injectEmailValidator(Tx_Cicregister_Service_EmailValidator $emailValidator) {
+	public function injectEmailValidator(Tx_Cicregister_Service_HashValidator $emailValidator) {
 		$this->emailValidator = $emailValidator;
 	}
 
@@ -57,18 +54,22 @@ class Tx_Cicregister_Behaviors_SendValidationEmail extends Tx_Cicregister_Behavi
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
 		$recipients = array($frontendUser->getEmail() => $frontendUser->getName());
-		$sender = array($this->settings['email']['senderEmail'] => $this->settings['email']['senderName']);
-		$subject = $this->settings['email']['validateSubject'];
+		$sender = array($conf['senderEmail'] => $conf['senderName']);
+		$subject = $conf['validateSubject'];
 		$templateName = 'ValidateEmail.html';
-		$variables = $this->settings['email']['variables'];
+		$variables = $conf['variables'];
 		$variables['frontendUser'] = $frontendUser;
 		$variables['validationKey'] = $this->emailValidator->generateKey($frontendUser);
 		$this->sendTemplateEmail($recipients, $sender, $subject, $templateName, $variables);
-		return 'createConfirmationMustValidate';
+
+		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RenderAction');
+		$response->setValue('createConfirmationMustValidate');
+		return $response;
 	}
 
 }

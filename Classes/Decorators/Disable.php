@@ -33,8 +33,9 @@ class Tx_Cicregister_Decorators_Disable implements Tx_Cicregister_Decorators_Dec
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $conf
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
 		$frontendUser->setDisable(true);
 	}
 

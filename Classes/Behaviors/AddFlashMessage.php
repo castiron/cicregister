@@ -29,14 +29,15 @@
  *
  */
 
-class Tx_Cicregister_Decorators_Enable implements Tx_Cicregister_Decorators_DecoratorInterface {
+class Tx_Cicregister_Behaviors_AddFlashMessage extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @param array $conf
+	 * @return string
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
-		$frontendUser->setDisable(false);
+	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+
 	}
 
 }

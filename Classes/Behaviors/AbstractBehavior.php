@@ -42,6 +42,11 @@ class Tx_Cicregister_Behaviors_AbstractBehavior {
 	protected $objectManager;
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 */
+	protected $controllerContext;
+
+	/**
 	 * inject the objectManager
 	 *
 	 * @param Tx_Extbase_Object_ObjectManagerInterface objectManager
@@ -59,6 +64,13 @@ class Tx_Cicregister_Behaviors_AbstractBehavior {
 	 */
 	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
+	}
+
+	/**
+	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 */
+	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+		$this->controllerContext = $controllerContext;
 	}
 
 	/**

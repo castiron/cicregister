@@ -6,32 +6,64 @@ plugin.tx_cicregister {
 	}
 	settings {
 		defaults {
-			groupUid = 2
+			groupUid = {$plugin.tx_cicregister.settings.defaults.groupUid}
 		}
-		email {
-			senderEmail = zach@castironcoding.com
-			senderName = Main Dish & Son
-			validateSubject = Main Dish & Son: Please confirm your registration
-			variables {
-				siteName = MainDish & Son
-				validatePid = 80
-			}
+		pids {
+			editView = {$plugin.tx_cicregister.settings.pids.editView}
 		}
 		behaviors {
 			frontendUser {
 				created {
+
 					Tx_Cicregister_Behaviors_SendValidationEmail = 1
-					Tx_Cicregister_Behaviors_AuthenticateUser = 0
+					Tx_Cicregister_Behaviors_SendValidationEmail {
+						senderEmail = zach@castironcoding.com
+						senderName = Main Dish & Son
+						validateSubject = Main Dish & Son: Please confirm your registration
+						variables {
+							siteName = MainDish & Son
+							validatePid = 80
+						}
+					}
+
+					Tx_Cicregister_Behaviors_AddFlashMessage = 0
+					Tx_Cicregister_Behaviors_AddFlashMessage {
+						message (
+							Your Main Dish & Sons account has been created and you have been logged in. To validate your
+							email address, please check your email inbox for a message with the subject "Please Confirm
+							Your Registration." Click on the validate email link in that message to validate your
+							account. Thank you for registering with Main Dish & Sons.
+						)
+					}
+
+					Tx_Cicregister_Behaviors_AuthenticateUser = 1
+					Tx_Cicregister_Behaviors_AuthenticateUser {
+						forwardAction = edit
+						forwardPid = 80
+						feuserPid = {$plugin.tx_cicregister.persistence.storagePid}
+					}
+
 				}
 			}
 		}
 		decorators {
 			frontendUser {
 				created {
-					Tx_Cicregister_Decorators_Disable = 1
+					Tx_Cicregister_Decorators_Disable = 0
+					Tx_Cicregister_Decorators_AddToGroup = 1
+					Tx_Cicregister_Decorators_AddToGroup {
+						groupUid = 	{$plugin.tx_cicregister.decorators.created.addToGroup.groupUid}
+					}
 				}
 				emailValidated {
-					Tx_Cicregister_Decorators_Enable = 1
+					Tx_Cicregister_Decorators_Enable = 0
+					Tx_Cicregister_Decorators_AddToGroup {
+						groupUid = 	{$plugin.tx_cicregister.decorators.emailValidated.addToGroup.groupUid}
+					}
+					Tx_Cicregister_Decorators_RemoveFromGroup = 1
+					Tx_Cicregister_Decorators_RemoveFromGroup {
+						groupUid = 	{$plugin.tx_cicregister.decorators.emailValidate.removeFromGroup.groupUid}
+					}
 				}
 				edited {
 
@@ -113,9 +145,14 @@ Tx_Cicregister_JSON_RequestPage {
 		switchableControllerActions {
 			FrontendUserJSON {
 				1 = create
+				2 = createConfirmationMustValidate
 			}
 		}
 	}
+}
+
+page.includeCSS {
+	99 = EXT:cicregister/Resources/Public/Stylesheet/CicRegisterStyles.css
 }
 
 page.includeJSFooter {

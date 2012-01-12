@@ -1,25 +1,80 @@
-<f:layout name="Default" />
+{namespace cr = Tx_Cicregister_ViewHelpers}
 
-This template displays a EDIT form for the current domain object.
-
-If you modify this template, do not forget to change the overwrite settings
-in /Configuration/ExtensionBuilder/settings.yaml:
-  Resources:
-    Private:
-      Templates:
-        Edit.html: keep
-
-Otherwise your changes will be overwritten the next time you save the extension in the extension builder
+<f:layout name="Default"/>
 
 <f:section name="main">
-<h1>Edit FEUser</h1>
+	<div class="Cicregister">
+		<h1>Edit Your Account</h1>
 
-<f:flashMessages />
+		<f:flashMessages class="flash-messages"/>
 
-<f:render partial="FormErrors" />
+		<f:form method="post" action="update" name="frontendUser" class="CicregisterForm CicregisterForm-New" id=""
+				object="{frontendUser}">
 
-<f:form method="post" action="update" name="fEUser" object="{fEUser}" >
-<f:render partial="FEUser/FormFields" arguments="{fEUser:fEUser}" />
-	<f:form.submit value="Save" />
-</f:form>
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
+				</div>
+				<div class="form-second-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="PasswordInput"
+							  arguments="{propertyName: 'password', propertyLabel: 'Password'}"/>
+				</div>
+
+				<div class="form-second-col">
+					<f:render partial="PasswordInput"
+							  arguments="{propertyName: 'confirmPassword', propertyLabel: 'Confirm Password'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
+			</div>
+
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'company', propertyLabel: 'Organization Name'}"/>
+				</div>
+
+				<div class="form-second-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'title', propertyLabel: 'Position Title'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'address', propertyLabel: 'Street Address'}"/>
+			</div>
+
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="TextInput"
+							  arguments="{propertyName: 'city', propertyLabel: 'City'}"/>
+				</div>
+				<div class="form-second-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'zip', propertyLabel: 'Zip Code'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'telephone', propertyLabel: 'Telephone'}"/>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'www', propertyLabel: 'Website'}"/>
+			</div>
+
+			<div class="form-row clearfix">
+				<div class="input">
+					<f:form.submit class="submit" value="Update Account"/>
+				</div>
+			</div>
+
+		</f:form>
+	</div>
+
 </f:section>

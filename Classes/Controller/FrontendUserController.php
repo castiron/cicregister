@@ -29,97 +29,8 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 
-class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Controller_ActionController {
+class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Controller_FrontendUserBaseController {
 
-	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserRepository
-	 */
-	protected $frontendUserRepository;
-
-	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
-	 */
-	protected $signalSlotDispatcher;
-
-	/**
-	 * @var Tx_Cicregister_Service_Decorator
-	 */
-	protected $decoratorService;
-
-	/**
-	 * @var Tx_Extbase_Property_PropertyMapper
-	 */
-	protected $propertyMapper;
-
-	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository
-	 */
-	protected $frontendUserGroupRepository;
-
-	/**
-	 * @var Tx_Cicregister_Service_Behavior
-	 */
-	protected $behaviorService;
-
-	/**
-	 * inject the behaviorService
-	 *
-	 * @param Tx_Cicregister_Service_Behavior behaviorService
-	 * @return void
-	 */
-	public function injectBehaviorService(Tx_Cicregister_Service_Behavior $behaviorService) {
-		$this->behaviorService = $behaviorService;
-	}
-
-	/**
-	 * inject the frontendUserGroupRepository
-	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository frontendUserGroupRepository
-	 * @return void
-	 */
-	public function injectFrontendUserGroupRepository(Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
-		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
-	}
-
-	/**
-	 * inject the propertyMapper
-	 *
-	 * @param Tx_Extbase_Property_PropertyMapper propertyMapper
-	 * @return void
-	 */
-	public function injectPropertyMapper(Tx_Extbase_Property_PropertyMapper $propertyMapper) {
-		$this->propertyMapper = $propertyMapper;
-	}
-
-	/**
-	 * inject the decoratorService
-	 *
-	 * @param Tx_Cicregister_Service_Decorator decoratorService
-	 * @return void
-	 */
-	public function injectDecoratorService(Tx_Cicregister_Service_Decorator $decoratorService) {
-		$this->decoratorService = $decoratorService;
-	}
-
-	/**
-	 * Inject the signalSlotDispatcher
-	 *
-	 * @param Tx_Extbase_SignalSlot_Dispatcher signalSlotDispatcher
-	 * @return void
-	 */
-	public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
-		$this->signalSlotDispatcher = $signalSlotDispatcher;
-	}
-
-	/**
-	 * Inject the frontendUserRepository
-	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserRepository $frontendUserRepository
-	 * @return void
-	 */
-	public function injectFrontendUserRepository(Tx_Cicregister_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
-		$this->frontendUserRepository = $frontendUserRepository;
-	}
 
 	public function initializeAction() {
 		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
@@ -146,8 +57,13 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	 * @return void
 	 */
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-		$this->view->assign('frontendUser', $frontendUser);
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
+		$user = $GLOBALS['TSFE']->fe_user;
+		if ($user->user['uid']) {
+			$this->flashMessageContainer->add('Use the form below to edit your user profile.');
+			$this->forward('edit');
+		} else {
+			$this->view->assign('frontendUser', $frontendUser);
+		}
 	}
 
 	/**
@@ -155,39 +71,41 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 
-		// add the user to the default group
-		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
-		if($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
+		// The user has already been validated by ExtBase. At this point, we're doing post-processing before creating
+		// the user.
+		$behaviorResponse = $this->createAndPersistUser($frontendUser);
+		switch (get_class($behaviorResponse)) {
+			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
+				$this->forward($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
+			break;
 
-		// decorate the new user
-		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['created'],$frontendUser);
+			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
+				$this->redirect($behaviorResponse->getValue());
+			break;
 
-		// add the user to the repository
-		$this->frontendUserRepository->add($frontendUser);
-		$this->flashMessageContainer->add('Your account has been created.');
-
-		// persist the user
-		$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-		$persistenceManager->persistAll();
-
-		// execute behaviors and forward (a redirect would be nice here, but it's tricky because the user object is still disabled!)
-		$forwardAction = $this->behaviorService->executeBehaviors($this->settings['behaviors']['frontendUser']['created'],$frontendUser);
-		if($forwardAction == false || $forwardAction == '') $forwardAction = 'createConfirmation';
-		$this->forward($forwardAction,NULL,NULL,array('frontendUser' => $frontendUser));
-
+			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
+				$this->redirectToUri($behaviorResponse->getValue());
+			break;
+		}
 	}
 
 	/**
 	 * @param string $key
 	 */
 	public function validateUserAction($key) {
-		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_EmailValidator');
+		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
 		$frontendUser = $emailValidatorService->validateKey($key);
 		if($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
-			$frontendUser->setDisable(false);
+			// Decorate the user
+			$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['emailValidated'], $frontendUser);
 			$this->frontendUserRepository->update($frontendUser);
 			$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 			$persistenceManager->persistAll();
+			$this->flashMessageContainer->add('You have successfully validated your email address. Your account is now active.');
+			$this->forward('edit');
+		} else {
+			$this->flashMessageContainer->add('The link you clicked was invalid. If you would like to register for a new account, please fill out the form below.');
+			$this->forward('new');
 		}
 		// TODO: Handle forwards and confirmations.
 	}
@@ -212,9 +130,16 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	 * @param $frontendUser
 	 * @return void
 	 */
-	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'editAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
-		$this->view->assign('frontendUser', $frontendUser);
+	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
+		// TODO: Check for frontend user and redirect to login page if none is found.
+		$user = $GLOBALS['TSFE']->fe_user;
+		if(!$user->user['uid']) {
+			$this->flashMessageContainer->add('You must be logged in to edit your account. Please login below.');
+			$this->forward('login');
+		} else {
+			$frontendUser = $this->frontendUserRepository->findByUid($user->user['uid']);
+			$this->view->assign('frontendUser', $frontendUser);
+		}
 	}
 
 	/**
@@ -224,10 +149,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 	 * @return void
 	 */
 	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
-		#$this->FrontendUserRepository->update($frontendUser);
+		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your Frontend user was updated.');
-		$this->redirect('edit');
+		$this->forward('edit');
 	}
 
 	/**
@@ -242,6 +166,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Extbase_MVC_Co
 		if($msg == false) {
 			$msg = 'no error message set for '.$this->actionMethodName;
 		}
+
 		return $msg;
 	}
 

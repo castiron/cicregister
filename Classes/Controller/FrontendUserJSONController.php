@@ -24,72 +24,68 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 
-class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Extbase_MVC_Controller_ActionController {
-
-	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserRepository
-	 */
-	protected $frontendUserRepository;
-
-	/**
-	 * @var Tx_Extbase_Reflection_Service
-	 */
-	protected $reflectionService;
-
-	/**
-	 * inject the reflectionService
-	 *
-	 * @param Tx_Extbase_Reflection_Service reflectionService
-	 * @return void
-	 */
-	public function injectReflectionService(Tx_Extbase_Reflection_Service $reflectionService) {
-		$this->reflectionService = $reflectionService;
-	}
+class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregister_Controller_FrontendUserBaseController {
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 
+		$behaviorResponse = $this->createAndPersistUser($frontendUser);
+		$results = new stdClass;
+		$results->hasErrors = false;
 
-
-		// add the user to the default group
-#		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
-#		if ($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
-
-		// decorate the new user
-#		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['created'], $frontendUser);
-
-		// add the user to the repository
-#		$this->frontendUserRepository->add($frontendUser);
-#		$this->flashMessageContainer->add('Your account has been created.');
-
-		// persist the user
-#		$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-#		$persistenceManager->persistAll();
-
-		// execute behaviors and forward (a redirect would be nice here, but it's tricky because the user object is still disabled!)
-#		$forwardAction = $this->behaviorService->executeBehaviors($this->settings['behaviors']['frontendUser']['created'], $frontendUser);
-#		if ($forwardAction == false || $forwardAction == '') $forwardAction = 'createConfirmation';
-#		$this->forward($forwardAction, NULL, NULL, array('frontendUser' => $frontendUser));
+		switch(get_class($behaviorResponse)) {
+			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
+				$viewObjectName = 'Tx_Cicregister_View_FrontendUserJSON_' . $behaviorResponse->getValue();
+				$view = $this->objectManager->create($this->defaultViewObjectName);
+				$this->setViewConfiguration($view);
+				$view->setControllerContext($this->controllerContext);
+				$view->assign('settings', $this->settings); // same with settings injection.
+				$this->controllerContext->getRequest()->setFormat('html');
+				$out = $view->render($behaviorResponse->getValue() . '');
+				$this->controllerContext->getRequest()->setFormat('json');
+				$results->html = $out;
+			break;
+			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
+				$uriBuilder = $this->controllerContext->getUriBuilder();
+				$uri = $uriBuilder
+						->reset()
+						->setTargetPageUid($this->settings['pids']['editView'])
+						->setNoCache(false)
+						->setUseCacheHash(false)
+						->uriFor($behaviorResponse->getValue(), NULL, 'FrontendUser');
+				$results->redirect = $uri;
+			break;
+			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
+				$results->redirect = $behaviorResponse->getValue();
+			break;
+		}
+		$this->view->assign('results',json_encode($results));
 	}
-
 
 	/**
 	 */
 	protected function errorAction() {
 		$results = new stdClass;
-		$results->success = false;
+		$results->hasErrors = false;
 		$errorResults = $this->arguments->getValidationResults()->forProperty('frontendUser');
 		$results->errors = new stdClass();
 		$results->errors->byProperty = array();
 		foreach($errorResults->getFlattenedErrors() as $property => $error) {
 			$errorDetails = $errorResults->forProperty($property)->getErrors();
 			foreach($errorDetails as $error) {
+				$results->hasErrors = true;
 				$errorObj = new stdClass;
 				$errorObj->code = $error->getCode();
 				$errorObj->property = $property;
-				$errorObj->message = $error->getMessage();
+				$key = 'form-frontendUserController-frontendUser.' . $errorObj->property . '-' . $errorObj->code;
+				$translatedMessage = Tx_Extbase_Utility_Localization::translate($key,'cicregister');
+				if($translatedMessage) {
+					$errorObj->message = $translatedMessage;
+				} else {
+					$errorObj->message = $error->getMessage();
+				}
 				$results->errors->byProperty[$property][] = $errorObj;
 			}
 		}

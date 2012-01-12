@@ -29,14 +29,6 @@
  *
  */
 
-class Tx_Cicregister_Decorators_Enable implements Tx_Cicregister_Decorators_DecoratorInterface {
-
-	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
-	 * @param array $conf
-	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
-		$frontendUser->setDisable(false);
-	}
+class Tx_Cicregister_Behaviors_Response_RedirectURI extends Tx_Cicregister_Behaviors_Response_ResponseBase implements Tx_Cicregister_Behaviors_Response_ResponseInterface {
 
 }

@@ -1,8 +1,52 @@
-a {
-  text-decoration: none;
-  color: #abcabc; }
-  a:hover {
-    text-decoration: underline; }
-  a.apply {
-    padding: 10px 20px 10px 0;
-    display: block; }
+.Cicregister .flash-messages {
+  color: #c40f08;
+  padding: 0; }
+  .Cicregister .flash-messages li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0; }
+.Cicregister form.CicregisterForm .clearfix {
+  clear: both; }
+.Cicregister form.CicregisterForm .form-two-col {
+  width: 600px; }
+  .Cicregister form.CicregisterForm .form-two-col .form-first-col {
+    width: 300px;
+    float: left; }
+  .Cicregister form.CicregisterForm .form-two-col .form-second-col {
+    width: 300px;
+    float: left; }
+.Cicregister form.CicregisterForm .form-row {
+  margin: 5px 0px 20px 0px; }
+  .Cicregister form.CicregisterForm .form-row .input {
+    margin-bottom: 5px; }
+    .Cicregister form.CicregisterForm .form-row .input input.submit {
+      display: block;
+      padding: 10px;
+      outline: medium none;
+      border-radius: 8px;
+      width: auto;
+      font-size: 1.25em;
+      background-color: #0aa9aa;
+      color: white;
+      border: none;
+      color: #fefdfc;
+      text-shadow: 2px 2px 0 #098a8a; }
+    .Cicregister form.CicregisterForm .form-row .input input, .Cicregister form.CicregisterForm .form-row .input select, .Cicregister form.CicregisterForm .form-row .input textarea {
+      border: 1px solid #7B7772;
+      background-color: #FFF;
+      width: 275px;
+      color: #000;
+      padding: 5px; }
+      .Cicregister form.CicregisterForm .form-row .input input.f3-form-error, .Cicregister form.CicregisterForm .form-row .input select.f3-form-error, .Cicregister form.CicregisterForm .form-row .input textarea.f3-form-error {
+        border: 1px solid #c40f08;
+        background-color: #f6d7d3; }
+  .Cicregister form.CicregisterForm .form-row label {
+    display: block;
+    color: #333;
+    font-weight: 500;
+    font-size: 1.2em;
+    margin: 0 0 3px 0; }
+  .Cicregister form.CicregisterForm .form-row span.error, .Cicregister form.CicregisterForm .form-row div.error {
+    font-weight: normal; }
+  .Cicregister form.CicregisterForm .form-row .error {
+    color: #c40f08; }

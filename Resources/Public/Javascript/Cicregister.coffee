@@ -1,6 +1,8 @@
 class CicregisterForm
 
 	constructor: (@element) ->
+		@elementClasses =
+			inputWithError: 'f3-form-error'
 		@postURL = '?type=1325527064&tx_cicregister_create[action]=create&tx_cicregister_create[format]=json'
 		@element = $(@element)
 		@initEvents()
@@ -8,6 +10,7 @@ class CicregisterForm
 	log: (msg, label = 'debug') ->
 		console.log(msg, label)
 		false
+
 	initEvents: ->
 		@element.bind "submit", (event) => @submitForm(event)
 
@@ -15,14 +18,48 @@ class CicregisterForm
 		@element.serialize()
 
 	submitFormError: (response) ->
-		@log(response, 'error')
 		response.success
 
 	submitFormSuccess: (response) ->
-		@log(response, 'success')
-		response.success
+		return @showErrors(response) if response.hasErrors == true
+		return @doRedirect(response) if response.redirect
+		return @showResults(response)
+
+	doRedirect: (response) ->
+		window.location = response.redirect
+
+	showResults: (response) ->
+		@element.parents('.Cicregister:first').html(response.html)
+		false
+
+	showErrors: (response) ->
+		for field, errorDetails of response.errors.byProperty
+			@showSingleError(field, errorDetails)
+
+	showSingleError: (field, errorDetails) ->
+		domLoc = $('#cicregister-' + field + '-errors')
+		errorWrapper = $('<div class="error">')
+		$('#cicregister-' + field).addClass(@elementClasses.inputWithError)
+		for index, errorDetail of errorDetails
+			errorWrapper.append('<div>' + errorDetail.message + '</div>')
+		domLoc.append(errorWrapper);
+
+	showMustValidate: (response) ->
+
+	showSucces: (response) ->
+
+	hideErrors: ->
+		inputWithErrorClassName = @elementClasses.inputWithError
+		$('.' + @elementClasses.inputWithError).each( ->
+			$(@).removeClass(inputWithErrorClassName)
+		)
+		@element.find('.error').each( ->
+			$(this).remove()
+		)
 
 	submitForm: (event) ->
+
+		@hideErrors()
 		result = false
 
 		$.ajax @postURL,
@@ -32,11 +69,10 @@ class CicregisterForm
 				result = @submitFormSuccess(response)
 			error:(response) =>
 				result = @submitFormError(response)
-		@log(result)
 		result
 
 $ ->
 	forms = []
-	$('.CicregisterForm-New').each( ->
+	$('.CicregisterForm-New-Ajax').each( ->
 		forms.push(new CicregisterForm(this))
 	)

@@ -5,6 +5,9 @@
 
     function CicregisterForm(element) {
       this.element = element;
+      this.elementClasses = {
+        inputWithError: 'f3-form-error'
+      };
       this.postURL = '?type=1325527064&tx_cicregister_create[action]=create&tx_cicregister_create[format]=json';
       this.element = $(this.element);
       this.initEvents();
@@ -28,18 +31,66 @@
     };
 
     CicregisterForm.prototype.submitFormError = function(response) {
-      this.log(response, 'error');
       return response.success;
     };
 
     CicregisterForm.prototype.submitFormSuccess = function(response) {
-      this.log(response, 'success');
-      return response.success;
+      if (response.hasErrors === true) return this.showErrors(response);
+      if (response.redirect) return this.doRedirect(response);
+      return this.showResults(response);
+    };
+
+    CicregisterForm.prototype.doRedirect = function(response) {
+      return window.location = response.redirect;
+    };
+
+    CicregisterForm.prototype.showResults = function(response) {
+      this.element.parents('.Cicregister:first').html(response.html);
+      return false;
+    };
+
+    CicregisterForm.prototype.showErrors = function(response) {
+      var errorDetails, field, _ref, _results;
+      _ref = response.errors.byProperty;
+      _results = [];
+      for (field in _ref) {
+        errorDetails = _ref[field];
+        _results.push(this.showSingleError(field, errorDetails));
+      }
+      return _results;
+    };
+
+    CicregisterForm.prototype.showSingleError = function(field, errorDetails) {
+      var domLoc, errorDetail, errorWrapper, index;
+      domLoc = $('#cicregister-' + field + '-errors');
+      errorWrapper = $('<div class="error">');
+      $('#cicregister-' + field).addClass(this.elementClasses.inputWithError);
+      for (index in errorDetails) {
+        errorDetail = errorDetails[index];
+        errorWrapper.append('<div>' + errorDetail.message + '</div>');
+      }
+      return domLoc.append(errorWrapper);
+    };
+
+    CicregisterForm.prototype.showMustValidate = function(response) {};
+
+    CicregisterForm.prototype.showSucces = function(response) {};
+
+    CicregisterForm.prototype.hideErrors = function() {
+      var inputWithErrorClassName;
+      inputWithErrorClassName = this.elementClasses.inputWithError;
+      $('.' + this.elementClasses.inputWithError).each(function() {
+        return $(this).removeClass(inputWithErrorClassName);
+      });
+      return this.element.find('.error').each(function() {
+        return $(this).remove();
+      });
     };
 
     CicregisterForm.prototype.submitForm = function(event) {
       var result,
         _this = this;
+      this.hideErrors();
       result = false;
       $.ajax(this.postURL, {
         dataType: 'JSON',
@@ -51,7 +102,6 @@
           return result = _this.submitFormError(response);
         }
       });
-      this.log(result);
       return result;
     };
 
@@ -62,7 +112,7 @@
   $(function() {
     var forms;
     forms = [];
-    return $('.CicregisterForm-New').each(function() {
+    return $('.CicregisterForm-New-Ajax').each(function() {
       return forms.push(new CicregisterForm(this));
     });
   });
