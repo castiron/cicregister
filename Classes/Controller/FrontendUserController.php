@@ -94,7 +94,6 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createConfirmationAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-
 	}
 
 	/**
