@@ -50,20 +50,19 @@
     };
 
     CicregisterForm.prototype.showErrors = function(response) {
-      var errorDetails, field, _ref, _results;
+      var errorDetails, field, _ref;
       _ref = response.errors.byProperty;
-      _results = [];
       for (field in _ref) {
         errorDetails = _ref[field];
-        _results.push(this.showSingleError(field, errorDetails));
+        this.showSingleError(field, errorDetails);
       }
-      return _results;
+      return $.colorbox.resize();
     };
 
     CicregisterForm.prototype.showSingleError = function(field, errorDetails) {
       var domLoc, errorDetail, errorWrapper, index;
       domLoc = $('#cicregister-' + field + '-errors');
-      errorWrapper = $('<div class="error">');
+      errorWrapper = $('<div class="message error">');
       $('#cicregister-' + field).addClass(this.elementClasses.inputWithError);
       for (index in errorDetails) {
         errorDetail = errorDetails[index];
@@ -112,8 +111,19 @@
   $(function() {
     var forms;
     forms = [];
-    return $('.CicregisterForm-New-Ajax').each(function() {
+    $('.CicregisterForm-New-Ajax').each(function() {
       return forms.push(new CicregisterForm(this));
+    });
+    $('.cicregister-lightbox-noJs').each(function() {
+      return $(this).hide();
+    });
+    $('.cicregister-lightbox-trigger').each(function() {
+      return $(this).show();
+    });
+    return $('.cicregister-lightbox-trigger').colorbox({
+      inline: true,
+      scrolling: false,
+      open: false
     });
   });
 

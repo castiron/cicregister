@@ -35,10 +35,11 @@ class CicregisterForm
 	showErrors: (response) ->
 		for field, errorDetails of response.errors.byProperty
 			@showSingleError(field, errorDetails)
+		$.colorbox.resize()
 
 	showSingleError: (field, errorDetails) ->
 		domLoc = $('#cicregister-' + field + '-errors')
-		errorWrapper = $('<div class="error">')
+		errorWrapper = $('<div class="message error">')
 		$('#cicregister-' + field).addClass(@elementClasses.inputWithError)
 		for index, errorDetail of errorDetails
 			errorWrapper.append('<div>' + errorDetail.message + '</div>')
@@ -76,3 +77,8 @@ $ ->
 	$('.CicregisterForm-New-Ajax').each( ->
 		forms.push(new CicregisterForm(this))
 	)
+
+	$('.cicregister-lightbox-noJs').each( -> $(this).hide(); )
+	$('.cicregister-lightbox-trigger').each(-> $(this).show();)
+	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: false});
+

@@ -1,0 +1,46 @@
+{namespace cr = Tx_Cicregister_ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+	<div class="Cicregister">
+		<h1>Create a New Account</h1>
+
+		<f:flashMessages class="flash-messages"/>
+
+		<!-- add class "CicregisterForm-New-Ajax" to form for asynch rendering -->
+		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New-Ajax" id=""
+				object="{frontendUser}">
+
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
+				</div>
+				<div class="form-second-col">
+					<f:render partial="TextInput" arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix form-two-col">
+				<div class="form-first-col">
+					<f:render partial="PasswordInput" arguments="{propertyName: 'password', propertyLabel: 'Password'}"/>
+				</div>
+
+				<div class="form-second-col">
+					<f:render partial="PasswordInput" arguments="{propertyName: 'confirmPassword', propertyLabel: 'Confirm Password'}"/>
+				</div>
+			</div>
+
+			<div class="form-row clearfix">
+				<f:render partial="TextInput" arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
+			</div>
+
+			<div class="form-row clearfix">
+				<div class="input">
+					<f:form.submit class="submit" value="Create Account"/>
+				</div>
+			</div>
+		</f:form>
+	</div>
+
+</f:section>

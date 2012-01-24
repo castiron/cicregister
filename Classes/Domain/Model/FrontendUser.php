@@ -128,7 +128,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @return string
 	 */
 	public function getConfirmPassword() {
-		if($this->confirmPassword == false) {
+		if($this->confirmPassword === false) {
 			return $this->getPassword();
 		}
 		return $this->confirmPassword;
@@ -151,5 +151,30 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	public function getName() {
 		return $this->getFirstName().' '.$this->getLastName();
 	}
+	/**
+	 * @param string $firstName
+	 */
+	public function setFirstName($firstName) {
+		$this->firstName = $firstName;
+	}
+	/**
+	 * @return string
+	 */
+	public function getFirstName() {
+		return $this->firstName;
+	}
+	/**
+	 * @param string $lastName
+	 */
+	public function setLastName($lastName) {
+		$this->lastName = $lastName;
+	}
+	/**
+	 * @return string
+	 */
+	public function getLastName() {
+		return $this->lastName;
+	}
+
 }
 ?>

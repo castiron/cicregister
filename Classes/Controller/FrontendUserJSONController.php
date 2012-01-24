@@ -30,7 +30,6 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
 		$results = new stdClass;
 		$results->hasErrors = false;
@@ -70,6 +69,7 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 		$results = new stdClass;
 		$results->hasErrors = false;
 		$errorResults = $this->arguments->getValidationResults()->forProperty('frontendUser');
+
 		$results->errors = new stdClass();
 		$results->errors->byProperty = array();
 		foreach($errorResults->getFlattenedErrors() as $property => $error) {

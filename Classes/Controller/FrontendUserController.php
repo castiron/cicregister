@@ -124,6 +124,10 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 	}
 
+	public function loginAction() {
+
+	}
+
 	/**
 	 * Edit user action
 	 *
@@ -131,7 +135,6 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @return void
 	 */
 	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-		// TODO: Check for frontend user and redirect to login page if none is found.
 		$user = $GLOBALS['TSFE']->fe_user;
 		if(!$user->user['uid']) {
 			$this->flashMessageContainer->add('You must be logged in to edit your account. Please login below.');
@@ -140,6 +143,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 			$frontendUser = $this->frontendUserRepository->findByUid($user->user['uid']);
 			$this->view->assign('frontendUser', $frontendUser);
 		}
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'editAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 	}
 
 	/**

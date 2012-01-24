@@ -46,7 +46,9 @@ class Tx_Cicregister_Domain_Validator_FrontendUserValidator extends Tx_Extbase_V
 	}
 
 	public function isValid($frontendUser) {
+
 		if ($frontendUser->getPassword() !== $frontendUser->getConfirmPassword()) {
+
 			$error = new Tx_Extbase_Validation_Error('Password and confirm password must match', 1325201715);
 			$this->result->forProperty('confirmPassword')->addError($error);
 			return false;

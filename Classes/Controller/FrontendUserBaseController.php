@@ -123,8 +123,11 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @return mixed
 	 */
-	protected function createAndPersistUser($frontendUser) {
+	protected function createAndPersistUser(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+
+
 		// add the user to the default group
 		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
 		if ($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);

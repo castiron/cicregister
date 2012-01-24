@@ -12,7 +12,7 @@
 		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New" id=""
 				object="{frontendUser}">
 
-			<div class="form-row clearfix form-two-col">
+			<div class="form-row form-two-col">
 				<div class="form-first-col">
 					<f:render partial="TextInput" arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
 				</div>
@@ -21,23 +21,38 @@
 				</div>
 			</div>
 
-			<div class="form-row clearfix form-two-col">
+			<div class="form-row form-two-col">
 				<div class="form-first-col">
-					<f:render partial="PasswordInput" arguments="{propertyName: 'password', propertyLabel: 'Password'}"/>
+					<label for="cicregister-passwordOne">Password: </label>
+
+					<div class="input">
+						<f:form.password id="cicregister-password0" name="password[0]"/>
+					</div>
+					<div id="cicregister-password0-errors" class="errorWrap">
+						<f:render partial="FieldError.html" arguments="{property: 'frontendUser.password'}"/>
+					</div>
+
 				</div>
 
 				<div class="form-second-col">
-					<f:render partial="PasswordInput" arguments="{propertyName: 'confirmPassword', propertyLabel: 'Confirm Password'}"/>
+					<label for="cicregister-password1">Password: </label>
+
+					<div class="input">
+						<f:form.password id="cicregister-password1" name="password[1]"/>
+					</div>
+					<div id="cicregister-password1-errors" class="errorWrap">
+						<f:render partial="FieldError.html" arguments="{property: 'frontendUser.password'}"/>
+					</div>
 				</div>
 			</div>
 
-			<div class="form-row clearfix">
+			<div class="form-row">
 				<f:render partial="TextInput" arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
 			</div>
 
-			<div class="form-row clearfix">
+			<div class="form-row">
 				<div class="input">
-					<f:form.submit class="submit" value="Create Account"/>
+					<f:form.submit class="btn primary" value="Create Account"/>
 				</div>
 			</div>
 		</f:form>
