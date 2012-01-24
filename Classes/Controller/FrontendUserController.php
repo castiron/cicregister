@@ -59,7 +59,6 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
 		$user = $GLOBALS['TSFE']->fe_user;
 		if ($user->user['uid']) {
-			$this->flashMessageContainer->add('Use the form below to edit your user profile.');
 			$this->forward('edit');
 		} else {
 			$this->view->assign('frontendUser', $frontendUser);
@@ -135,6 +134,8 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @return void
 	 */
 	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
+//		t3lib_utility_Debug::debug($this->controllerContext->getRequest()->getOriginalRequestMappingResults(),'msg');
+
 		$user = $GLOBALS['TSFE']->fe_user;
 		if(!$user->user['uid']) {
 			$this->flashMessageContainer->add('You must be logged in to edit your account. Please login below.');
@@ -154,7 +155,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 */
 	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 		$this->frontendUserRepository->update($frontendUser);
-		$this->flashMessageContainer->add('Your Frontend user was updated.');
+		$this->flashMessageContainer->add('Your profile has been updated.');
 		$this->forward('edit');
 	}
 

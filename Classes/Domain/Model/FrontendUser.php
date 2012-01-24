@@ -48,9 +48,10 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 */
 	protected $password;
 
+	// TODO: Fix password and confirm password validation.
 	/**
 	 * @var string
-	 * @validate NotEmpty
+	 * @ZZZZvalidate NotEmpty
 	 */
 	protected $confirmPassword;
 
