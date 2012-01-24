@@ -147,7 +147,23 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 
 	}
 
-
+	public function initializeAction() {
+		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
+		// want to make sure that the replacement object is validated instead of the default cicregister object. Whereas the
+		// object manager does look at Extbase's objects Typoscript section, the argument validator does not.
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$replacementFrontendUserObject = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+		if ($replacementFrontendUserObject) {
+			$frontendUserClass = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+			if ($this->arguments->offsetExists('frontendUser')) {
+				$required = FALSE;
+				if ($this->arguments->getArgument('frontendUser')->isRequired() === TRUE) $required = TRUE;
+				$this->arguments->addNewArgument('frontendUser', 'Tx_Dodgeuser_Domain_Model_FrontendUser', $required);
+				// perhaps there's a better way here, than to re-initialize all arguments
+				$this->initializeActionMethodValidators();
+			}
+		}
+	}
 
 
 }

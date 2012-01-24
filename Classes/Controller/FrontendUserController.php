@@ -31,25 +31,6 @@
 
 class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Controller_FrontendUserBaseController {
 
-
-	public function initializeAction() {
-		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
-		// want to make sure that the replacement object is validated instead of the default cicregister object. Whereas the
-		// object manager does look at Extbase's objects Typoscript section, the argument validator does not.
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$replacementFrontendUserObject = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
-		if($replacementFrontendUserObject) {
-			$frontendUserClass = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
-			if($this->arguments->offsetExists('frontendUser')) {
-				$required = FALSE;
-				if($this->arguments->getArgument('frontendUser')->isRequired() === TRUE) $required = TRUE;
-				$this->arguments->addNewArgument('frontendUser', 'Tx_Dodgeuser_Domain_Model_FrontendUser', $required);
-				// perhaps there's a better way here, than to re-initialize all arguments
-				$this->initializeActionMethodValidators();
-			}
-		}
-	}
-
 	/**
 	 * Renders the "new user" form.
 	 *
@@ -120,11 +101,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createConfirmationMustValidateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-
 	}
 
 	public function loginAction() {
-
 	}
 
 	/**
@@ -134,8 +113,6 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @return void
 	 */
 	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-//		t3lib_utility_Debug::debug($this->controllerContext->getRequest()->getOriginalRequestMappingResults(),'msg');
-
 		$user = $GLOBALS['TSFE']->fe_user;
 		if(!$user->user['uid']) {
 			$this->flashMessageContainer->add('You must be logged in to edit your account. Please login below.');
