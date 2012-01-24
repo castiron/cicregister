@@ -123,7 +123,7 @@
     return $('.cicregister-lightbox-trigger').colorbox({
       inline: true,
       scrolling: false,
-      open: false
+      open: true
     });
   });
 

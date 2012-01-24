@@ -8,6 +8,9 @@
 		<languageKey index="default" type="array">
 			<label index="flash-frontendUserController-createAction-default">There was a problem with your registration.
 			Please review the errors below, correct, and re-submit the form.</label>
+            <label index="flash-frontendUserController-updateAction-default">There was a problem updating your profile.
+         			Please review any errors below, correct, and re-submit the form.</label>
+
 			<label index="form-frontendUserController-frontendUser.email-1221560718">Email is a required field.</label>
 			<label index="form-frontendUserController-frontendUser.email-1221559976">The email address you entered is invalid.</label>
 			<label index="form-frontendUserController-frontendUser.password-1221560718">Password is a required field.</label>

@@ -80,5 +80,5 @@ $ ->
 
 	$('.cicregister-lightbox-noJs').each( -> $(this).hide(); )
 	$('.cicregister-lightbox-trigger').each(-> $(this).show();)
-	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: false});
+	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: true});
 
