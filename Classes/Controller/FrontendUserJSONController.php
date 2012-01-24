@@ -63,6 +63,11 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 		$this->view->assign('results',json_encode($results));
 	}
 
+	public function initializeCreateAction() {
+#		t3lib_div::debug($this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK));
+	}
+
+
 	/**
 	 */
 	protected function errorAction() {

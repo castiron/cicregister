@@ -36,6 +36,18 @@ require_once(PATH_typo3 . 'sysext/sv/class.tx_sv_auth.php');
 class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 
 	/**
+	 * Only try to authenticate the user if a login has was returned in the URL.
+	 *
+	 * @return	boolean		TRUE if service is available
+	 */
+	public function init() {
+		$available = FALSE;
+		$key = t3lib_div::_GP('loginHash');
+		if($key) $available = TRUE;
+		return $key;
+	}
+
+	/**
 	 * Find a user (eg. look up the user record in database when a login is sent)
 	 *
 	 * @return	mixed		user array or FALSE
@@ -64,6 +76,7 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 
 			$user = $this->fetchUserRecord($this->login['uname']);
 			if (!is_array($user)) {
+
 				// Failed login attempt (no username found)
 				$this->writelog(255, 3, 3, 2,
 					"Login-attempt from %s (%s), username '%s' not found!!",
@@ -100,7 +113,10 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 		if ($this->login['uident'] && $this->login['uname']) {
 
 			// Checking password match for user:
-			if ($skipCompareUident == FALSE) $OK = $this->compareUident($user, $this->login);
+
+			if ($skipCompareUident == FALSE) {
+				$OK = $this->compareUident($user, $this->login);
+			}
 
 			if (!$OK) {
 				// Failed login attempt (wrong password) - write that to the log!
