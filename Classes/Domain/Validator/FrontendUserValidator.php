@@ -32,29 +32,42 @@
 class Tx_Cicregister_Domain_Validator_FrontendUserValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
 
 	/**
-	 * Checks the given object can be validated by the validator implementation
-	 *
-	 * @param object $object The object to be checked
-	 * @return boolean TRUE if the given value is an object
+	 * @var Tx_Extbase_Object_ObjectManager
 	 */
-	public function canValidate($object) {
-		if($object instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
-			return true;
-		} else {
-			return false;
-		}
+	protected $objectManager;
+
+	/**
+	 * Inject the objectManager
+	 *
+	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+		$this->objectManager = $objectManager;
 	}
 
 	public function isValid($frontendUser) {
-
-		if ($frontendUser->getPassword() !== $frontendUser->getConfirmPassword()) {
-
-			$error = new Tx_Extbase_Validation_Error('Password and confirm password must match', 1325201715);
-			$this->result->forProperty('confirmPassword')->addError($error);
-			return false;
-		} else {
-			return true;
+		$valid = true;
+		$repository = $this->objectManager->get('Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository');
+		$matches = $repository->findByEmail($frontendUser->getEmail());
+		foreach($matches as $match) {
+			if($match->getUid() != $frontendUser->getUid()) {
+				$error = new Tx_Extbase_Validation_Error('Email address is not available', 1325202490);
+				$this->result->forProperty('email')->addError($error);
+				$valid = false;
+				break;
+			}
 		}
+		$matches = $repository->findByUsername($frontendUser->getUsername());
+		foreach($matches as $match) {
+			if($match->getUid() != $frontendUser->getUid()) {
+				$error = new Tx_Extbase_Validation_Error('Username is not available', 1325202492);
+				$this->result->forProperty('username')->addError($error);
+				$valid = false;
+				break;
+			}
+		}
+		return $valid;
 	}
 
 }

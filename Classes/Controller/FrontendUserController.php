@@ -48,8 +48,10 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $password
+	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
 	 */
-	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
 
 		// The user has already been validated by ExtBase. At this point, we're doing post-processing before creating
 		// the user.
@@ -81,11 +83,20 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 			$this->frontendUserRepository->update($frontendUser);
 			$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
 			$persistenceManager->persistAll();
-			$this->flashMessageContainer->add('You have successfully validated your email address. Your account is now active.');
-			$this->forward('edit');
+			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
+			$user = $GLOBALS['TSFE']->fe_user;
+			if ($user->user['uid']) {
+				$this->forward('edit');
+			} else {
+				$this->forward('new');
+			}
 		} else {
 			$this->flashMessageContainer->add('The link you clicked was invalid. If you would like to register for a new account, please fill out the form below.');
-			$this->forward('new');
+			if ($user->user['uid']) {
+				$this->forward('edit');
+			} else {
+				$this->forward('new');
+			}
 		}
 		// TODO: Handle forwards and confirmations.
 	}

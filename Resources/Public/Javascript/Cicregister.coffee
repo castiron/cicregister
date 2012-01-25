@@ -34,7 +34,10 @@ class CicregisterForm
 
 	showErrors: (response) ->
 		for field, errorDetails of response.errors.byProperty
-			@showSingleError(field, errorDetails)
+			do(field, errorDetails) =>
+				@showSingleError(field, errorDetails)
+				if field == 'password'
+	      	@showSingleError('confirmPassword', errorDetails)
 		$.colorbox.resize()
 
 	showSingleError: (field, errorDetails) ->
@@ -58,16 +61,25 @@ class CicregisterForm
 			$(this).remove()
 		)
 
+	showLoading: ->
+		$('#loadingIndicator').show()
+
+	hideLoading: ->
+		$('#loadingIndicator').hide()
+
 	submitForm: (event) ->
 
 		@hideErrors()
 		result = false
+
+		@showLoading()
 
 		$.ajax @postURL,
 			dataType: 'JSON'
 			data: @serializeForm()
 			success: (response) =>
 				result = @submitFormSuccess(response)
+				@hideLoading()
 			error:(response) =>
 				result = @submitFormError(response)
 		result

@@ -70,4 +70,21 @@ class Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository extends Tx_E
 				->count();
 		return $result;
 	}
+
+	public function findByEmail($email) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$result = $query->matching($query->logicalAnd($query->equals('email', $email), $query->equals('deleted', 0)))
+				->execute();
+		return $result;
+	}
+
+	public function findByUsername($username) {
+		$query = $this->createQuery();
+		$query->getQuerySettings()->setRespectEnableFields(FALSE);
+		$result = $query->matching($query->logicalAnd($query->equals('username', $username), $query->equals('deleted', 0)))
+				->execute();
+		return $result;
+	}
+
 }

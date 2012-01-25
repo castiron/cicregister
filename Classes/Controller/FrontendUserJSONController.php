@@ -28,8 +28,12 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $password
+	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
 	 */
-	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
+
+		$frontendUser->setPassword($password[0]);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
 		$results = new stdClass;
 		$results->hasErrors = false;
@@ -73,7 +77,8 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 	protected function errorAction() {
 		$results = new stdClass;
 		$results->hasErrors = false;
-		$errorResults = $this->arguments->getValidationResults()->forProperty('frontendUser');
+
+		$errorResults = $this->arguments->getValidationResults();
 
 		$results->errors = new stdClass();
 		$results->errors->byProperty = array();
@@ -84,14 +89,14 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 				$errorObj = new stdClass;
 				$errorObj->code = $error->getCode();
 				$errorObj->property = $property;
-				$key = 'form-frontendUserController-frontendUser.' . $errorObj->property . '-' . $errorObj->code;
+				$key = 'form-frontendUserController-' . $errorObj->property . '-' . $errorObj->code;
 				$translatedMessage = Tx_Extbase_Utility_Localization::translate($key,'cicregister');
 				if($translatedMessage) {
 					$errorObj->message = $translatedMessage;
 				} else {
 					$errorObj->message = $error->getMessage();
 				}
-				$results->errors->byProperty[$property][] = $errorObj;
+				$results->errors->byProperty[str_replace('.','-',$property)][] = $errorObj;
 			}
 		}
 		$this->view->assign('results',json_encode($results));

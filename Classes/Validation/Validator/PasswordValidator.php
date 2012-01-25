@@ -53,26 +53,31 @@ class Tx_Cicregister_Validation_Validator_PasswordValidator extends Tx_Extbase_V
 	 */
 	public function isValid($value) {
 
-		// get the option for the validation
-		$minimumLength = $this->options['minimumLength'];
-		$minimumLengthSpelledOut = $this->options['minimumLengthSpelledOut'];
-		$allowEmpty = $this->options['allowEmpty'];
+		$minimumLength = 3;
+		$minimumLengthSpelledOut = 'three';
+
+		if(array_key_exists('allowEmpty',$this->options)) {
+			$allowEmpty = $this->options['allowEmpty'];
+		} else {
+			$allowEmpty = false;
+		}
 
 		// check for empty password
 		if ($value[0] === '' && $allowEmpty != true) {
-			$this->addError('Empty passwords are not allowed. Please enter a secure password.', 1221560718);
+			$this->addError('Password is a required field.', 1221560718);
 		}
+
 		// check for password length
 		if (
 			($allowEmpty == true && strlen($value[0] > 0 && strlen($value[0]) < $minimumLength)) ||
 			($allowEmpty == false && strlen($value[0]) < $minimumLength)
 		) {
-			$this->addError('The password is too short, minimum length is ' . $minimumLengthSpelledOut . ' characters.', 1221560718);
+			$this->addError('Minimum length is ' . $minimumLengthSpelledOut . ' characters.', 1221560718);
 		}
 
 		// check that the passwords are the same
 		if (strcmp($value[0], $value[1]) != 0) {
-			$this->addError('The passwords do not match. Please make sure you have entered the password correctly in both fields', 1221560718);
+			$this->addError('Passwords do not match.', 1221560718);
 		}
 
 	}

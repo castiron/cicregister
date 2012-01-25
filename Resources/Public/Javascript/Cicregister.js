@@ -50,11 +50,18 @@
     };
 
     CicregisterForm.prototype.showErrors = function(response) {
-      var errorDetails, field, _ref;
+      var errorDetails, field, _fn, _ref,
+        _this = this;
       _ref = response.errors.byProperty;
+      _fn = function(field, errorDetails) {
+        _this.showSingleError(field, errorDetails);
+        if (field === 'password') {
+          return _this.showSingleError('confirmPassword', errorDetails);
+        }
+      };
       for (field in _ref) {
         errorDetails = _ref[field];
-        this.showSingleError(field, errorDetails);
+        _fn(field, errorDetails);
       }
       return $.colorbox.resize();
     };
@@ -86,16 +93,26 @@
       });
     };
 
+    CicregisterForm.prototype.showLoading = function() {
+      return $('#loadingIndicator').show();
+    };
+
+    CicregisterForm.prototype.hideLoading = function() {
+      return $('#loadingIndicator').hide();
+    };
+
     CicregisterForm.prototype.submitForm = function(event) {
       var result,
         _this = this;
       this.hideErrors();
       result = false;
+      this.showLoading();
       $.ajax(this.postURL, {
         dataType: 'JSON',
         data: this.serializeForm(),
         success: function(response) {
-          return result = _this.submitFormSuccess(response);
+          result = _this.submitFormSuccess(response);
+          return _this.hideLoading();
         },
         error: function(response) {
           return result = _this.submitFormError(response);
