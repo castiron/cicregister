@@ -1,2 +1,0 @@
-guard 'sass', :input => 'Stylesheet'
-guard 'coffeescript', :input => 'Javascript'
