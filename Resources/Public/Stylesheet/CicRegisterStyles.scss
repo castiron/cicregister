@@ -3,12 +3,23 @@ $error_color_bg: #f6d7d3;
 $highlight_color_bg: #0AA9AA;
 $highlight_color_fg: #ffffff;
 
+
 #cicregister-lightbox {
     background-color: #FFF;
-
+    .CicregisterForm-New-Ajax {
+    	min-width: 617px;
+    	#loadingIndicator {
+			position: absolute;
+			right: 350px;
+			top: -3px;
+       	}
+    }
 }
-
 .Cicregister {
-
+	#loadingIndicator {
+		position: absolute;
+		right: 310px;
+		top: -3px;
+	}
 }
 

@@ -53,6 +53,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
 
+		// set the password
+		$frontendUser->setPassword($password[0]);
+
 		// The user has already been validated by ExtBase. At this point, we're doing post-processing before creating
 		// the user.
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
@@ -137,8 +140,15 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @param array $otherData
+	 * @param array $password
+	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator(allowEmpty = true)
 	 */
-	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $otherData = array()) {
+	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $otherData = array(), array $password = NULL) {
+
+		if($password != NULL && is_array($password) && $password[0] != false) {
+			// set the password
+			$frontendUser->setPassword($password[0]);
+		}
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, $otherData));
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
