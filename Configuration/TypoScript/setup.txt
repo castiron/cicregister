@@ -74,7 +74,7 @@ plugin.tx_cicregister {
 	persistence {
 		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
 		//TODO: remove at some point
-		storagePid = 4
+		storagePid = 4, 132
 	}
 	features {
 		rewrittenPropertyMapper = 1

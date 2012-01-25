@@ -124,12 +124,11 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	}
 
 	/**
-	 * Update action
-	 *
-	 * @param $frontendUser
-	 * @return void
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param array $otherData
 	 */
-	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $otherData = array()) {
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, $otherData));
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
 		$this->forward('edit');
