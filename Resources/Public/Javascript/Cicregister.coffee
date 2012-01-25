@@ -33,6 +33,7 @@ class CicregisterForm
 		false
 
 	showErrors: (response) ->
+		@hideErrors()
 		for field, errorDetails of response.errors.byProperty
 			do(field, errorDetails) =>
 				@showSingleError(field, errorDetails)
@@ -69,7 +70,6 @@ class CicregisterForm
 
 	submitForm: (event) ->
 
-		@hideErrors()
 		result = false
 
 		@showLoading()
@@ -79,7 +79,7 @@ class CicregisterForm
 			data: @serializeForm()
 			success: (response) =>
 				result = @submitFormSuccess(response)
-				@hideLoading()
+				@hideLoading() if !response.redirect
 			error:(response) =>
 				result = @submitFormError(response)
 		result

@@ -52,6 +52,7 @@
     CicregisterForm.prototype.showErrors = function(response) {
       var errorDetails, field, _fn, _ref,
         _this = this;
+      this.hideErrors();
       _ref = response.errors.byProperty;
       _fn = function(field, errorDetails) {
         _this.showSingleError(field, errorDetails);
@@ -104,7 +105,6 @@
     CicregisterForm.prototype.submitForm = function(event) {
       var result,
         _this = this;
-      this.hideErrors();
       result = false;
       this.showLoading();
       $.ajax(this.postURL, {
@@ -112,7 +112,7 @@
         data: this.serializeForm(),
         success: function(response) {
           result = _this.submitFormSuccess(response);
-          return _this.hideLoading();
+          if (!response.redirect) return _this.hideLoading();
         },
         error: function(response) {
           return result = _this.submitFormError(response);
