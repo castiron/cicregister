@@ -46,21 +46,36 @@ class Tx_Cicregister_Behaviors_SyncToSalesforceContact extends Tx_Cicregister_Be
 	 * @return string
 	 */
 	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+		$SFUsername = 'support@grdodge.org';
+		$SFPassword = 'cicdev985';
+		$SFToken = '9y3eF1LYUR2IfQASQX8Vvl4x';
+
 		require_once(t3lib_extMgm::extPath('cicregister').'Lib/SFDC/SoapClient/SforcePartnerClient.php');
 		$SF = new SforcePartnerClient;
 		$mySoapClient = $SF->createConnection(t3lib_extMgm::extPath('cicregister') . 'Lib/SFDC/SoapClient/partner.wsdl.xml');
-		$SFLoginResults = $SF->login("support@grdodge.org", "cicdev985");
+
+		$SFLoginResults = $SF->login($SFUsername, $SFPassword.$SFToken);
+
+		//TODO: Refactor, complete, and improve.
 
 		$SFContact = new sObject();
 		$SFContact->type = 'Contact';
-		$SFContact->FirstName = $frontendUser->getFirstName();
-		$SFContact->LastName = $frontendUser->getLastName();
-		$SFContact->Email = $frontendUser->getEmail();
+		$SFContact->fields['FirstName']= $frontendUser->getFirstName();
+		$SFContact->fields['LastName'] = $frontendUser->getLastName();
+		$SFContact->fields['Email']  = $frontendUser->getEmail();
+		$SFContact->fields['Id'] = $frontendUser->getSfdcContactId();
 
-		t3lib_utility_Debug::debug($SFContact,__FILE__ . " " . __LINE__);
+		$res = $SF->upsert("Id", array($SFContact));
 
-		$res = $SF->upsert("Id", $SFContact);
-		t3lib_utility_Debug::debug($res,__FILE__ . " " . __LINE__);
+		if($res[0]->id) {
+			$frontendUser->setSfdcContactID($res[0]->id);
+		} else {
+			$SFContact->fields['Id'] = '';
+			$res = $SF->upsert("Id", array($SFContact));
+			$id = $res[0]->id;
+			$frontendUser->setSfdcContactID($id);
+		}
+
 	}
 
 }
