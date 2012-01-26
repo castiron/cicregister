@@ -1,0 +1,11 @@
+ 	# cat=basic/sfdc/101; type=input; label=Salesforce Username (optional)
+SFDCUsername =
+
+ 	# cat=basic/sfdc/102; type=input; label=Salesforce PW (optional)
+SFDCPassword =
+
+ 	# cat=basic/sfdc/103; type=input; label=Salesforce Token (optional)
+SFDCToken =
+
+ 	# cat=basic/sfdc/104; type=input; label=Path to Enterprise WSDL (optional)
+SFDCWSDL =

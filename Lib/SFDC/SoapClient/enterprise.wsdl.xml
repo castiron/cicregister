@@ -1092,8 +1092,8 @@ All Rights Reserved
                         <element name="CaseContactRoles" nillable="true" minOccurs="0" type="tns:QueryResult"/>
                         <element name="Cases" nillable="true" minOccurs="0" type="tns:QueryResult"/>
                         <element name="ContractContactRoles" nillable="true" minOccurs="0" type="tns:QueryResult"/>
-                        <element name="ContractsSigned" nillable="true" minOccurs="0" type="tns:QueryResult"/>
-                        <element name="CreatedBy" nillable="true" minOccurs="0" type="ens:User"/>
+							<element name="ContractsSigned" nillable="true" minOccurs="0" type="tns:QueryResult"/>
+							<element name="CreatedBy" nillable="true" minOccurs="0" type="ens:User"/>
                         <element name="CreatedById" nillable="true" minOccurs="0" type="tns:ID"/>
                         <element name="CreatedDate" nillable="true" minOccurs="0" type="xsd:dateTime"/>
                         <element name="Department" nillable="true" minOccurs="0" type="xsd:string"/>

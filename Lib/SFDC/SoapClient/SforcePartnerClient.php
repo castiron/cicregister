@@ -32,6 +32,7 @@ require_once ('SforceBaseClient.php');
  * This file contains two classes.
  * @package SalesforceSoapClient
  */
+
 /**
  * SforcePartnerClient class.
  *
@@ -39,7 +40,7 @@ require_once ('SforceBaseClient.php');
  */
 class SforcePartnerClient extends SforceBaseClient {
   const PARTNER_NAMESPACE = 'urn:partner.soap.sforce.com';
-	
+
   function SforcePartnerClient() {
     $this->namespace = self::PARTNER_NAMESPACE;
   }
@@ -79,7 +80,7 @@ class SforcePartnerClient extends SforceBaseClient {
   }
 
   /**
-   * 
+   *
    * @param array $request
    */
   public function sendSingleEmail($request) {
@@ -154,7 +155,7 @@ class SforcePartnerClient extends SforceBaseClient {
     $arg->sObjects = $sObjects;
     return parent::_upsert($arg);
   }
-  
+
   /**
    * @param string $fieldList
    * @param string $sObjectType
@@ -163,7 +164,7 @@ class SforcePartnerClient extends SforceBaseClient {
    */
   public function retrieve($fieldList, $sObjectType, $ids) {
   	return $this->_retrieveResult(parent::retrieve($fieldList, $sObjectType, $ids));
-  }  
+  }
 
   /**
    *
@@ -183,5 +184,5 @@ class SforcePartnerClient extends SforceBaseClient {
   	}
   	return $arr;
   }
-  
+
 }

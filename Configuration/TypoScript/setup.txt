@@ -16,19 +16,19 @@ plugin.tx_cicregister {
 				emailValidationSuccess {
 					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 1
 					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
-
+						credentialFile = /path/to/your/credentialFile.php
 					}
 				}
 				emailValidationFailure {
 				}
 				updated {
-					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 1
+					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 0
 					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
 					}
 				}
 				created {
 
-					Tx_Cicregister_Behaviors_SendValidationEmail = 1
+					Tx_Cicregister_Behaviors_SendValidationEmail = 0
 					Tx_Cicregister_Behaviors_SendValidationEmail {
 						senderEmail = zach@castironcoding.com
 						senderName = Main Dish & Son
