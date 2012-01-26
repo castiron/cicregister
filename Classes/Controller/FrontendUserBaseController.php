@@ -32,6 +32,16 @@
 abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_Extbase_MVC_Controller_ActionController {
 
 	/**
+	 * @var bool
+	 */
+	protected $userIsAuthenticated = false;
+
+	/**
+	 * @var array
+	 */
+	protected $user = array();
+
+	/**
 	 * @var Tx_Cicregister_Domain_Repository_FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
@@ -60,6 +70,21 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	 * @var Tx_Cicregister_Service_Behavior
 	 */
 	protected $behaviorService;
+
+	/**
+	 * @var Tx_Extbase_Persistence_Manager
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * inject the persistenceManager
+	 *
+	 * @param Tx_Extbase_Persistence_Manager persistenceManager
+	 * @return void
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
 
 	/**
 	 * inject the behaviorService
@@ -122,6 +147,48 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	}
 
 	/**
+	 * @param $confKey
+	 * @param $frontendUser
+	 */
+	protected function decorateUser($frontendUser, $confKey) {
+		$conf = $this->settings['decorators']['frontendUser'][$confKey];
+		if(!is_array($conf)) $conf = array();
+		$this->decoratorService->decorate($conf, $frontendUser);
+	}
+
+	/**
+	 * @param $frontendUser
+	 * @param $confKey
+	 * @param $defaultForward
+	 */
+	protected function doBehaviors($frontendUser, $confKey, $defaultForward) {
+		$behaviorsConf = $this->settings['behaviors']['frontendUser'][$confKey];
+		if(!is_array($behaviorsConf)) $behaviorsConf = array();
+		$behaviorResponse = $this->behaviorService->executeBehaviors($behaviorsConf, $frontendUser, $this->controllerContext, $defaultForward);
+		return $behaviorResponse;
+	}
+
+	/**
+	 * @param Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse
+	 */
+	public function handleBehaviorResponse(Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse) {
+		// Behaviors can return one of three types of actions, which determine what happens after the user is created.
+		switch (get_class($behaviorResponse)) {
+			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
+				$this->forward($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
+				break;
+
+			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
+				$this->redirect($behaviorResponse->getValue());
+				break;
+
+			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
+				$this->redirectToUri($behaviorResponse->getValue());
+				break;
+		}
+	}
+
+	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @return mixed
 	 */
@@ -131,23 +198,24 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
 		if ($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
 
-		// decorate the new user
-		$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['created'], $frontendUser);
+		$this->decorateUser($frontendUser, $confKey);
 
 		// add the user to the repository
 		$this->frontendUserRepository->add($frontendUser);
 		$this->flashMessageContainer->add('Your account has been created.');
 
 		// persist the user
-		$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-		$persistenceManager->persistAll();
+		$this->persistenceManager->persistAll();
 
-		$behaviorResponse = $this->behaviorService->executeBehaviors($this->settings['behaviors']['frontendUser']['created'], $frontendUser, $this->controllerContext, 'createConfirmation');
-		return $behaviorResponse;
-
+		return $this->doBehaviors($frontendUser, 'created', 'createConfirmation');
 	}
 
 	public function initializeAction() {
+		$this->userData = $GLOBALS['TSFE']->fe_user->user;
+		if($this->userData['uid']) {
+			$this->userIsAuthenticated = true;
+		}
+
 		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
 		// want to make sure that the replacement object is validated instead of the default cicregister object. Whereas the
 		// object manager does look at Extbase's objects Typoscript section, the argument validator does not.

@@ -52,6 +52,7 @@ class Tx_Cicregister_Service_Decorator implements t3lib_Singleton {
 	 */
 	public function decorate(array $decorators, $object) {
 		foreach($decorators as $decoratorClassName => $enabled) {
+
 			if($enabled == true || (is_array($enabled) && $enabled['_typoScriptNodeValue'] == true)) {
 				if(is_array($enabled)) {
 					$conf = $enabled;

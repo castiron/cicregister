@@ -13,6 +13,19 @@ plugin.tx_cicregister {
 		}
 		behaviors {
 			frontendUser {
+				emailValidationSuccess {
+					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 1
+					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
+
+					}
+				}
+				emailValidationFailure {
+				}
+				updated {
+					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 1
+					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
+					}
+				}
 				created {
 
 					Tx_Cicregister_Behaviors_SendValidationEmail = 1
@@ -29,10 +42,7 @@ plugin.tx_cicregister {
 					Tx_Cicregister_Behaviors_AddFlashMessage = 0
 					Tx_Cicregister_Behaviors_AddFlashMessage {
 						message (
-							Your Main Dish & Sons account has been created and you have been logged in. To validate your
-							email address, please check your email inbox for a message with the subject "Please Confirm
-							Your Registration." Click on the validate email link in that message to validate your
-							account. Thank you for registering with Main Dish & Sons.
+							Message goes here...
 						)
 					}
 
@@ -42,7 +52,6 @@ plugin.tx_cicregister {
 						forwardPid = 80
 						feuserPid = {$plugin.tx_cicregister.persistence.storagePid}
 					}
-
 				}
 			}
 		}

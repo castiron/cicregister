@@ -2,25 +2,20 @@
 
 /***************************************************************
  *  Copyright notice
- *
- *  (c) 2011 Zachary Davis <zach@castironcoding.com>, Cast Iron Coding, Inc
- *
+ *  (c) 2011 Zachary Davis <zach
+ * @castironcoding.com>, Cast Iron Coding, Inc
  *  All rights reserved
- *
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 3 of the License, or
  *  (at your option) any later version.
- *
  *  The GNU General Public License can be found at
  *  http://www.gnu.org/copyleft/gpl.html.
- *
  *  This script is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
@@ -32,46 +27,36 @@
 class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Controller_FrontendUserBaseController {
 
 	/**
-	 * Renders the "new user" form.
+	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @return void
 	 */
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-		$user = $GLOBALS['TSFE']->fe_user;
-		if ($user->user['uid']) {
+		if($this->userIsAuthenticated) {
 			$this->forward('edit');
 		} else {
 			$this->view->assign('frontendUser', $frontendUser);
 		}
+		// emit a signal before rendering the view
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 	}
 
 	/**
+	 * After the new form is submitted, the user is passed to this method so it can be created.
+	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @param array $password
 	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
 	 */
 	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
 
-		// set the password
+		// The password is passed separately so that it can be easily validated using the PasswordValidator
 		$frontendUser->setPassword($password[0]);
 
-		// The user has already been validated by ExtBase. At this point, we're doing post-processing before creating
-		// the user.
-		$behaviorResponse = $this->createAndPersistUser($frontendUser);
-		switch (get_class($behaviorResponse)) {
-			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
-				$this->forward($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
-			break;
+		// We have an inherited method for creating and persisting the user.
+		$this->handleBehaviorResponse($this->createAndPersistUser($frontendUser));
 
-			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
-				$this->redirect($behaviorResponse->getValue());
-			break;
-
-			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
-				$this->redirectToUri($behaviorResponse->getValue());
-			break;
-		}
 	}
 
 	/**
@@ -80,43 +65,32 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	public function validateUserAction($key) {
 		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
 		$frontendUser = $emailValidatorService->validateKey($key);
-		if($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
-			// Decorate the user
-			$this->decoratorService->decorate($this->settings['decorators']['frontendUser']['emailValidated'], $frontendUser);
+		// TODO: Handle an internal login redirect.
+		$forward = 'new'; // logged in users will get forward from new to edit; otherwise, users will be asked to signup.
+		if ($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
+			// Decorate and persist the user.
+			$this->decorateUser($frontendUser, 'emailValidated');
 			$this->frontendUserRepository->update($frontendUser);
-			$persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-			$persistenceManager->persistAll();
+			$this->persistenceManager->persistAll();
 			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
-			$user = $GLOBALS['TSFE']->fe_user;
-			if ($user->user['uid']) {
-				$this->forward('edit');
-			} else {
-				$this->forward('new');
-			}
+			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward));
 		} else {
-			$this->flashMessageContainer->add('The link you clicked was invalid. If you would like to register for a new account, please fill out the form below.');
-			if ($user->user['uid']) {
-				$this->forward('edit');
-			} else {
-				$this->forward('new');
-			}
+			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationFailure', $forward));
 		}
-		// TODO: Handle forwards and confirmations.
 	}
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createConfirmationAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+		$this->view->assign('frontendUser', $frontendUser);
 	}
 
 	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createConfirmationMustValidateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-	}
-
-	public function loginAction() {
+		$this->view->assign('frontendUser',$frontendUser);
 	}
 
 	/**
@@ -126,15 +100,14 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @return void
 	 */
 	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
-		$user = $GLOBALS['TSFE']->fe_user;
-		if(!$user->user['uid']) {
-			$this->flashMessageContainer->add('You must be logged in to edit your account. Please login below.');
-			$this->forward('login');
+		if(!$this->userIsAuthenticated) {
+			$this->forward('new');
 		} else {
-			$frontendUser = $this->frontendUserRepository->findByUid($user->user['uid']);
+			$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 			$this->view->assign('frontendUser', $frontendUser);
+			// emit a signal before rendering the view
+			$this->signalSlotDispatcher->dispatch(__CLASS__, 'editAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 		}
-		$this->signalSlotDispatcher->dispatch(__CLASS__, 'editAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 	}
 
 	/**
@@ -145,14 +118,18 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 */
 	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $otherData = array(), array $password = NULL) {
 
-		if($password != NULL && is_array($password) && $password[0] != false) {
-			// set the password
+		if ($password != NULL && is_array($password) && $password[0] != false) {
 			$frontendUser->setPassword($password[0]);
 		}
+
+		$this->decorateUser($frontendUser, 'updated');
+
+		// emit a signal prior to saving the user.
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, $otherData));
+
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
-		$this->forward('edit');
+		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'));
 	}
 
 	/**
@@ -162,14 +139,13 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		switch ($this->actionMethodName) {
 			default:
 				$msg = Tx_Extbase_Utility_Localization::translate('flash-frontendUserController-' . $this->actionMethodName . '-default', 'cicregister');
-			break;
+				break;
 		}
-		if($msg == false) {
-			$msg = 'no error message set for '.$this->actionMethodName;
+		if ($msg == false) {
+			$msg = 'no error message set for ' . $this->actionMethodName;
 		}
-
 		return $msg;
 	}
-
 }
+
 ?>
