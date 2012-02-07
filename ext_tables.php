@@ -62,6 +62,38 @@ t3lib_div::loadTCA('fe_groups');
 $TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register Usergroup', 'Tx_Cicregister_Domain_Model_FrontendUserGroup');
 $TCA['fe_groups']['types']['Tx_Cicregister_Domain_Model_FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
 
+$tempColumns = Array(
+	'tx_cicregister_sfdc_contact_id' => array(
+		'exclude' => 0,
+		'label' => 'Salesforce Contact ID',
+		'config' => array(
+			'type' => 'input',
+			'size' => 30,
+			'eval' => 'trim'
+		),
+	),
+	'tx_cicregister_sfdc_lead_id' => array(
+		'exclude' => 0,
+		'label' => 'Salesforce Lead ID',
+		'config' => array(
+			'type' => 'input',
+			'size' => 30,
+			'eval' => 'trim'
+		),
+	),
+	'tx_cicregister_sfdc_sync_timestamp' => array(
+		'exclude' => 0,
+		'label' => 'Salesforce Sync Timestamp',
+		'config' => array(
+			'type' => 'input',
+			'size' => 30,
+			'eval' => 'trim'
+		),
+	),
+);
 
+t3lib_div::loadTCA("fe_users");
+t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
+t3lib_extMgm::addToAllTCAtypes("fe_users", "--div--;Salesforce, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
 
 ?>

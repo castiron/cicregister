@@ -35,6 +35,27 @@
 class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_FrontendUser {
 
 	/**
+	 * sfdcContactID
+	 *
+	 * @var string
+	 */
+	protected $sfdcContactID;
+
+	/**
+	 * sfdcLeadID
+	 *
+	 * @var string
+	 */
+	protected $sfdcLeadID;
+
+	/**
+	 * sfdcSyncTimestamp
+	 *
+	 * @var string
+	 */
+	protected $sfdcSyncTimestamp;
+
+	/**
 	 * @var string
 	 * @validate String
 	 * @validate NotEmpty
@@ -122,27 +143,34 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 		return $this->disable;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getName() {
 		return $this->getFirstName().' '.$this->getLastName();
 	}
+
 	/**
 	 * @param string $firstName
 	 */
 	public function setFirstName($firstName) {
 		$this->firstName = $firstName;
 	}
+
 	/**
 	 * @return string
 	 */
 	public function getFirstName() {
 		return $this->firstName;
 	}
+
 	/**
 	 * @param string $lastName
 	 */
 	public function setLastName($lastName) {
 		$this->lastName = $lastName;
 	}
+
 	/**
 	 * @return string
 	 */
@@ -150,5 +178,56 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 		return $this->lastName;
 	}
 
+	/**
+	 * Returns the sfdcContactID
+	 *
+	 * @return string $sfdcContactID
+	 */
+	public function getSfdcContactID() {
+		return $this->sfdcContactID;
+	}
+
+	/**
+	 * Sets the sfdcContactID
+	 *
+	 * @param string $sfdcContactID
+	 * @return void
+	 */
+	public function setSfdcContactID($sfdcContactID) {
+		$this->sfdcContactID = $sfdcContactID;
+	}
+
+	/**
+	 * Returns the sfdcSyncTimestamp
+	 *
+	 * @return string $sfdcSyncTimestamp
+	 */
+	public function getSfdcSyncTimestamp() {
+		return $this->sfdcSyncTimestamp;
+	}
+
+	/**
+	 * Sets the sfdcSyncTimestamp
+	 *
+	 * @param string $sfdcSyncTimestamp
+	 * @return void
+	 */
+	public function setSfdcSyncTimestamp($sfdcSyncTimestamp) {
+		$this->sfdcSyncTimestamp = $sfdcSyncTimestamp;
+	}
+
+	/**
+	 * @param string $sfdcLeadID
+	 */
+	public function setSfdcLeadID($sfdcLeadID) {
+		$this->sfdcLeadID = $sfdcLeadID;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSfdcLeadID() {
+		return $this->sfdcLeadID;
+	}
 }
 ?>

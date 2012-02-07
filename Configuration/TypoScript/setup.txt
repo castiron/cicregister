@@ -14,23 +14,17 @@ plugin.tx_cicregister {
 		behaviors {
 			frontendUser {
 				emailValidationSuccess {
-					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 1
-					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
-						credentialFile = /path/to/your/credentialFile.php
-					}
+					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
 				}
 				emailValidationFailure {
 				}
 				updated {
-					Tx_Cicregister_Behaviors_SyncToSalesforceContact = 0
-					Tx_Cicregister_Behaviors_SyncToSalesforceContact {
-					}
+					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
 				}
 				created {
-
 					Tx_Cicregister_Behaviors_SendValidationEmail = 0
 					Tx_Cicregister_Behaviors_SendValidationEmail {
-						senderEmail = zach@castironcoding.com
+						senderEmail = typo3@yourdomain.com
 						senderName = Main Dish & Son
 						validateSubject = Main Dish & Son: Please confirm your registration
 						variables {
@@ -42,14 +36,14 @@ plugin.tx_cicregister {
 					Tx_Cicregister_Behaviors_AddFlashMessage = 0
 					Tx_Cicregister_Behaviors_AddFlashMessage {
 						message (
-							Message goes here...
+							Your message goes here...
 						)
 					}
 
 					Tx_Cicregister_Behaviors_AuthenticateUser = 1
 					Tx_Cicregister_Behaviors_AuthenticateUser {
 						forwardAction = edit
-						forwardPid = 80
+						forwardPid = {$plugin.tx_cicregister.settings.pid.edirtView}
 						feuserPid = {$plugin.tx_cicregister.persistence.storagePid}
 					}
 				}
@@ -129,6 +123,11 @@ config.tx_extbase {
 				mapping {
 					tableName = fe_users
 					recordType = Tx_Cicregister_Domain_Model_FrontendUser
+					columns {
+						tx_cicregister_sfdc_contact_id.mapOnProperty = sfdcContactID
+						tx_cicregister_sfdc_lead_id.mapOnProperty = sfdcLeadID
+						tx_cicregister_sfdc_sync_timestamp.mapOnProperty = sfdcSyncTimestamp
+					}
 				}
 			}
 		}
