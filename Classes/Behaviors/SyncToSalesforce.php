@@ -88,6 +88,9 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 			$objType = 'lead';
 		}
 
+		// TODO: Consider validating contacts to make sure they're real before doing a contact upsert.
+
+
 		$this->initSFConnection();
 
 		// 2. Check if the existing lead has at some point been converted to a contact. If so, then we'll want to
