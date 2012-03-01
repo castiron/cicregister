@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************
  *  Copyright notice
  *
@@ -10,7 +9,7 @@
  *  This script is part of the TYPO3 project. The TYPO3 project is
  *  free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
+ *  the Free Software Foundation; either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  The GNU General Public License can be found at
@@ -25,37 +24,45 @@
  ***************************************************************/
 
 /**
- * Test case for class Tx_Cicregister_Controller_FEUserController.
  *
- * @version $Id$
- * @copyright Copyright belongs to the respective authors
- * @license http://www.gnu.org/licenses/gpl.html GNU General Public License, version 3 or later
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
- * @package TYPO3
- * @subpackage CIC User Registration
- *
- * @author Zachary Davis <zach@castironcoding.com>
  */
+
 class Tx_Cicregister_Controller_FrontendUserControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
-	/**
-	 * @var Tx_Cicregister_Domain_Model_FrontendUser
-	 */
-	protected $fixture;
 
-	public function setUp() {
-		$this->fixture = new Tx_Cicregister_Domain_Model_FrontendUser();
-	}
+	protected $frontendUserRepository;
 
-	public function tearDown() {
-		unset($this->fixture);
+	public function setup() {
+
 	}
 
 	/**
 	 * @test
 	 */
-	public function dummyMethod() {
-		$this->markTestIncomplete();
+	public function newActionWorks() {
+		$frontendUserRepositoryMock = $this->getMock('Tx_Cicregister_Domain_Repository_FrontendUserRepository');
+		$frontendUserMock = $this->getMock('Tx_Cicregister_Domain_Model_FrontendUser');
+
+		$signalSlotDispatcherMock = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher');
+
+		$requestMock = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Request'), array('dummy'), array(), '', FALSE);
+		$requestMock->_set('pluginName', 'tx_cicregister_create');
+		$requestMock->_set('controllerName','frontenduser');
+		$requestMock->_set('actionName','new');
+
+		$viewMock = $this->getMock('Tx_Fluid_Core_View_TemplateView', array('assign'), array(), '', FALSE);
+
+		$frontendUserControllerMock = $this->getMock($this->buildAccessibleProxy('Tx_Cicregister_Controller_FrontendUserController'), array('dummy'), array(), '', FALSE);
+		$frontendUserControllerMock->_set('request', $mockRequest);
+		$frontendUserControllerMock->_set('signalSlotDispatcher',$signalSlotDispatcherMock);
+		$frontendUserControllerMock->_set('frontendUserRepository',$frontendUserRepositoryMock);
+		$frontendUserControllerMock->_set('view', $viewMock);
+		$frontendUserControllerMock->_set('userIsAuthenticated', false);
+		$frontendUserControllerMock->newAction($frontendUserMock);
+
+		// TODO: Finish this test.
+
 	}
 
 }
-?>

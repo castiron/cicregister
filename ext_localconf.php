@@ -17,43 +17,6 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
-	'Edit',
-	array(
-
-	),
-	// non-cacheable actions
-	array(
-
-	)
-);
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
-	'Login',
-	array(
-
-	),
-	// non-cacheable actions
-	array(
-
-	)
-);
-
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
-	'Recoverpass',
-	array(
-
-	),
-	// non-cacheable actions
-	array(
-
-	)
-);
-
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
 
 t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'Tx_Cicregister_Service_Authentication' /* sv key */,

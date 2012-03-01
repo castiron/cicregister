@@ -43,10 +43,16 @@ class Tx_Cicregister_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit
 	 */
 	protected $fixture;
 
+	/**
+	 *
+	 */
 	public function setUp() {
 		$this->fixture = new Tx_Cicregister_Domain_Model_FrontendUser();
 	}
 
+	/**
+	 *
+	 */
 	public function tearDown() {
 		unset($this->fixture);
 	}
@@ -58,9 +64,111 @@ class Tx_Cicregister_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit
 	 * @return void
 	 */
 	public function usernameCanBeSet() {
-		$username = 'aUsername';
+		$username = 'peewee';
 		$this->fixture->setUsername($username);
 		$this->assertEquals($username, $this->fixture->getUsername());
 	}
+
+	/**
+	 * Test if email can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function emailCanBeSet() {
+		$email = 'name@email.com';
+		$this->fixture->setEmail($email);
+		$this->assertEquals($email, $this->fixture->getEmail());
+	}
+
+	/**
+	 * Test if a user can be disabled
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function disableCanBeSet() {
+		$disable = true;
+		$this->fixture->setDisable($disable);
+		$this->assertEquals($disable, $this->fixture->getDisable());
+	}
+
+	/**
+	 * Tests if first name can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function firstNameCanBeSet() {
+		$firstName = 'John';
+		$this->fixture->setFirstName($firstName);
+		$this->assertEquals($firstName, $this->fixture->getFirstName());
+	}
+
+	/**
+	 * Tests if last name can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function lastNameCanBeSet() {
+		$lastName = 'Milton';
+		$this->fixture->setLastName($lastName);
+		$this->assertEquals($lastName, $this->fixture->getLastName());
+	}
+
+	/**
+	 * Tests if name is composed of $firstName.' '.$lastName
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function nameEqualsFirstAndLastName() {
+		$lastName = 'Milton';
+		$firstName = 'John';
+		$fullName = $firstName.' '.$lastName;
+		$this->fixture->setFirstName($firstName);
+		$this->fixture->setLastName($lastName);
+		$this->assertEquals($fullName, $this->fixture->getName());
+	}
+
+	/**
+	 * Tests if sfdcContactID can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function sfdcContactIdCanBeSet() {
+		$sfdcContactID = '0035000000N1Gwj';
+		$this->fixture->setSfdcContactID($sfdcContactID);
+		$this->assertEquals($sfdcContactID, $this->fixture->getSfdcContactID());
+	}
+
+	/**
+	 * Tests if sfdcLeadId can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function sfdcLeadIdCanBeSet() {
+		$sfdcLeadId = '0035000000N1Gwj';
+		$this->fixture->setSfdcLeadID($sfdcLeadId);
+		$this->assertEquals($sfdcLeadId, $this->fixture->getSfdcLeadID());
+	}
+
+	/**
+	 * Tests if sfdcSyncTimestamp can be set
+	 *
+	 * @test
+	 * @return void
+	 */
+	public function sfdcTimestampCanBeSet() {
+		$sfdcSyncTimestamp = time();
+		$this->fixture->setSfdcSyncTimestamp($sfdcSyncTimestamp);
+		$this->assertEquals($sfdcSyncTimestamp, $this->fixture->getSfdcSyncTimestamp());
+	}
+
+
+
 }
 ?>
