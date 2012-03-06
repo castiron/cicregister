@@ -8,6 +8,9 @@ $highlight_color_fg: #ffffff;
     background-color: #FFF;
     .CicregisterForm-New-Ajax {
     	min-width: 617px;
+    	.ie7 &, .ie8 & {
+    		width: 617px
+    	}
     	#loadingIndicator {
 			position: absolute;
 			right: 350px;
@@ -15,6 +18,9 @@ $highlight_color_fg: #ffffff;
        	}
     }
 }
+
+
+
 .Cicregister {
 	#loadingIndicator {
 		position: absolute;
