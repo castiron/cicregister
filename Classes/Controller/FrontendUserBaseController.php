@@ -160,6 +160,7 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	 * @param $frontendUser
 	 * @param $confKey
 	 * @param $defaultForward
+	 * @return mixed
 	 */
 	protected function doBehaviors($frontendUser, $confKey, $defaultForward) {
 		$behaviorsConf = $this->settings['behaviors']['frontendUser'][$confKey];
@@ -170,8 +171,9 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 
 	/**
 	 * @param Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
-	public function handleBehaviorResponse(Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse) {
+	public function handleBehaviorResponse(Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse, Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 		// Behaviors can return one of three types of actions, which determine what happens after the user is created.
 		switch (get_class($behaviorResponse)) {
 			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
@@ -198,7 +200,7 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['groupUid']);
 		if ($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
 
-		$this->decorateUser($frontendUser, $confKey);
+		$this->decorateUser($frontendUser, 'created');
 
 		// add the user to the repository
 		$this->frontendUserRepository->add($frontendUser);

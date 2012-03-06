@@ -73,9 +73,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 			$this->frontendUserRepository->update($frontendUser);
 			$this->persistenceManager->persistAll();
 			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
-			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward));
+			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward), $frontenduser);
 		} else {
-			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationFailure', $forward));
+			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationFailure', $forward), $frontenduser);
 		}
 	}
 
@@ -129,7 +129,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
-		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'));
+		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'), $frontenduser);
 	}
 
 	/**
