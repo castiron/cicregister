@@ -22,7 +22,8 @@
     CicregisterForm.prototype.initEvents = function() {
       var _this = this;
       return this.element.bind("submit", function(event) {
-        return _this.submitForm(event);
+        _this.submitForm(event);
+        return false;
       });
     };
 

@@ -12,7 +12,9 @@ class CicregisterForm
 		false
 
 	initEvents: ->
-		@element.bind "submit", (event) => @submitForm(event)
+		@element.bind "submit", (event) =>
+			@submitForm(event)
+			return false
 
 	serializeForm: ->
 		@element.serialize()
