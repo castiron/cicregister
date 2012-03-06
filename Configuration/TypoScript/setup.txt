@@ -65,7 +65,7 @@ plugin.tx_cicregister {
 					}
 					Tx_Cicregister_Decorators_RemoveFromGroup = 1
 					Tx_Cicregister_Decorators_RemoveFromGroup {
-						groupUid = 	{$plugin.tx_cicregister.decorators.emailValidate.removeFromGroup.groupUid}
+						groupUid = 	{$plugin.tx_cicregister.decorators.emailValidated.removeFromGroup.groupUid}
 					}
 				}
 				edited {

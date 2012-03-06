@@ -18,7 +18,7 @@ plugin.tx_cicregister {
  	decorators {
  		created.addToGroup.groupUid = 5
  		emailValidated.addToGroup.groupUid = 4
- 		emailValidate.removeFromGroup.groupUid = 5
+ 		emailValidated.removeFromGroup.groupUid = 5
  	}
  	persistence {
  		# cat=plugin.tx_cicregister//a; type=int+; label=Default storage PID
