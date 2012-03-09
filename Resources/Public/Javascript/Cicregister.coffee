@@ -28,7 +28,7 @@ class CicregisterForm
 		return @showResults(response)
 
 	doRedirect: (response) ->
-		window.location = response.redirect
+		document.location.href = '/' + response.redirect
 
 	showResults: (response) ->
 		@element.parents('.Cicregister:first').html(response.html)

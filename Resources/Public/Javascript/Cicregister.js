@@ -42,7 +42,7 @@
     };
 
     CicregisterForm.prototype.doRedirect = function(response) {
-      return window.location = response.redirect;
+      return document.location.href = '/' + response.redirect;
     };
 
     CicregisterForm.prototype.showResults = function(response) {
