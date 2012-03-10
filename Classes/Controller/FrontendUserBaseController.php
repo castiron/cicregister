@@ -175,9 +175,10 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	 */
 	public function handleBehaviorResponse(Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse, Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
 		// Behaviors can return one of three types of actions, which determine what happens after the user is created.
+
 		switch (get_class($behaviorResponse)) {
 			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
-				$this->forward($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
+				$this->redirect($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
 				break;
 
 			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
