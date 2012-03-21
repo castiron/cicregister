@@ -26,10 +26,13 @@
 					<label for="cicregister-passwordOne">Password: </label>
 
 					<div class="input">
-						<f:form.password id="cicregister-password0" name="password[0]"/>
+						<f:form.password id="cicregister-password0"
+										 class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+										 name="password[0]"/>
 					</div>
+
 					<div id="cicregister-password0-errors" class="errorWrap">
-						<f:render partial="FieldError.html" arguments="{property: 'frontendUser.password'}"/>
+						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
 					</div>
 
 				</div>
@@ -38,10 +41,12 @@
 					<label for="cicregister-password1">Password: </label>
 
 					<div class="input">
-						<f:form.password id="cicregister-password1" name="password[1]"/>
+						<f:form.password id="cicregister-password0"
+										 class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+										 name="password[1]"/>
 					</div>
 					<div id="cicregister-password1-errors" class="errorWrap">
-						<f:render partial="FieldError.html" arguments="{property: 'frontendUser.password'}"/>
+						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
 					</div>
 				</div>
 			</div>
