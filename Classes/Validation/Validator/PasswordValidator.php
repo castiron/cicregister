@@ -72,12 +72,12 @@ class Tx_Cicregister_Validation_Validator_PasswordValidator extends Tx_Extbase_V
 			($allowEmpty == true && strlen($value[0] > 0 && strlen($value[0]) < $minimumLength)) ||
 			($allowEmpty == false && strlen($value[0]) < $minimumLength)
 		) {
-			$this->addError('Minimum length is ' . $minimumLengthSpelledOut . ' characters.', 1221560718);
+			$this->addError('Minimum length is ' . $minimumLengthSpelledOut . ' characters.', 1221560719);
 		}
 
 		// check that the passwords are the same
 		if (strcmp($value[0], $value[1]) != 0) {
-			$this->addError('Passwords do not match.', 1221560718);
+			$this->addError('Passwords do not match.', 1221560720);
 		}
 
 	}
