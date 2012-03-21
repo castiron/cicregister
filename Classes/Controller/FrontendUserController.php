@@ -55,7 +55,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		$frontendUser->setPassword($password[0]);
 
 		// We have an inherited method for creating and persisting the user.
-		$this->handleBehaviorResponse($this->createAndPersistUser($frontendUser));
+		$this->handleBehaviorResponse($this->createAndPersistUser($frontendUser), $frontendUser);
 
 	}
 
