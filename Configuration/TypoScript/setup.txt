@@ -43,7 +43,7 @@ plugin.tx_cicregister {
 					Tx_Cicregister_Behaviors_AuthenticateUser = 1
 					Tx_Cicregister_Behaviors_AuthenticateUser {
 						forwardAction = edit
-						forwardPid = {$plugin.tx_cicregister.settings.pid.edirtView}
+						forwardPid = {$plugin.tx_cicregister.settings.pid.editView}
 						feuserPid = {$plugin.tx_cicregister.persistence.storagePid}
 					}
 				}
