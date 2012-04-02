@@ -86,7 +86,7 @@ class Tx_Cicregister_Behaviors_AbstractBehavior {
 		$emailView->setFormat('html');
 		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
-		$templatePathAndFilename = $templateRootPath . 'Email/' . $templateName;
+		$templatePathAndFilename = $templateRootPath . '/Email/' . $templateName;
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 		$emailView->assignMultiple($variables);
 		$emailBody = $emailView->render();
