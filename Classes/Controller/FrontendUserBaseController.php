@@ -229,7 +229,7 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 			if ($this->arguments->offsetExists('frontendUser')) {
 				$required = FALSE;
 				if ($this->arguments->getArgument('frontendUser')->isRequired() === TRUE) $required = TRUE;
-				$this->arguments->addNewArgument('frontendUser', 'Tx_Dodgeuser_Domain_Model_FrontendUser', $required);
+				$this->arguments->addNewArgument('frontendUser', $frontendUserClass, $required);
 				// perhaps there's a better way here, than to re-initialize all arguments
 				$this->initializeActionMethodValidators();
 			}

@@ -27,8 +27,13 @@
 			<label index="form-frontendUserController-frontendUser.lastName-1221560718">Last name is a required field.
 			</label>
 
-			<label index="form-frontendUserController-password-1221560718">Passwords do not match.
+			<label index="form-frontendUserController-password-1221560718">Password is a required field
 			</label>
+			<label index="form-frontendUserController-password-1221560719">Password must be at least 3 characters long.
+			</label>
+			<label index="form-frontendUserController-password-1221560720">Passwords do not match.
+			</label>
+
 
 			<label index="form-frontendUserController-frontendUser.confirmPassword-1325201715">Confirm password must
 				match the password field.

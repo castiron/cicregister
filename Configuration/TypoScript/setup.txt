@@ -43,7 +43,7 @@ plugin.tx_cicregister {
 					Tx_Cicregister_Behaviors_AuthenticateUser = 1
 					Tx_Cicregister_Behaviors_AuthenticateUser {
 						forwardAction = edit
-						forwardPid = {$plugin.tx_cicregister.settings.pid.edirtView}
+						forwardPid = {$plugin.tx_cicregister.settings.pid.editView}
 						feuserPid = {$plugin.tx_cicregister.persistence.storagePid}
 					}
 				}
@@ -163,8 +163,12 @@ page.includeCSS {
 	99 = EXT:cicregister/Resources/Public/Stylesheet/CicRegisterStyles.css
 }
 
+page.includeJSFooterlibs {
+}
+
 page.includeJSFooter {
-	99 = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
+	1812749850 = EXT:cicregister/Resources/Public/Javascript/jquery.colorbox-min.js
+	1812749851 = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
 }
 
 plugin.tx_cicregister._CSS_DEFAULT_STYLE (
