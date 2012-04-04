@@ -122,6 +122,14 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 
 	/**
 	 * username == email
+	 * @return string
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * username == email
 	 * @param $username
 	 */
 	public function setUsername($username) {
