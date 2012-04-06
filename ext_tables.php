@@ -75,7 +75,7 @@ $tempColumns = array(
 		'config' => array(
 			'type' => 'input',
 			'size' => 30,
-			'eval' => 'trim'
+			'eval' => 'trim,unique'
 		),
 	),
 );
