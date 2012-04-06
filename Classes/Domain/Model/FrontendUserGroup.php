@@ -34,13 +34,37 @@
  */
 class Tx_Cicregister_Domain_Model_FrontendUserGroup extends Tx_Extbase_Domain_Model_FrontendUserGroup {
 
+	/*
+	 * enrollmentCode
+	 *
+	 * @var string
+	 */
+	var $enrollmentCode;
+
 	/**
 	 * __construct
 	 *
-	 * @return void
 	 */
 	public function __construct() {
 
+	}
+
+	/*
+	 * @return string
+	 */
+	public function getEnrollmentCode() {
+		return $this->enrollmentCode;
+	}
+
+	/*
+	 * setEnrollmentCode
+	 *
+	 * @param string $enrollmentCode
+	 * @return void
+	 *
+	 */
+	public function setEnrollmentCode($enrollmentCode) {
+		$this->enrollmentCode = $enrollmentCode;
 	}
 
 }

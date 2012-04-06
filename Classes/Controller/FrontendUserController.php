@@ -96,10 +96,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	/**
 	 * Edit user action
 	 *
-	 * @param $frontendUser
 	 * @return void
 	 */
-	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
+	public function editAction() {
 		if(!$this->userIsAuthenticated) {
 			$this->forward('new');
 		} else {
@@ -130,6 +129,42 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
 		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'), $frontendUser);
+	}
+
+	/*
+	 * Show a form for a user to submit an enrollment code
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 */
+	public function enrollAction() {
+		// TODO : output flash messages in the view
+		if(!$this->userIsAuthenticated) {
+			$this->forward('new');
+		}
+	}
+
+	/**
+	 * @param string $enrollmentCode
+	 */
+	public function saveEnrollmentAction($enrollmentCode = NULL) {
+		// TODO: set up TCA for group so enrollmentCode is unique
+		if(!$enrollmentCode) {
+			$this->flashMessageContainer->add('Please enter an enrollment code','',t3lib_FlashMessage::ERROR);
+		} else {
+			$test = $this->frontendUserGroupRepository->findOneByUid('9');
+			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
+			if($group instanceof Tx_Cicregister_Domain_Model_FrontendUserGroup) {
+				if($this->userIsAuthenticated) {
+					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
+					$frontendUser->addUserGroup($group);
+					$this->flashMessageContainer->add('You have been enrolled');
+				} else {
+					$this->flashMessageContainer->add('You must be logged in to enroll yourself','',t3lib_FlashMessage::ERROR);
+				}
+			} else {
+				$this->flashMessageContainer->add('The enrollment code you entered was invalid','',t3lib_FlashMessage::ERROR);
+			}
+		}
+		$this->forward('enroll');
 	}
 
 	/**

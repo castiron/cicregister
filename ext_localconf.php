@@ -17,6 +17,18 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'Enroll',
+	array(
+		'FrontendUser' => 'enroll,saveEnrollment',
+	),
+	// non-cacheable actions
+	array(
+		'FrontendUser' => 'enroll,saveEnrollment',
+	)
+);
+
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
 
 t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'Tx_Cicregister_Service_Authentication' /* sv key */,
