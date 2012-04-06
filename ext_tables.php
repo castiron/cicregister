@@ -28,6 +28,7 @@ $TCA['fe_users']['types']['Tx_Cicregister_Domain_Model_FrontendUser'] = $TCA['fe
 
 // Add the type to fe_groups!
 t3lib_div::loadTCA('fe_groups');
+$TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'] = array();
 $TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register Usergroup', 'Tx_Cicregister_Domain_Model_FrontendUserGroup');
 $TCA['fe_groups']['types']['Tx_Cicregister_Domain_Model_FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
 
