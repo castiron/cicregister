@@ -150,12 +150,11 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		if(!$enrollmentCode) {
 			$this->flashMessageContainer->add('Please enter an enrollment code','',t3lib_FlashMessage::ERROR);
 		} else {
-			$test = $this->frontendUserGroupRepository->findOneByUid('9');
 			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
 			if($group instanceof Tx_Cicregister_Domain_Model_FrontendUserGroup) {
 				if($this->userIsAuthenticated) {
-					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
-					$frontendUser->addUserGroup($group);
+#					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
+#					$frontendUser->addUserGroup($group);
 					$this->flashMessageContainer->add('You have been enrolled');
 				} else {
 					$this->flashMessageContainer->add('You must be logged in to enroll yourself','',t3lib_FlashMessage::ERROR);
