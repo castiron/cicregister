@@ -144,21 +144,20 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @param string $enrollmentCode
 	 */
 	public function saveEnrollmentAction($enrollmentCode = NULL) {
-		// TODO: set up TCA for group so enrollmentCode is unique
 		if(!$enrollmentCode) {
-			$this->flashMessageContainer->add('Please enter an enrollment code','',t3lib_FlashMessage::ERROR);
+			$this->flashMessageContainer->add('Please enter an enrollment code.','',t3lib_FlashMessage::ERROR);
 		} else {
 			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
 			if($group instanceof Tx_Cicregister_Domain_Model_FrontendUserGroup) {
 				if($this->userIsAuthenticated) {
 					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 					$frontendUser->addUserGroup($group);
-					$this->flashMessageContainer->add('You have been enrolled');
+					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
 				} else {
-					$this->flashMessageContainer->add('You must be logged in to enroll yourself','',t3lib_FlashMessage::ERROR);
+					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',t3lib_FlashMessage::ERROR);
 				}
 			} else {
-				$this->flashMessageContainer->add('The enrollment code you entered was invalid','',t3lib_FlashMessage::ERROR);
+				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',t3lib_FlashMessage::ERROR);
 			}
 		}
 		$this->forward('enroll');
