@@ -167,8 +167,8 @@ page.includeJSFooterlibs {
 }
 
 page.includeJSFooter {
-	1812749850 = EXT:cicregister/Resources/Public/Javascript/jquery.colorbox-min.js
-	1812749851 = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
+#	1812749850 = EXT:cicregister/Resources/Public/Javascript/jquery.colorbox-min.js
+#	1812749851 = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
 }
 
 plugin.tx_cicregister._CSS_DEFAULT_STYLE (
