@@ -34,6 +34,17 @@
  */
 class Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository extends Tx_Extbase_Domain_Repository_FrontendUserGroupRepository {
 
+	public function initializeObject() {
+		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$querySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($querySettings);
+	}
+//	/**
+//	 * @param int $uid
+//	 */
+//	public function findOneByUid($uid) {
+//		var_dump($this->querySettings);
+//	}
 }
 
 ?>

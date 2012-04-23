@@ -117,6 +117,9 @@ config.tx_extbase {
 				mapping {
 					tableName = fe_groups
 					recordType = Tx_Cicregister_Domain_Model_FrontendUserGroup
+					columns {
+						tx_cicregister_enrollment_code.mapOnProperty = enrollmentCode
+					}
 				}
 			}
 			Tx_Cicregister_Domain_Model_FrontendUser {

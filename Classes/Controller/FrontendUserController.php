@@ -96,10 +96,9 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	/**
 	 * Edit user action
 	 *
-	 * @param $frontendUser
 	 * @return void
 	 */
-	public function editAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
+	public function editAction() {
 		if(!$this->userIsAuthenticated) {
 			$this->forward('new');
 		} else {
@@ -130,6 +129,38 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		$this->frontendUserRepository->update($frontendUser);
 		$this->flashMessageContainer->add('Your profile has been updated.');
 		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'), $frontendUser);
+	}
+
+	/**
+	 * Show a form for a user to submit an enrollment code
+	 */
+	public function enrollAction() {
+		if(!$this->userIsAuthenticated) {
+			$this->forward('new');
+		}
+	}
+
+	/**
+	 * @param string $enrollmentCode
+	 */
+	public function saveEnrollmentAction($enrollmentCode = NULL) {
+		if(!$enrollmentCode) {
+			$this->flashMessageContainer->add('Please enter an enrollment code.','',t3lib_FlashMessage::ERROR);
+		} else {
+			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
+			if($group instanceof Tx_Cicregister_Domain_Model_FrontendUserGroup) {
+				if($this->userIsAuthenticated) {
+					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
+					$frontendUser->addUserGroup($group);
+					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
+				} else {
+					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',t3lib_FlashMessage::ERROR);
+				}
+			} else {
+				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',t3lib_FlashMessage::ERROR);
+			}
+		}
+		$this->forward('enroll');
 	}
 
 	/**
