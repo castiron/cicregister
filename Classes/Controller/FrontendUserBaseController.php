@@ -215,7 +215,7 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 
 	public function initializeAction() {
 		$this->userData = $GLOBALS['TSFE']->fe_user->user;
-		if($this->userData['uid']) {
+		if (isset($GLOBALS['TSFE']) && $GLOBALS['TSFE']->loginUser) {
 			$this->userIsAuthenticated = true;
 		}
 

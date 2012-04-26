@@ -19,6 +19,18 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
+	'Login',
+	array(
+		'Login' => 'dispatch, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
+	),
+	// non-cacheable actions
+	array(
+		'Login' => 'login, logout, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
+	)
+);
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
 	'Enroll',
 	array(
 		'FrontendUser' => 'enroll,saveEnrollment',

@@ -6,13 +6,19 @@ if (!defined('TYPO3_MODE')) {
 Tx_Extbase_Utility_Extension::registerPlugin(
 	$_EXTKEY,
 	'Create',
-	'Account Creation Interface'
+	'CICRegister: Create/Edit Account'
 );
 
 Tx_Extbase_Utility_Extension::registerPlugin(
 	$_EXTKEY,
 	'Enroll',
-	'User Group Self-Enrollment Interface'
+	'CICRegister: Group Enrollment'
+);
+
+Tx_Extbase_Utility_Extension::registerPlugin(
+	$_EXTKEY,
+	'Login',
+	'CICRegister: Login'
 );
 
 //$pluginSignature = str_replace('_','',$_EXTKEY) . '_' . create;

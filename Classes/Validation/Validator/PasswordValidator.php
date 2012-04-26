@@ -53,8 +53,8 @@ class Tx_Cicregister_Validation_Validator_PasswordValidator extends Tx_Extbase_V
 	 */
 	public function isValid($value) {
 
-		$minimumLength = 3;
-		$minimumLengthSpelledOut = 'three';
+		$minimumLength = 6;
+		$minimumLengthSpelledOut = 'six';
 
 		if(array_key_exists('allowEmpty',$this->options)) {
 			$allowEmpty = $this->options['allowEmpty'];

@@ -27,9 +27,9 @@
 			<label index="form-frontendUserController-frontendUser.lastName-1221560718">Last name is a required field.
 			</label>
 
-			<label index="form-frontendUserController-password-1221560718">Password is a required field
+			<label index="form-frontendUserController-password-1221560718">Password is a required field.
 			</label>
-			<label index="form-frontendUserController-password-1221560719">Password must be at least 3 characters long.
+			<label index="form-frontendUserController-password-1221560719">Password must be at least six characters long.
 			</label>
 			<label index="form-frontendUserController-password-1221560720">Passwords do not match.
 			</label>
@@ -39,10 +39,10 @@
 				match the password field.
 			</label>
 			<label index="form-frontendUserController-frontendUser.email-1238108067">Email must be between 3 and 50
-				characters
+				characters.
 			</label>
 			<label index="form-frontendUserController-frontendUser.email-1325202490">An account with this email address
-				already exists
+				already exists.
 			</label>
 			<label index="form-frontendUserController-frontendUser.agreeTermsPrivacy-1327519111">Before registering, you
 				must agree to Dodge's terms and services.

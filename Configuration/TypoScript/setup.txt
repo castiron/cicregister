@@ -12,6 +12,20 @@ plugin.tx_cicregister {
 			editView = {$plugin.tx_cicregister.settings.pids.editView}
 		}
 		behaviors {
+			login {
+				forgotPassword {
+					Tx_Cicregister_Behaviors_SendForgotPasswordEmail = 1
+					Tx_Cicregister_Behaviors_SendForgotPasswordEmail {
+						senderEmail = typo3@grandma.cichq.com
+						senderName = Main Dish & Son
+						validateSubject = Main Dish & Son: Password Recovery
+						variables {
+							siteName = MainDish & Son
+							validatePid = 80
+						}
+					}
+				}
+			}
 			frontendUser {
 				emailValidationSuccess {
 					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
@@ -24,7 +38,7 @@ plugin.tx_cicregister {
 				created {
 					Tx_Cicregister_Behaviors_SendValidationEmail = 0
 					Tx_Cicregister_Behaviors_SendValidationEmail {
-						senderEmail = typo3@yourdomain.com
+						senderEmail = typo3@grandma.cichq.com
 						senderName = Main Dish & Son
 						validateSubject = Main Dish & Son: Please confirm your registration
 						variables {
