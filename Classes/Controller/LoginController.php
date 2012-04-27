@@ -249,6 +249,8 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * event.
 	 *
 	 * @param string $emailAddress
+	 * @validate $emailAddress notEmpty
+	 * @validate $emailAddress emailAddress
 	 */
 	public function handleForgotPasswordAction($emailAddress) {
 
@@ -267,8 +269,18 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 				$this->forward('forgotPassword', NULL, NULL, array('requestProcessed' => true, 'requestSuccessful' => false));
 			}
 		}
-
 	}
+
+	/**
+	 * Handle default flash messages
+	 *
+	 * @return string
+	 */
+	protected function getErrorFlashMessage() {
+		$msg = Tx_Extbase_Utility_Localization::translate('controller-login-genericActionMessage-'. $this->actionMethodName, 'cicregister');
+		return $msg;
+	}
+
 
 	/**
 	 * Ideally, developers should have to do as little as possible to make the login mechanisms work. We'll look at
