@@ -21,7 +21,7 @@ plugin.tx_cicregister {
 						validateSubject = Main Dish & Son: Password Recovery
 						variables {
 							siteName = MainDish & Son
-							validatePid = 80
+							validatePid = {$plugin.tx_cicregister.settings.pids.editView}
 						}
 					}
 				}
@@ -43,7 +43,7 @@ plugin.tx_cicregister {
 						validateSubject = Main Dish & Son: Please confirm your registration
 						variables {
 							siteName = MainDish & Son
-							validatePid = 80
+							validatePid = {$plugin.tx_cicregister.settings.pids.editView}
 						}
 					}
 
@@ -90,8 +90,6 @@ plugin.tx_cicregister {
 	}
 	persistence {
 		storagePid = {$plugin.tx_cicregister.persistence.storagePid}
-		//TODO: remove at some point
-		storagePid = 4, 132
 	}
 	features {
 		rewrittenPropertyMapper = 1
@@ -153,7 +151,7 @@ config.tx_extbase {
 
 Tx_Cicregister_JSON_RequestPage = PAGE
 Tx_Cicregister_JSON_RequestPage {
-    typeNum = 1325527064
+    typeNum = {$plugin.tx_cicregister.settings.eidTypeNum}
     config {
         disableAllHeaderCode = 1
         xhtml_cleaning = 0

@@ -1,0 +1,72 @@
+{namespace cr = Tx_Cicregister_ViewHelpers}
+{namespace cb = Tx_Cicbase_ViewHelpers}
+
+<f:layout name="Login"/>
+
+<f:section name="main">
+	<h4>
+		<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-header"/>
+	</h4>
+
+	<ul class="unstyled flash-messages">
+		<f:if condition="{logoutOccurred}">
+				<li class="well alert-success">
+					<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-logoutMessage"/>
+				</li>
+		</f:if>
+
+		<f:if condition="{loginFailed}">
+			<li class="well alert-error">
+				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-loginFailedMessage"/>
+			</li>
+		</f:if>
+
+		<f:if condition="{loginSuccess}">
+			<li class="well alert-success">
+				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-loginSuccessMessage"/>
+			</li>
+		</f:if>
+
+		<f:if condition="{loginNotAttempted}">
+			<li class="well alert-info">
+				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-loginNotAttemptedMessage"/>
+			</li>
+		</f:if>
+	</ul>
+
+	<f:form onsubmit="{hookOnSubmit}" enctype="multipart/form-data" method="post">
+		<div class="row row-flush">
+			<div class="span4">
+				<div class="input control-group">
+					<label for="user"><f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-allActions-usernameFieldLabel"/></label>
+					<input tabindex="1" type="text" class="" id="user" name="user" value=""/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span4">
+				<div class="input control-group">
+					<label for="pass"><f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-allActions-passwordFieldLabel"/></label>
+					<input tabindex="2" type="password" class="" id="pass" name="pass" value=""/>
+				</div>
+				<div class="message">
+					<f:link.action action="forgotPassword">
+						<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-forgotPassword"/>
+					</f:link.action>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="input span12">
+				<f:form.submit name="submit" class="btn primary" value="Sign in" />
+			</div>
+		</div>
+
+		<input type="hidden" name="logintype" value="{postParams.loginType}"/>
+		<f:form.hidden name="loginType" value="{postParams.loginType}"/>
+		<input type="hidden" name="pid" value="{postParams.storagePid}"/>
+		<f:form.hidden name="redirect_url" value="{postParams.redirectUrl}"/>
+		<f:form.hidden name="loginAttempt" value="1"/>
+		<cb:raw value="{hookScriptInclude}" />
+	</f:form>
+</f:section>

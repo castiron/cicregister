@@ -1,0 +1,24 @@
+{namespace cr = Tx_Cicregister_ViewHelpers}
+
+<f:layout name="Login"/>
+
+<f:section name="main">
+	<h4 class="with-icon with-icon-check with-trim with-trim-light">Logout</h4>
+	<ul class="unstyled flash-messages">
+		<li class="well alert-info">
+			<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-logoutAction-instructions"/>
+			<f:link.page pageUid="86">
+				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-logoutAction-updateAccountLink"/>
+			</f:link.page>
+		</li>
+	</ul>
+
+	<f:form enctype="multipart/form-data" method="post">
+		<p class="submit">
+			<f:form.submit name="submit" class="btn primary" value="Sign out"/>
+		</p>
+		<input type="hidden" name="logintype" value="{postParams.loginType}"/>
+		<f:form.hidden name="loginType" value="{postParams.loginType}"/>
+		<input type="hidden" name="pid" value="{postParams.storagePid}"/>
+	</f:form>
+</f:section>

@@ -1,29 +1,29 @@
 <?php
 
-		/***************************************************************
-		 *  Copyright notice
-		 *  (c) 2011 Zachary Davis <zach
-		 *
-		 * @castironcoding.com>, Cast Iron Coding, Inc
-		 *  All rights reserved
-		 *  This script is part of the TYPO3 project. The TYPO3 project is
-		 *  free software; you can redistribute it and/or modify
-		 *  it under the terms of the GNU General Public License as published by
-		 *  the Free Software Foundation; either version 3 of the License, or
-		 *  (at your option) any later version.
-		 *  The GNU General Public License can be found at
-		 *  http://www.gnu.org/copyleft/gpl.html.
-		 *  This script is distributed in the hope that it will be useful,
-		 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-		 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		 *  GNU General Public License for more details.
-		 *  This copyright notice MUST APPEAR in all copies of the script!
-		 ***************************************************************/
+/***************************************************************
+ *  Copyright notice
+ *  (c) 2011 Zachary Davis <zach
+ *
+ * @castironcoding.com>, Cast Iron Coding, Inc
+ *  All rights reserved
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
-		/**
-		 * @package cicregister
-		 * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
-		 */
+/**
+ * @package cicregister
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
+ */
 
 class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controller_ActionController {
 
@@ -82,7 +82,6 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		$this->urlValidator = $urlValidator;
 	}
 
-
 	/**
 	 * Initialize the controller
 	 */
@@ -108,22 +107,24 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * Show the logout view
 	 */
 	public function logoutAction() {
+		t3lib_utility_Debug::debug($this->settings,__FILE__ . " " . __LINE__);
+		$this->view->assign('editPid', $this->settings);
 
-		// gotta be logged in to logout, son.
+		// A fella's gotta be logged in before he can logout.
 		if(!$this->userIsAuthenticated) $this->forward('login');
 
-		$this->view->assign('userData',$this->userData);
 		$postParams['loginType'] = 'logout';
-
-		// TODO: Should not be hard-coded
-		$postParams['storagePid'] = 4;
+		$postParams['storagePid'] = $this->determineStoragePid();
 
 		$this->view->assign('postParams', $postParams);
+		$this->view->assign('userData',$this->userData);
 	}
 
 	/**
 	 * Looks for felogin's frontend login hook so that this login mechanism can
-	 * be compatible with the RSAAuth extension.
+	 * be compatible with the RSAAuth extension and other extensions that attempt
+	 * to extends felogin.
+	 *
 	 * @return array
 	 */
 	protected function handleRSAAuthHook() {
@@ -140,6 +141,14 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		return $res;
 	}
 
+	/**
+	 * Validates the return URL using the urlValidator service. The URL Validator is taken almost verbatim from
+	 * felogin under the assumption that felogin redirect url validation is tested, stable code, that should be
+	 * reused
+	 *
+	 * @param $redirectUrl
+	 * @return string
+	 */
 	public function getValidRedirectUrl($redirectUrl) {
 		$redirectUrl = t3lib_div::_GP('redirect_url');
 		$referer = $this->urlValidator->validateRedirectUrl(t3lib_div::_GP('referer'));
@@ -149,6 +158,8 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
+	 * Displays the form asking the user to enter his/her email address for password retrieval
+	 *
 	 * @param bool $requestProcessed
 	 */
 	public function forgotPasswordAction($requestProcessed = false) {
@@ -156,6 +167,9 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
+	 * Shows the reset password form. The key is passed via the link in the email sent to the user and is
+	 * validated using cicregister's hash validator service.
+	 *
 	 * @param string $key
 	 */
 	public function resetPasswordAction($key) {
@@ -173,6 +187,9 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
+	 * Processes the password posted from the reset password form. Note that the same validation is used here
+	 * that is used in the frontend user controller for user registration.
+	 *
 	 * @param string $key
 	 * @param array $password
 	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
@@ -192,10 +209,10 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
-	 *
+	 * Insert a flash message in cases where the key was invalid
 	 */
 	public function invalidResetRequestAction() {
-		// TODO: Show the user something when the request is invalid.
+		//TODO: Implement this view
 	}
 
 	/**
@@ -205,31 +222,44 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		$user = $this->frontendUserRepository->findOneByEmail($emailAddress);
 		if(is_object($user) && $user->getUid()) {
 			$behaviorsConf = $this->settings['behaviors']['login']['forgotPassword'];
-			$res = $this->behaviorService->executeBehaviors($behaviorsConf, $user, $this->controllerContext, 'forgotPassword');
+			$this->behaviorService->executeBehaviors($behaviorsConf, $user, $this->controllerContext, 'forgotPassword');
 		}
 		$this->forward('forgotPassword',NULL,NULL,array('requestProcessed' => true));
 	}
 
 	/**
+	 * Ideally, developers should have to do as little as possible to make the login mechanisms work. We'll look at
+	 * what kind of object cicregister is responsible for, and determine its storage pid from typoscript conf.
+	 * TODO: Allow developers to override this value with a flexform storage pid.
+	 *
+	 * @return integer
+	 */
+	protected function determineStoragePid() {
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$out = $frameworkConfiguration['persistence']['storagePid'];
+		return $out;
+	}
+
+	/**
+	 * Displays the login form to the user
+	 *
 	 * @param boolean $loginAttempt
 	 * @param string $loginType
 	 */
 	public function loginAction($loginAttempt = false, $loginType = '') {
-
-		$redirectUrl = $this->getValidRedirectUrl();
+		
+		// TODO: Handle post-login redirect
+		#$redirectUrl = $this->getValidRedirectUrl();
 		$hookResults = $this->handleRSAAuthHook();
 
 		$postParams = array();
 		$postParams['redirectUrl'] = $redirectUrl;
 		$postParams['loginType'] = 'login';
-		// TODO: Should not be hard-coded
-		$postParams['storagePid'] = 4;
-
+		$postParams['storagePid'] = $this->determineStoragePid();
 
 		// Considered using flash messages here. However, it's often useful to have full
 		// fluid/html power in the message, and that's tricky with flash messages. Eg, after
-		// a user signs up, they should get a link to edit profile. We'll improve this later
-		// when there's more time.
+		// a user signs up, they should get a link to edit profile.
 		$loginFailed = false;
 		$loginSuccess = false;
 		$logoutOccurred = false;
@@ -243,7 +273,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		} elseif(!$loginAttempt) {
 			$loginNotAttempted = true;
 		}
-
+		
 		$this->view->assign('loginFailed', $loginFailed);
 		$this->view->assign('logoutOccurred', $logoutOccurred);
 		$this->view->assign('loginSuccess', $loginSuccess);
