@@ -9,7 +9,7 @@
 		<f:flashMessages class="flash-messages"/>
 
 		<!-- add class "CicregisterForm-New-Ajax" to form for asynch rendering -->
-		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New" id=""
+		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New-Ajax CicregisterForm-New" id=""
 				object="{frontendUser}">
 
 			<div class="form-row form-two-col">
@@ -23,29 +23,21 @@
 
 			<div class="form-row form-two-col">
 				<div class="form-first-col">
-					<label for="cicregister-passwordOne">Password: </label>
-
+					<label for="cicregister-password">Password: </label>
 					<div class="input">
-						<f:form.password id="cicregister-password0"
-										 class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
-										 name="password[0]"/>
+						<f:form.password id="cicregister-password" name="password[]"/>
 					</div>
-
-					<div id="cicregister-password0-errors" class="errorWrap">
+					<div id="cicregister-password-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
 					</div>
-
 				</div>
 
 				<div class="form-second-col">
-					<label for="cicregister-password1">Password: </label>
-
+					<label for="cicregister-confirmPassword">Confirm Password: </label>
 					<div class="input">
-						<f:form.password id="cicregister-password0"
-										 class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
-										 name="password[1]"/>
+						<f:form.password id="cicregister-confirmPassword" name="password[]"/>
 					</div>
-					<div id="cicregister-password1-errors" class="errorWrap">
+					<div id="cicregister-confirmPassword-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
 					</div>
 				</div>

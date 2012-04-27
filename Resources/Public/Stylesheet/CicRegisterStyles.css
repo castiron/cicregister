@@ -1,13 +1,9 @@
 #cicregister-lightbox {
   background-color: #FFF; }
-  #cicregister-lightbox .CicregisterForm-New-Ajax {
-    min-width: 617px; }
-    .ie7 #cicregister-lightbox .CicregisterForm-New-Ajax, .ie8 #cicregister-lightbox .CicregisterForm-New-Ajax {
-      width: 617px; }
-    #cicregister-lightbox .CicregisterForm-New-Ajax #loadingIndicator {
-      position: absolute;
-      right: 350px;
-      top: -3px; }
+  #cicregister-lightbox .CicregisterForm-New-Ajax #loadingIndicator {
+    position: absolute;
+    right: 350px;
+    top: -3px; }
 
 .Cicregister #loadingIndicator {
   position: absolute;

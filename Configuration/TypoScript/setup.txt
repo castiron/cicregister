@@ -17,6 +17,7 @@ plugin.tx_cicregister {
 			}
 			allowForgotPassword = 1
 			honorRedirectUrlArgument = 1
+			postLoginRedirectPid = 154
 		}
 		behaviors {
 			login {

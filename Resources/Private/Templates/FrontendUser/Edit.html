@@ -22,13 +22,25 @@
 
 			<div class="form-row clearfix form-two-col">
 				<div class="form-first-col">
-					<f:render partial="PasswordInput"
-							  arguments="{propertyName: 'password', propertyLabel: 'Password'}"/>
+					<label for="cicregister-password">Update Password: </label>
+
+					<div class="input">
+						<f:form.password id="cicregister-password" name="password[]"/>
+					</div>
+					<div id="cicregister-password-errors" class="errorWrap">
+						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+					</div>
 				</div>
 
 				<div class="form-second-col">
-					<f:render partial="PasswordInput"
-							  arguments="{propertyName: 'confirmPassword', propertyLabel: 'Confirm Password'}"/>
+					<label for="cicregister-confirmPassword">Confirm Update Password: </label>
+
+					<div class="input">
+						<f:form.password id="cicregister-confirmPassword" name="password[]"/>
+					</div>
+					<div id="cicregister-confirmPassword-errors" class="errorWrap">
+						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+					</div>
 				</div>
 			</div>
 

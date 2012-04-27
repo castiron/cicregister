@@ -100,7 +100,6 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $loginType
 	 */
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
-
 		if($this->userIsAuthenticated) {
 			// handle redirect
 			$returnUrl = $this->getValidReturnUrl();
@@ -109,7 +108,18 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 				&& $loginAttempt == true
 				&& $returnUrl
 			) {
+				// redirect to return url
 				$this->doRedirect($returnUrl);
+			} elseif($this->settings['login']['postLoginRedirectPid'] && $loginAttempt) {
+
+				// redirect to the url generated from the postLoginRedirectPid
+				$pid = $this->settings['login']['postLoginRedirectPid'];
+				$uriBuilder = $this->controllerContext->getUriBuilder();
+				$uri = $uriBuilder
+						->reset()
+						->setTargetPageUid($pageUid)
+						->build();
+				$this->doRedirect($uri);
 			} else {
 				$this->forward('logout');
 			}
@@ -295,8 +305,13 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		return $out;
 	}
 
+	/**
+	 * @param $redirectUrl
+	 */
 	protected function doRedirect($redirectUrl) {
-		$this->redirectToUri($redirectUrl);
+		if($redirectUrl) {
+			$this->redirectToUri($redirectUrl);
+		}
 	}
 
 	/**
@@ -306,7 +321,6 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $loginType
 	 */
 	public function loginAction($loginAttempt = false, $loginType = '') {
-
 		$returnUrl = $this->getValidReturnUrl();
 		$hookResults = $this->handleRSAAuthHook();
 		$postParams = array();
