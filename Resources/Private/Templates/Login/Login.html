@@ -29,6 +29,9 @@
 
 		<f:if condition="{loginNotAttempted}">
 			<li class="well alert-info">
+				<f:if condition="{returnMessage}">
+					<strong>{returnMessage}</strong><br/><br />
+				</f:if>
 				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-loginNotAttemptedMessage"/>
 			</li>
 		</f:if>
@@ -49,11 +52,14 @@
 					<label for="pass"><f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-allActions-passwordFieldLabel"/></label>
 					<input tabindex="2" type="password" class="" id="pass" name="pass" value=""/>
 				</div>
-				<div class="message">
-					<f:link.action action="forgotPassword">
-						<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-forgotPassword"/>
-					</f:link.action>
-				</div>
+				<f:if condition="{loginSettings.allowForgotPassword}">
+					<div class="message">
+						<f:link.action action="forgotPassword">
+							<f:translate
+									key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-forgotPassword"/>
+						</f:link.action>
+					</div>
+				</f:if>
 			</div>
 		</div>
 		<div class="row">
@@ -62,11 +68,14 @@
 			</div>
 		</div>
 
+		<!-- We want backwards compatibility with felogin, so we leave these variables in the same namespace -->
 		<input type="hidden" name="logintype" value="{postParams.loginType}"/>
-		<f:form.hidden name="loginType" value="{postParams.loginType}"/>
 		<input type="hidden" name="pid" value="{postParams.storagePid}"/>
-		<f:form.hidden name="redirect_url" value="{postParams.redirectUrl}"/>
+		<input type="hidden" name="return_url" value="{postParams.returnUrl}"/>
+		<!-- Used for tracking the flow in our loginController -->
+		<f:form.hidden name="loginType" value="{postParams.loginType}"/>
 		<f:form.hidden name="loginAttempt" value="1"/>
+		<!-- For RSA Auth support -->
 		<cb:raw value="{hookScriptInclude}" />
 	</f:form>
 </f:section>

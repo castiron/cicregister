@@ -93,11 +93,26 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
-	 * The main point of entry for the controller
+	 * The default entry point. The login form also posts to the dispatch method
+	 * so that it can decide what do display after login.
+	 *
+	 * @param boolean $loginAttempt
+	 * @param string $loginType
 	 */
-	public function dispatchAction() {
+	public function dispatchAction($loginAttempt = false, $loginType = '') {
+
 		if($this->userIsAuthenticated) {
-			$this->forward('logout');
+			// handle redirect
+			$returnUrl = $this->getValidReturnUrl();
+			if (
+				(bool)$this->settings['login']['honorRedirectUrlArgument'] == true
+				&& $loginAttempt == true
+				&& $returnUrl
+			) {
+				$this->doRedirect($returnUrl);
+			} else {
+				$this->forward('logout');
+			}
 		} else {
 			$this->forward('login');
 		}
@@ -107,7 +122,6 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * Show the logout view
 	 */
 	public function logoutAction() {
-		t3lib_utility_Debug::debug($this->settings,__FILE__ . " " . __LINE__);
 		$this->view->assign('editPid', $this->settings);
 
 		// A fella's gotta be logged in before he can logout.
@@ -146,14 +160,11 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * felogin under the assumption that felogin redirect url validation is tested, stable code, that should be
 	 * reused
 	 *
-	 * @param $redirectUrl
 	 * @return string
 	 */
-	public function getValidRedirectUrl($redirectUrl) {
-		$redirectUrl = t3lib_div::_GP('redirect_url');
-		$referer = $this->urlValidator->validateRedirectUrl(t3lib_div::_GP('referer'));
-		$redirectUrl = t3lib_div::_GP('redirect_url');
-		$out = $this->urlValidator->validateRedirectUrl($redirectUrl);
+	public function getValidReturnUrl() {
+		$returnUrl = t3lib_div::_GP('return_url');
+		$out = $this->urlValidator->validateReturnUrl($returnUrl);
 		return $out;
 	}
 
@@ -161,9 +172,26 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * Displays the form asking the user to enter his/her email address for password retrieval
 	 *
 	 * @param bool $requestProcessed
+	 * @param bool $requestSuccessful
 	 */
-	public function forgotPasswordAction($requestProcessed = false) {
-		$this->view->assign('requestProcessed',$requestProcessed);
+	public function forgotPasswordAction($requestProcessed = FALSE, $requestSuccessful = FALSE) {
+		// handle flash messages
+		$messages = $this->flashMessageContainer->getAll();
+		if(count($messages) > 0) {
+			$this->view->assign('hasMessages',true);
+			$this->view->assign('messages',$messages);
+			$this->flashMessageContainer->flush();
+		}
+
+		if($requestProcessed === TRUE) {
+			$this->view->assign('requestProcessed', true);
+			if ($requestSuccessful === TRUE) {
+				$this->view->assign('emailSent', true);
+			}
+		} else {
+			$this->view->assign('requestProcessed', false);
+		}
+
 	}
 
 	/**
@@ -182,7 +210,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 			$this->flashMessageContainer->flush();
 			$this->view->assign('key',$key);
 		} else {
-			$this->forward('invalidResetRequestAction');
+			$this->forward('invalidResetRequest');
 		}
 	}
 
@@ -204,7 +232,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		if ($password != NULL && is_array($password) && $password[0] != false) {
 			$frontendUser->setPassword($password[0]);
 		}
-		$this->flashMessageContainer->add('Your password has been changed. Please login below.');
+		$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('controller-login-pwChanged', 'cicregister'));
 		$this->forward('login');
 	}
 
@@ -212,19 +240,34 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * Insert a flash message in cases where the key was invalid
 	 */
 	public function invalidResetRequestAction() {
-		//TODO: Implement this view
+		$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('controller-login-invalidHash', 'cicregister'));
+		$this->forward('forgotPassword');
 	}
 
 	/**
+	 * Accepts the forget password form submission and executes behaviors tied to the forgot password
+	 * event.
+	 *
 	 * @param string $emailAddress
 	 */
 	public function handleForgotPasswordAction($emailAddress) {
-		$user = $this->frontendUserRepository->findOneByEmail($emailAddress);
-		if(is_object($user) && $user->getUid()) {
-			$behaviorsConf = $this->settings['behaviors']['login']['forgotPassword'];
-			$this->behaviorService->executeBehaviors($behaviorsConf, $user, $this->controllerContext, 'forgotPassword');
+
+		// If the extension is configured to not allow forgot password, this action is not allowed.
+		if(!$this->settings['login']['allowForgotPassword']) {
+			$GLOBALS['TSFE']->pageNotFoundAndExit();
+		} else {
+			// forgot password is allowed...
+			$user = $this->frontendUserRepository->findOneByEmail($emailAddress);
+			if (is_object($user) && $user->getUid()) {
+				$behaviorsConf = $this->settings['behaviors']['login']['forgotPassword'];
+				$this->behaviorService->executeBehaviors($behaviorsConf, $user, $this->controllerContext, 'forgotPassword');
+				$this->forward('forgotPassword', NULL, NULL, array('requestProcessed' => true, 'requestSuccessful' => true));
+			} else {
+				// The developer can decide whether she wants to show feedback in the view when the request was not successful.
+				$this->forward('forgotPassword', NULL, NULL, array('requestProcessed' => true, 'requestSuccessful' => false));
+			}
 		}
-		$this->forward('forgotPassword',NULL,NULL,array('requestProcessed' => true));
+
 	}
 
 	/**
@@ -240,6 +283,10 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		return $out;
 	}
 
+	protected function doRedirect($redirectUrl) {
+		$this->redirectToUri($redirectUrl);
+	}
+
 	/**
 	 * Displays the login form to the user
 	 *
@@ -247,13 +294,11 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $loginType
 	 */
 	public function loginAction($loginAttempt = false, $loginType = '') {
-		
-		// TODO: Handle post-login redirect
-		#$redirectUrl = $this->getValidRedirectUrl();
-		$hookResults = $this->handleRSAAuthHook();
 
+		$returnUrl = $this->getValidReturnUrl();
+		$hookResults = $this->handleRSAAuthHook();
 		$postParams = array();
-		$postParams['redirectUrl'] = $redirectUrl;
+		$postParams['returnUrl'] = $returnUrl;
 		$postParams['loginType'] = 'login';
 		$postParams['storagePid'] = $this->determineStoragePid();
 
@@ -273,7 +318,15 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		} elseif(!$loginAttempt) {
 			$loginNotAttempted = true;
 		}
-		
+
+		// insert a return message from typoscript, if requested.
+		$returnMsgKey = t3lib_div::_GP('return_msg');
+		if(array_key_exists($returnMsgKey,$this->settings['login']['returnMessages'])) {
+			$this->view->assign('returnMessage',$this->settings['login']['returnMessages'][$returnMsgKey]);
+		}
+
+		// assign various view variables
+		$this->view->assign('loginSettings',$this->settings['login']);
 		$this->view->assign('loginFailed', $loginFailed);
 		$this->view->assign('logoutOccurred', $logoutOccurred);
 		$this->view->assign('loginSuccess', $loginSuccess);

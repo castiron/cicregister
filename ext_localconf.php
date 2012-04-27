@@ -21,7 +21,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Login',
 	array(
-		'Login' => 'dispatch, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
+		'Login' => 'dispatch, login, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
 	),
 	// non-cacheable actions
 	array(

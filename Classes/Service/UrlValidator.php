@@ -30,7 +30,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 	 * @param string $url
 	 * @return string cleaned referer or empty string if not valid
 	 */
-	public function validateRedirectUrl($url) {
+	public function validateReturnUrl($url) {
 		$url = strval($url);
 		if ($url === '') {
 			return '';
@@ -40,7 +40,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 		$sanitizedUrl = t3lib_div::removeXSS($decodedUrl);
 
 		if ($decodedUrl !== $sanitizedUrl || preg_match('#["<>\\\]+#', $url)) {
-			t3lib_div::sysLog(sprintf($this->pi_getLL('xssAttackDetected'), $url), 'cicregister', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			t3lib_div::sysLog(sprintf(Tx_Extbase_Utility_Localization::translate('service-URLValidator-xssAttackDetected', 'cicregister'), $url), 'cicregister', t3lib_div::SYSLOG_SEVERITY_WARNING);
 			return '';
 		}
 
@@ -50,7 +50,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 		}
 
 		// URL is not allowed
-		t3lib_div::sysLog(sprintf($this->pi_getLL('noValidRedirectUrl'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
+		t3lib_div::sysLog(sprintf(Tx_Extbase_Utility_Localization::translate('service-URLValidator-noValidRedirectUrl', 'cicregister'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
 		return '';
 	}
 

@@ -32,10 +32,16 @@
             <label index="form-loginController-allActions-returnToLogin">Return to Login Form</label>
             <label index="form-loginController-allActions-emailAddressLabel">Email Address:</label>
             <label index="form-loginController-forgotPassword-header">Forgot Your Password?</label>
-            <label index="form-loginController-forgotPassword-requestProcessed">Your password reset request has been processed. Please check your inbox for an email message containing the reset password link.</label>
-            <label index="form-loginController-forgotPassword-instructions">Enter the email address associated with your account in the field below. An email will be sent to this address containing a link that will allow you to reset your password.</label>
+			<label index="form-loginController-forgotPassword-submit">Reset Password</label>
+			<label index="form-loginController-forgotPassword-requestProcessed">Your password reset request has been processed. Please check your inbox for an email message containing the reset password link.</label>
+			<label index="form-loginController-forgotPassword-requestProcessedFailure">We were unable to find an account associated with the email address you entered.</label>
+			<label index="form-loginController-forgotPassword-instructions">Enter the email address associated with your account in the field below. An email will be sent to this address containing a link that will allow you to reset your password.</label>
             <label index="form-loginController-logoutAction-instructions">You are currently signed in. To logout, click the button below.</label>
             <label index="form-loginController-logoutAction-updateAccountLink">Click here to update your account information</label>
+			<label index="service-URLValidator-noValidRedirectUrl">Url "%s" for redirect was not accepted!</label>
+			<label index="service-URLValidator-xssAttackDetected">Url "%s" contained an XSS attack and was cleaned!</label>
+			<label index="controller-login-invalidHash">The reset password link you clicked on is invalid.</label>
+			<label index="controller-login-pwChanged">Your pasword has been updated. Please sign-in below.</label>
 		</languageKey>
 	</data>
 </T3locallang>

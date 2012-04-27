@@ -11,6 +11,13 @@ plugin.tx_cicregister {
 		pids {
 			editView = {$plugin.tx_cicregister.settings.pids.editView}
 		}
+		login {
+			returnMessages {
+				1 = This is a sample redirect message. Reference the key in the &return_msg GET/POST variable.
+			}
+			allowForgotPassword = 1
+			honorRedirectUrlArgument = 1
+		}
 		behaviors {
 			login {
 				forgotPassword {
