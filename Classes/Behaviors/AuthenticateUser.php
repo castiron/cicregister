@@ -59,18 +59,22 @@ class Tx_Cicregister_Behaviors_AuthenticateUser extends Tx_Cicregister_Behaviors
 		$loginHash = $hashValidator->generateShortLivedKey($frontendUser->getUid());
 
 		$uriBuilder = $this->controllerContext->getUriBuilder();
+
+		$returnUrl = t3lib_div::_GP('return_url');
+
 		$uri = $uriBuilder
 				->reset()
 				->setTargetPageUid($conf['forwardPid'])
+				->setLinkAccessRestrictedPages(true)
 				->setNoCache(false)
 				->setUseCacheHash(false)
 				->setArguments(array(
+					'return_url' => $returnUrl,
 					'logintype' => 'login',
 					'pid' => $conf['feuserPid'],
 					'loginHash' => $loginHash
 				))
 				->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
-
 		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RedirectURI');
 		$response->setValue($uri);
 		return $response;
