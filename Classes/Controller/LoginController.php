@@ -100,12 +100,15 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $loginType
 	 */
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
+		$loginHash = t3lib_div::_GP('loginHash');
 		if($this->userIsAuthenticated) {
 			// handle redirect
 			$returnUrl = $this->getValidReturnUrl();
+			// we need to check for the presence, but not the validity, of the login
+			// hash, so that we can pick up redirects that follow account creation.
 			if (
 				(bool)$this->settings['login']['honorRedirectUrlArgument'] == true
-				&& $loginAttempt == true
+				&& ($loginAttempt == true || $loginHash)
 				&& $returnUrl
 			) {
 				// redirect to return url
