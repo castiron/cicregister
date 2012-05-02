@@ -36,6 +36,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		if($this->userIsAuthenticated) {
 			$this->forward('edit');
 		} else {
+			$this->view->assign('viewSettings',$this->settings['views']['new']);
 			$this->view->assign('frontendUser', $frontendUser);
 		}
 		// emit a signal before rendering the view

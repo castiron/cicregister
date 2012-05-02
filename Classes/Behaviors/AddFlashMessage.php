@@ -32,12 +32,33 @@
 class Tx_Cicregister_Behaviors_AddFlashMessage extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
 
 	/**
+	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 */
+	protected $flashMessageContainer;
+
+	/**
+	 * inject the flashMessageContainer
+	 *
+	 * @param Tx_Extbase_MVC_Controller_FlashMessages flashMessageContainer
+	 * @return void
+	 */
+	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+	}
+
+	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
 	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
-
+		$severity = $conf['severity'];
+		if(!$severity) $severity = t3lib_FlashMessage::OK;
+		$message = $conf['message'];
+		$title = $conf['title'];
+		if($message) {
+			$this->flashMessageContainer->add($message,$title,$severity);
+		}
 	}
 
 }

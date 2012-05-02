@@ -6,6 +6,8 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="backend-create-flexform-title">Configure Plugin Instance</label>
+			<label index="backend-create-flexform-disableAjax">Disable Ajax</label>
 			<label index="flash-frontendUserController-createAction-default">There was a problem with your registration. Please review the errors below, correct, and re-submit the form.</label>
 			<label index="flash-frontendUserController-updateAction-default">There was a problem updating your profile. Please review any errors below, correct, and re-submit the form.</label>
 			<label index="form-frontendUserController-frontendUser.email-1221560718">Email is a required field.</label>

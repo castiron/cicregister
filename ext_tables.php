@@ -21,9 +21,9 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 	'CICRegister: Login'
 );
 
-//$pluginSignature = str_replace('_','',$_EXTKEY) . '_' . create;
-//$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-//t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/flexform_' .create. '.xml');
+$pluginSignature = str_replace('_','',$_EXTKEY) . '_' . 'create';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/CreateFlexform.xml');
 
 t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'CIC User Registration');
 

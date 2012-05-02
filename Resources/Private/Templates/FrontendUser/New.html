@@ -6,10 +6,20 @@
 	<div class="Cicregister">
 		<h1>Create a New Account</h1>
 
-		<f:flashMessages class="flash-messages"/>
+		<f:if condition="{viewSettings.disableAjax}">
+			<f:then>
+				<f:flashMessages class="flash-messages"/>
+			</f:then>
+			<f:else>
+			</f:else>
+		</f:if>
 
-		<!-- add class "CicregisterForm-New-Ajax" to form for asynch rendering -->
-		<f:form method="post" action="create" name="frontendUser" class="CicregisterForm  CicregisterForm-New-Ajax CicregisterForm-New" id=""
+		<f:form method="post"
+				pageUid="{viewSettings.formTargetPid}"
+				action="create"
+				name="frontendUser"
+				class="CicregisterForm {f:if(condition:'{viewSettings.disableAjax}', then:'CicregisterForm-New-AjaxDisabled', else:'CicregisterForm-New-Ajax')} CicregisterForm-New"
+				id="cicregister-newform"
 				object="{frontendUser}">
 
 			<div class="form-row form-two-col">
@@ -25,7 +35,7 @@
 				<div class="form-first-col">
 					<label for="cicregister-password">Password: </label>
 					<div class="input">
-						<f:form.password id="cicregister-password" name="password[]"/>
+						<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}" id="cicregister-password" name="password[]"/>
 					</div>
 					<div id="cicregister-password-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
@@ -35,7 +45,7 @@
 				<div class="form-second-col">
 					<label for="cicregister-confirmPassword">Confirm Password: </label>
 					<div class="input">
-						<f:form.password id="cicregister-confirmPassword" name="password[]"/>
+						<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}" id="cicregister-confirmPassword" name="password[]"/>
 					</div>
 					<div id="cicregister-confirmPassword-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
@@ -49,7 +59,8 @@
 
 			<div class="form-row">
 				<div class="input">
-					<f:form.submit class="btn primary" value="Create Account"/>
+					<input id="cicregister-submitButton" data-loading-text="Processing sign-up..."
+						   class="btn primary" type="submit" name="" value="Create Account">
 				</div>
 			</div>
 		</f:form>

@@ -1,28 +1,39 @@
 plugin.tx_cicregister {
  	view {
- 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template root (FE)
  		templateRootPath = EXT:cicregister/Resources/Private/Templates/
- 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template partials (FE)
  		partialRootPath = EXT:cicregister/Resources/Private/Partials/
- 		# cat=plugin.tx_cicregister/file; type=string; label=Path to template layouts (FE)
  		layoutRootPath = EXT:cicregister/Resources/Private/Layouts/
  	}
  	settings {
- 		defaults {
- 			groupUid = 2
- 		}
 		pids {
 			editView = 80
+			newView = 153
+			storagePid = 4
+			loginPid = 74
+			logoutPid = 74
+		}
+		uids {
+			globalGroupId = 2
+			validatedGroupId = 3
+			unvalidatedGroupId = 4
+		}
+		strings {
+			siteName = Main Dish & Sons
+		}
+		email {
+			senderEmail = typo3@grandma.cichq.com
+			senderName = Main Dish & Sons
+			subjects {
+				forgotPassword = Main Dish & Son: Password Recovery
+				validateAccount = Main Dish & Son: Please Confirm Your Registration
+			}
+		}
+		decorators {
+
+		}
+		behaviors {
+
 		}
 		eidTypeNum = 1325527064
- 	}
- 	decorators {
- 		created.addToGroup.groupUid = 5
- 		emailValidated.addToGroup.groupUid = 4
- 		emailValidated.removeFromGroup.groupUid = 5
- 	}
- 	persistence {
- 		# cat=plugin.tx_cicregister//a; type=int+; label=Default storage PID
- 		storagePid = 4
  	}
  }

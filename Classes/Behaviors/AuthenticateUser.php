@@ -73,8 +73,7 @@ class Tx_Cicregister_Behaviors_AuthenticateUser extends Tx_Cicregister_Behaviors
 					'logintype' => 'login',
 					'pid' => $conf['feuserPid'],
 					'loginHash' => $loginHash
-				))
-				->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
+				))->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
 		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RedirectURI');
 		$response->setValue($uri);
 		return $response;

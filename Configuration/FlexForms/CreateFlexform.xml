@@ -1,0 +1,25 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>1</langDisable>
+	</meta>
+	<sheets>
+		<sheet>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:backend-create-flexform-title</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.views.new.disableAjax>
+						<TCEforms>
+							<label>LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:backend-create-flexform-disableAjax</label>
+							<config>
+								<type>check</type>
+							</config>
+						</TCEforms>
+					</settings.views.new.disableAjax>
+				</el>
+			</ROOT>
+		</sheet>
+	</sheets>
+</T3DataStructure>
