@@ -3,7 +3,7 @@
 <f:layout name="Default"/>
 
 <f:section name="main">
-	<div class="Cicregister span9">
+	<div class="Cicregister">
 		<h1>Join Sustainable Jersey</h1>
 
 		<p class="lead with-trim">Creating an account takes less than a minute, and we promise
@@ -28,13 +28,13 @@
 				<div class="span4">
 					<div class="input control-group">
 						<f:render partial="TextInput"
-								  arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
+								  arguments="{inputClass: 'span4', propertyName: 'firstName', propertyLabel: 'First Name'}"/>
 					</div>
 				</div>
 				<div class="span4">
 					<div class="input control-group">
 						<f:render partial="TextInput"
-								  arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
+								  arguments="{inputClass: 'span4', propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
 					</div>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 						<label for="cicregister-password">Password: </label>
 
 						<div class="input">
-							<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+							<f:form.password class="span4 {cr:ifIsError(key:'password', then:'f3-form-error')}"
 											 id="cicregister-password" name="password[]"/>
 						</div>
 						<div id="cicregister-password-errors" class="errorWrap">
@@ -59,7 +59,7 @@
 						<label for="cicregister-confirmPassword">Confirm Password: </label>
 
 						<div class="input">
-							<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+							<f:form.password class="span4 {cr:ifIsError(key:'password', then:'f3-form-error')}"
 											 id="cicregister-confirmPassword" name="password[]"/>
 						</div>
 						<div id="cicregister-confirmPassword-errors" class="errorWrap">
@@ -70,16 +70,10 @@
 			</div>
 
 			<div class="row">
-				<div class="span4">
+				<div class="span8">
 					<div class="input control-group">
 						<f:render partial="TextInput"
-								  arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
-					</div>
-				</div>
-				<div class="span4">
-					<div class="input control-group">
-						<label>Terms and Services</label>
-						TODO: Add terms and service checkbox.
+								  arguments="{inputClass: 'span8', propertyName: 'email', propertyLabel: 'Email Address'}"/>
 					</div>
 				</div>
 			</div>
