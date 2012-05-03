@@ -4,9 +4,9 @@
 <f:layout name="Login"/>
 
 <f:section name="main">
-	<h4>
+	<h1 class="page-header">
 		<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-header"/>
-	</h4>
+	</h1>
 
 	<ul class="unstyled flash-messages">
 		<f:if condition="{logoutOccurred}">
@@ -38,7 +38,7 @@
 	</ul>
 
 	<f:form onsubmit="{hookOnSubmit}" action="dispatch" enctype="multipart/form-data" method="post">
-		<div class="row row-flush">
+		<div class="row row">
 			<div class="span4">
 				<div class="input control-group">
 					<label for="user"><f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-allActions-usernameFieldLabel"/></label>
