@@ -1,69 +1,97 @@
 {namespace cr = Tx_Cicregister_ViewHelpers}
 
-<f:layout name="Default" />
+<f:layout name="Default"/>
 
 <f:section name="main">
-	<div class="Cicregister">
-		<h1>Create a New Account</h1>
+	<div class="Cicregister span9">
+		<h1>Join Sustainable Jersey</h1>
 
-		<f:if condition="{viewSettings.disableAjax}">
-			<f:then>
-				<f:flashMessages class="flash-messages"/>
-			</f:then>
-			<f:else>
-			</f:else>
-		</f:if>
+		<p class="lead with-trim">Creating an account takes less than a minute, and we promise
+			we will never share your information with third parties.</p>
 
+		<ul class="unstyled">
+			<li>
+				<f:flashMessages renderMode="div" class="flash-messages well alert-error"/>
+			</li>
+		</ul>
+
+		<!-- add class "CicregisterForm-New-Ajax" to form for asynch rendering -->
 		<f:form method="post"
-				pageUid="{viewSettings.formTargetPid}"
 				action="create"
+				pageUid="{viewSettings.formTargetPid}"
 				name="frontendUser"
 				class="CicregisterForm {f:if(condition:'{viewSettings.disableAjax}', then:'CicregisterForm-New-AjaxDisabled', else:'CicregisterForm-New-Ajax')} CicregisterForm-New"
 				id="cicregister-newform"
 				object="{frontendUser}">
 
-			<div class="form-row form-two-col">
-				<div class="form-first-col">
-					<f:render partial="TextInput" arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
-				</div>
-				<div class="form-second-col">
-					<f:render partial="TextInput" arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
-				</div>
-			</div>
-
-			<div class="form-row form-two-col">
-				<div class="form-first-col">
-					<label for="cicregister-password">Password: </label>
-					<div class="input">
-						<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}" id="cicregister-password" name="password[]"/>
-					</div>
-					<div id="cicregister-password-errors" class="errorWrap">
-						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+			<div class="row">
+				<div class="span4">
+					<div class="input control-group">
+						<f:render partial="TextInput"
+								  arguments="{propertyName: 'firstName', propertyLabel: 'First Name'}"/>
 					</div>
 				</div>
-
-				<div class="form-second-col">
-					<label for="cicregister-confirmPassword">Confirm Password: </label>
-					<div class="input">
-						<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}" id="cicregister-confirmPassword" name="password[]"/>
-					</div>
-					<div id="cicregister-confirmPassword-errors" class="errorWrap">
-						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+				<div class="span4">
+					<div class="input control-group">
+						<f:render partial="TextInput"
+								  arguments="{propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-row">
-				<f:render partial="TextInput" arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
+			<div class="row">
+				<div class="span4">
+					<div class="input control-group">
+						<label for="cicregister-password">Password: </label>
+
+						<div class="input">
+							<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+											 id="cicregister-password" name="password[]"/>
+						</div>
+						<div id="cicregister-password-errors" class="errorWrap">
+							<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+						</div>
+					</div>
+				</div>
+
+				<div class="span4">
+					<div class="input control-group">
+						<label for="cicregister-confirmPassword">Confirm Password: </label>
+
+						<div class="input">
+							<f:form.password class="{cr:ifIsError(key:'password', then:'f3-form-error')}"
+											 id="cicregister-confirmPassword" name="password[]"/>
+						</div>
+						<div id="cicregister-confirmPassword-errors" class="errorWrap">
+							<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<div class="form-row">
-				<div class="input">
-					<input id="cicregister-submitButton" data-loading-text="Processing sign-up..."
-						   class="btn primary" type="submit" name="" value="Create Account">
+			<div class="row">
+				<div class="span4">
+					<div class="input control-group">
+						<f:render partial="TextInput"
+								  arguments="{propertyName: 'email', propertyLabel: 'Email Address'}"/>
+					</div>
+				</div>
+				<div class="span4">
+					<div class="input control-group">
+						<label>Terms and Services</label>
+						TODO: Add terms and service checkbox.
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span2">
+					<div class="input control-group">
+						<input id="cicregister-submitButton" data-loading-text="Account is being created..."
+							   class="btn primary" style="float: left;" type="submit" name="" value="Create Account">
+					</div>
 				</div>
 			</div>
 		</f:form>
 	</div>
-
 </f:section>
