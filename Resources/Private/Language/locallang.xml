@@ -29,7 +29,7 @@
             <label index="form-loginController-loginAction-loginSuccessMessage">You have successfully signed in.</label>
             <label index="form-loginController-loginAction-loginNotAttemptedMessage">Welcome back! Please enter your email and password below to sign in.</label>
             <label index="form-loginController-loginAction-forgotPassword">Forgot Password?</label>
-            <label index="form-loginController-allActions-usernameFieldLabel">Username:</label>
+            <label index="form-loginController-allActions-usernameFieldLabel">Email Address:</label>
             <label index="form-loginController-allActions-passwordFieldLabel">Password:</label>
 			<label index="form-loginController-allActions-confirmPasswordFieldLabel">Confirm Password:</label>
 			<label index="form-loginController-allActions-returnToLogin">Return to Login Form</label>
