@@ -1,0 +1,37 @@
+{namespace cr = Tx_Cicregister_ViewHelpers}
+{namespace cb = Tx_Cicbase_ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="main">
+
+	<h1 class="page-header">Group Enrollment</h1>
+
+	<ul class="unstyled">
+		<li>
+			<f:flashMessages renderMode="div" class="flash-messages well alert-error"/>
+		</li>
+	</ul>
+
+	<f:flashMessages class="flash-messages"/>
+	<f:form enctype="multipart/form-data" action="saveEnrollment" method="post">
+		<div class="row">
+			<div class="span4">
+				<div class="input control-group">
+					<!-- TODO: Localize this label -->
+					<label for="cicregister-frontendUser-enrollmentCode">Enrollment Code: </label>
+					<f:form.textfield id="cicregister-frontendUser-enrollmentCode" name="enrollmentCode" />
+					<p class="message">Required Field</p>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span2">
+				<div class="input control-group">
+					<f:form.submit class="btn primary" value="Enroll"/>
+				</div>
+			</div>
+		</div>
+	</f:form>
+
+</f:section>
