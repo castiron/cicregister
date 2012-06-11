@@ -6,11 +6,11 @@ plugin.tx_cicregister {
  	}
  	settings {
 		pids {
-			editView = 80
-			newView = 153
+			editView = 85
+			newView = 86
 			storagePid = 4
-			loginPid = 74
-			logoutPid = 74
+			loginView = 74
+			logoutView= 90
 		}
 		uids {
 			globalGroupId = 2

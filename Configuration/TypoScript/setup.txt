@@ -16,6 +16,7 @@ plugin.tx_cicregister {
 		}
 		pids {
 			editView = {$plugin.tx_cicregister.settings.pids.editView}
+			loginView = {$plugin.tx_cicregister.settings.pids.loginView}
 		}
 		login {
 			returnMessages {
@@ -23,7 +24,7 @@ plugin.tx_cicregister {
 			}
 			allowForgotPassword = 1
 			honorRedirectUrlArgument = 1
-			postLoginRedirectPid = {$plugin.tx_cicregister.settings.pids.logoutPid}
+			postLoginRedirectPid = {$plugin.tx_cicregister.settings.pids.logoutView}
 		}
 		behaviors {
 			login {
@@ -69,7 +70,7 @@ plugin.tx_cicregister {
 					Tx_Cicregister_Behaviors_AuthenticateUser = 1
 					Tx_Cicregister_Behaviors_AuthenticateUser {
 						forwardAction =
-						forwardPid = {$plugin.tx_cicregister.settings.pids.loginPid}
+						forwardPid = {$plugin.tx_cicregister.settings.pids.logoutView}
 						feuserPid =  {$plugin.tx_cicregister.settings.pids.storagePid}
 					}
 				}
@@ -185,13 +186,29 @@ Tx_Cicregister_JSON_RequestPage {
 	}
 }
 
+config {
+	# The validation email links to the edit profile page, which is often set so that it is
+	# only visible to a logged in user. This rather obscure Typoscript property makes it
+	# possible for Extbase to link to an access restricted page. Moreover, we tend to think
+	# that this is a good site-wide default. Why would you want to show an anonymous user
+	# text that wasn't linked? Better not to show the content element at all, but to let it
+	# renderd the same accross contexts.
+	typolinkLinkAccessRestrictedPages = NONE
+}
+
 page.includeCSS {
+	89179817291 = EXT:cicregister/Resources/Public/Stylesheet/Cicregister.css
 }
 
 page.includeJSFooterlibs {
+	jquery = //ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js
+	jquery.external = 1
 }
 
 page.includeJSFooter {
+	colorbox = EXT:cicregister/Resources/Public/Javascript/Jquery-Colorbox-min.js
+	bootstrap-button = EXT:cicregister/Resources/Public/Javascript/bootstrap-button.js
+	cicregister = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
 }
 
 plugin.tx_cicregister._CSS_DEFAULT_STYLE (
