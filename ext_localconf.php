@@ -8,12 +8,12 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	'Create',
 	array(
 		'FrontendUser' => 'new,create,edit,update,createConfirmation,createConfirmationMustValidate,validateUser',
-		'FrontendUserJSON' => 'create,createConfirmationMustValidate'
+		'FrontendUserJSON' => 'create,edit,update,createConfirmation,createConfirmationMustValidate,validateUser'
 	),
 	// non-cacheable actions
 	array(
 		'FrontendUser' => 'new,create,edit,update,createConfirmation,createConfirmationMustValidate,validateUser',
-		'FrontendUserJSON' => 'create,createConfirmationMustValidate'
+		'FrontendUserJSON' => 'create,edit,update,createConfirmation,createConfirmationMustValidate,validateUser'
 	)
 );
 
@@ -40,6 +40,20 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 		'FrontendUser' => 'enroll,saveEnrollment',
 	)
 );
+
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'Button',
+	array(
+		'FrontendUser' => 'button,create',
+	),
+	// non-cacheable actions
+	array(
+		'FrontendUser' => '',
+	)
+);
+
+
 
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
 
