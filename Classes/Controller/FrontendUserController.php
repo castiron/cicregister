@@ -105,6 +105,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		} else {
 			$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 			$this->view->assign('frontendUser', $frontendUser);
+
 			// emit a signal before rendering the view
 			$this->signalSlotDispatcher->dispatch(__CLASS__, 'editAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
 		}
@@ -165,6 +166,14 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	}
 
 	/**
+	 *
+	 */
+	public function buttonAction() {
+		$this->view->assign('viewSettings',$this->settings['views']['new']);
+	}
+
+
+	/**
 	 * @return string
 	 */
 	protected function getErrorFlashMessage() {
@@ -174,7 +183,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 				break;
 		}
 		if ($msg == false) {
-			$msg = 'no error message set for ' . $this->actionMethodName;
+			$msg = 'There was an error calling ' . $this->actionMethodName;
 		}
 		return $msg;
 	}
