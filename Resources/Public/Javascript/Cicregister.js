@@ -96,11 +96,11 @@
     };
 
     CicregisterForm.prototype.showLoading = function() {
-      return $('#loadingIndicator').show();
+      return $('#cicregister-submitButton').button('loading');
     };
 
     CicregisterForm.prototype.hideLoading = function() {
-      return $('#loadingIndicator').hide();
+      return $('#cicregister-submitButton').button('reset');
     };
 
     CicregisterForm.prototype.submitForm = function(event) {
@@ -141,7 +141,12 @@
     return $('.cicregister-lightbox-trigger').colorbox({
       inline: true,
       scrolling: false,
-      open: false
+      open: false,
+      onOpen: function() {
+        return $.each(forms, function() {
+          return this.hideErrors();
+        });
+      }
     });
   });
 

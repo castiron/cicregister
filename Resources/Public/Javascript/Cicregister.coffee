@@ -65,10 +65,10 @@ class CicregisterForm
 		)
 
 	showLoading: ->
-		$('#loadingIndicator').show()
+		$('#cicregister-submitButton').button('loading')
 
 	hideLoading: ->
-		$('#loadingIndicator').hide()
+		$('#cicregister-submitButton').button('reset')
 
 	submitForm: (event) ->
 
@@ -91,8 +91,11 @@ $ ->
 	$('.CicregisterForm-New-Ajax').each( ->
 		forms.push(new CicregisterForm(this))
 	)
-
 	$('.cicregister-lightbox-noJs').each( -> $(this).hide(); )
 	$('.cicregister-lightbox-trigger').each(-> $(this).show();)
-	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: false});
+	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: false, onOpen: ->
+		$.each(forms, ->
+			@.hideErrors()
+		)
+	});
 
