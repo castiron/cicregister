@@ -13,12 +13,6 @@
       this.initEvents();
     }
 
-    CicregisterForm.prototype.log = function(msg, label) {
-      if (label == null) label = 'debug';
-      console.log(msg, label);
-      return false;
-    };
-
     CicregisterForm.prototype.initEvents = function() {
       var _this = this;
       return this.element.bind("submit", function(event) {
@@ -136,6 +130,7 @@
       return $(this).hide();
     });
     $('.cicregister-lightbox-trigger').each(function() {
+      $(this).attr('href', $(this).attr('rel'));
       return $(this).show();
     });
     return $('.cicregister-lightbox-trigger').colorbox({

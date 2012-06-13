@@ -7,10 +7,6 @@ class CicregisterForm
 		@element = $(@element)
 		@initEvents()
 
-	log: (msg, label = 'debug') ->
-		console.log(msg, label)
-		false
-
 	initEvents: ->
 		@element.bind "submit", (event) =>
 			@submitForm(event)
@@ -91,8 +87,19 @@ $ ->
 	$('.CicregisterForm-New-Ajax').each( ->
 		forms.push(new CicregisterForm(this))
 	)
-	$('.cicregister-lightbox-noJs').each( -> $(this).hide(); )
-	$('.cicregister-lightbox-trigger').each(-> $(this).show();)
+	
+	$('.cicregister-lightbox-noJs').each( -> 
+		$(this).hide() 
+	)
+	
+	$('.cicregister-lightbox-trigger').each(-> 
+		# The HREF of the register button points to the register page,
+		# Browsers with javascript enabled replace it with the value of
+		# the rel attribute, which points to the lightbox.
+		$(this).attr('href',$(this).attr('rel'))
+		$(this).show()
+	)
+	
 	$('.cicregister-lightbox-trigger').colorbox({inline:true, scrolling: false, open: false, onOpen: ->
 		$.each(forms, ->
 			@.hideErrors()
