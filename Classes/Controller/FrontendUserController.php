@@ -166,7 +166,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	}
 
 	/**
-	 *
+	 * Renders a button and a lightboxed signup form.
 	 */
 	public function buttonAction() {
 		$this->view->assign('viewSettings',$this->settings['views']['new']);
