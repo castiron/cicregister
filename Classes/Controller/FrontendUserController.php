@@ -26,6 +26,8 @@
 
 class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Controller_FrontendUserBaseController {
 
+	protected $actionSuccess = false;
+
 	/**
 	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
@@ -140,12 +142,14 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 		if(!$this->userIsAuthenticated) {
 			$this->forward('new');
 		}
+		$this->view->assign('actionSuccess',$this->actionSuccess);
 	}
 
 	/**
 	 * @param string $enrollmentCode
 	 */
 	public function saveEnrollmentAction($enrollmentCode = NULL) {
+		// TODO: Abstract these labels into locallang.
 		if(!$enrollmentCode) {
 			$this->flashMessageContainer->add('Please enter an enrollment code.','',t3lib_FlashMessage::ERROR);
 		} else {
@@ -155,6 +159,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 					$frontendUser->addUserGroup($group);
 					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
+					$this->view->assign('success',true);
 				} else {
 					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',t3lib_FlashMessage::ERROR);
 				}
@@ -162,7 +167,6 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',t3lib_FlashMessage::ERROR);
 			}
 		}
-		$this->forward('enroll');
 	}
 
 	/**
