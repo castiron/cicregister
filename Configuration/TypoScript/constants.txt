@@ -14,8 +14,8 @@ plugin.tx_cicregister {
 		}
 		uids {
 			globalGroupId = 2
-			validatedGroupId = 3
-			unvalidatedGroupId = 4
+			validatedGroupId = 4
+			unvalidatedGroupId = 3
 		}
 		strings {
 			siteName = Main Dish & Sons
