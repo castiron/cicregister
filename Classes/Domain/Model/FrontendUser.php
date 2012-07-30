@@ -237,5 +237,15 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	public function getSfdcLeadID() {
 		return $this->sfdcLeadID;
 	}
+
+	/**
+	 * Determines if the user is part of the given group
+	 *
+	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $group
+	 * @return bool
+	 */
+	public function hasUserGroup(Tx_Extbase_Domain_Model_FrontendUserGroup $group){
+		return $this->usergroup->contains($group);
+	}
 }
 ?>
