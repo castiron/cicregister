@@ -9,6 +9,8 @@
 	</h1>
 
 	<ul class="unstyled flash-messages">
+
+
 		<f:if condition="{logoutOccurred}">
 				<li class="well alert-success">
 					<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-loginAction-logoutMessage"/>
@@ -38,7 +40,7 @@
 	</ul>
 
 	<f:form onsubmit="{hookOnSubmit}" action="dispatch" enctype="multipart/form-data" method="post">
-		<div class="row row">
+		<div class="row">
 			<div class="span4">
 				<div class="input control-group">
 					<label for="user"><f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-allActions-usernameFieldLabel"/></label>

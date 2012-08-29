@@ -6,19 +6,19 @@ plugin.tx_cicregister {
  	}
  	settings {
 		pids {
-			editView = 80
-			newView = 153
+			editView = 85
+			newView = 86
 			storagePid = 4
-			loginPid = 74
-			logoutPid = 74
+			loginView = 74
+			logoutView= 90
 		}
 		uids {
 			globalGroupId = 2
-			validatedGroupId = 3
-			unvalidatedGroupId = 4
+			validatedGroupId = 4
+			unvalidatedGroupId = 3
 		}
 		strings {
-			siteName = Main Dish & Sons
+			siteName = Main Dish & Son
 		}
 		email {
 			senderEmail = typo3@grandma.cichq.com

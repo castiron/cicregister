@@ -13,12 +13,6 @@
       this.initEvents();
     }
 
-    CicregisterForm.prototype.log = function(msg, label) {
-      if (label == null) label = 'debug';
-      console.log(msg, label);
-      return false;
-    };
-
     CicregisterForm.prototype.initEvents = function() {
       var _this = this;
       return this.element.bind("submit", function(event) {
@@ -96,11 +90,11 @@
     };
 
     CicregisterForm.prototype.showLoading = function() {
-      return $('#loadingIndicator').show();
+      return $('#cicregister-submitButton').button('loading');
     };
 
     CicregisterForm.prototype.hideLoading = function() {
-      return $('#loadingIndicator').hide();
+      return $('#cicregister-submitButton').button('reset');
     };
 
     CicregisterForm.prototype.submitForm = function(event) {
@@ -136,12 +130,18 @@
       return $(this).hide();
     });
     $('.cicregister-lightbox-trigger').each(function() {
+      $(this).attr('href', $(this).attr('rel'));
       return $(this).show();
     });
     return $('.cicregister-lightbox-trigger').colorbox({
       inline: true,
       scrolling: false,
-      open: false
+      open: false,
+      onOpen: function() {
+        return $.each(forms, function() {
+          return this.hideErrors();
+        });
+      }
     });
   });
 

@@ -1,0 +1,17 @@
+{namespace cr = Tx_Cicregister_ViewHelpers}
+{namespace cb = Tx_Cicbase_ViewHelpers}
+
+<f:layout name="Default"/>
+
+<f:section name="main">
+
+	<h1 class="page-header">Group Enrollment</h1>
+	<ul class="unstyled">
+		<li>
+			<f:flashMessages renderMode="div" class="flash-messages well alert-error"/>
+		</li>
+	</ul>
+	
+	<f:render partial="EnrollmentForm" arguments="{_all}" />
+
+</f:section>

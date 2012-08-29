@@ -142,8 +142,9 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 
 		$postParams['loginType'] = 'logout';
 		$postParams['storagePid'] = $this->determineStoragePid();
-
+		$this->view->assign('editPageUid',$this->settings['pids']['editView']);
 		$this->view->assign('postParams', $postParams);
+		$this->view->assign('loginViewPid',$this->settings['pids']['loginView']);
 		$this->view->assign('userData',$this->userData);
 	}
 

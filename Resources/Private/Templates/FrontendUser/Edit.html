@@ -12,33 +12,33 @@
 				object="{frontendUser}">
 
 			<div class="row">
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{required: 'true', inputClass: 'span6', propertyName: 'firstName', propertyLabel: 'First Name'}"/>
+							  arguments="{required: 'true', inputClass: 'span4', propertyName: 'firstName', propertyLabel: 'First Name'}"/>
 				</div>
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{required: 'true', inputClass: 'span6', propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
+							  arguments="{required: 'true', inputClass: 'span4', propertyName: 'lastName', propertyLabel: 'Last Name'}"/>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="span6">
+				<div class="span4">
 					<label for="cicregister-password">Update Password: </label>
 
 					<div class="input">
-						<f:form.password class="span6" id="cicregister-password" name="password[]"/>
+						<f:form.password class="span4" id="cicregister-password" name="password[]"/>
 					</div>
 					<div id="cicregister-password-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
 					</div>
 				</div>
 
-				<div class="span6">
+				<div class="span4">
 					<label for="cicregister-confirmPassword">Confirm Update Password: </label>
 
 					<div class="input">
-						<f:form.password class="span6" id="cicregister-confirmPassword" name="password[]"/>
+						<f:form.password class="span4" id="cicregister-confirmPassword" name="password[]"/>
 					</div>
 					<div id="cicregister-confirmPassword-errors" class="errorWrap">
 						<f:render partial="FieldError.html" arguments="{property: 'password'}"/>
@@ -47,58 +47,58 @@
 			</div>
 
 			<div class="row">
-				<div class="span12">
+				<div class="span8">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span12', propertyName: 'email', propertyLabel: 'Email Address'}"/>
+							  arguments="{inputClass: 'span8', propertyName: 'email', propertyLabel: 'Email Address'}"/>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span6', propertyName: 'company', propertyLabel: 'Organization Name'}"/>
+							  arguments="{inputClass: 'span4', propertyName: 'company', propertyLabel: 'Organization Name'}"/>
 				</div>
 
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span6', propertyName: 'title', propertyLabel: 'Position Title'}"/>
+							  arguments="{inputClass: 'span4', propertyName: 'title', propertyLabel: 'Position Title'}"/>
 				</div>
 			</div>
 
 			<div class="row row-flush">
-				<div class="span12">
+				<div class="span8">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span12', propertyName: 'address', propertyLabel: 'Street Address'}"/>
+							  arguments="{inputClass: 'span8', propertyName: 'address', propertyLabel: 'Street Address'}"/>
 				</div>
 			</div>
 
 			<div class="row row-flush">
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span6', propertyName: 'city', propertyLabel: 'City'}"/>
+							  arguments="{inputClass: 'span4', propertyName: 'city', propertyLabel: 'City'}"/>
 				</div>
-				<div class="span6">
+				<div class="span4">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span6', propertyName: 'zip', propertyLabel: 'Zip Code'}"/>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="span12">
-					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span12', propertyName: 'telephone', propertyLabel: 'Telephone'}"/>
+							  arguments="{inputClass: 'span4', propertyName: 'zip', propertyLabel: 'Zip Code'}"/>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="span12">
+				<div class="span8">
 					<f:render partial="TextInput"
-							  arguments="{inputClass: 'span12', propertyName: 'www', propertyLabel: 'Website'}"/>
+							  arguments="{inputClass: 'span8', propertyName: 'telephone', propertyLabel: 'Telephone'}"/>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="span12">
+				<div class="span8">
+					<f:render partial="TextInput"
+							  arguments="{inputClass: 'span8', propertyName: 'www', propertyLabel: 'Website'}"/>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="span8">
 					<f:form.submit class="btn" value="Update Account"/>
 				</div>
 			</div>

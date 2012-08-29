@@ -5,16 +5,20 @@
 <f:section name="main">
 	<h1 class="page-header">Logout</h1>
 
+	<f:flashMessages renderMode="ul" class="unstyled well alert-success"/>
+
 	<ul class="unstyled flash-messages">
 		<li class="well alert-info">
 			<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-logoutAction-instructions"/>
-			<f:link.page pageUid="86">
-				<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-logoutAction-updateAccountLink"/>
-			</f:link.page>
+			<f:if condition="{editPageUid}">
+				<f:link.page pageUid="{editPageUid}">
+					<f:translate key="LLL:EXT:cicregister/Resources/Private/Language/locallang.xml:form-loginController-logoutAction-updateAccountLink"/>
+				</f:link.page>
+			</f:if>
 		</li>
 	</ul>
 
-	<f:form enctype="multipart/form-data" method="post">
+	<f:form enctype="multipart/form-data" pageUid="{loginViewPid}" method="post">
 		<p class="submit">
 			<f:form.submit name="submit" class="btn primary" value="Sign out"/>
 		</p>
