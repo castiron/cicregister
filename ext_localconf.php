@@ -3,6 +3,9 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
+
+$TYPO3_CONF_VARS['FE']['eID_include']['cicregister-getUsername'] = 'EXT:cicregister/Scripts/GetUsername.php';
+
 Tx_Extbase_Utility_Extension::configurePlugin(
 	$_EXTKEY,
 	'Create',
