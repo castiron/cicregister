@@ -28,6 +28,12 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 	'CICRegister: Create Account Button'
 );
 
+Tx_Extbase_Utility_Extension::registerPlugin(
+	$_EXTKEY,
+	'ValidateEmail',
+	'CICRegister: Email Validation'
+);
+
 $pluginSignature = str_replace('_','',$_EXTKEY) . '_' . 'create';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
 t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/CreateFlexform.xml');

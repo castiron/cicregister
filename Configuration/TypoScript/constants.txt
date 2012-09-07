@@ -27,6 +27,12 @@ plugin.tx_cicregister {
 				forgotPassword = Main Dish & Son: Password Recovery
 				validateAccount = Main Dish & Son: Please Confirm Your Registration
 			}
+			create {
+				message = Thank you for creating a new account!
+			}
+			validationEmailSend {
+				message = Almost done!
+			}
 		}
 		decorators {
 

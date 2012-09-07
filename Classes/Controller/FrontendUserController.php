@@ -83,6 +83,18 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	}
 
 	/**
+	 * This action sends a validation email to $user which contains a link
+	 * to the validateUser action.
+	 *
+	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 */
+	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '');
+		$this->flashMessageContainer->add('An email has been sent to '.$frontendUser->getEmail().' for validation.');
+	}
+
+
+	/**
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
 	 */
 	public function createConfirmationAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {

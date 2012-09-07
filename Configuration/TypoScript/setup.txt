@@ -42,6 +42,19 @@ plugin.tx_cicregister {
 				}
 			}
 			frontendUser {
+				validationEmailSend {
+					Tx_Cicregister_Behaviors_SendValidationEmail = 1
+					Tx_Cicregister_Behaviors_SendValidationEmail {
+						senderEmail = {$plugin.tx_cicregister.settings.email.senderEmail}
+						senderName = {$plugin.tx_cicregister.settings.email.senderName}
+						validateSubject = {$plugin.tx_cicregister.settings.email.subjects.validateAccount}
+						variables {
+							message = {$plugin.tx_cicregister.settings.email.validationEmailSend.message}
+							siteName = {$plugin.tx_cicregister.settings.strings.siteName}
+							validatePid = {$plugin.tx_cicregister.settings.pids.editView}
+						}
+					}
+				}
 				emailValidationSuccess {
 					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
 				}
@@ -57,6 +70,7 @@ plugin.tx_cicregister {
 						senderName = {$plugin.tx_cicregister.settings.email.senderName}
 						validateSubject = {$plugin.tx_cicregister.settings.email.subjects.validateAccount}
 						variables {
+							message = {$plugin.tx_cicregister.settings.email.create.message}
 							siteName = {$plugin.tx_cicregister.settings.strings.siteName}
 							validatePid = {$plugin.tx_cicregister.settings.pids.editView}
 						}

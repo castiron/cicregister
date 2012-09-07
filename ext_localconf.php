@@ -56,7 +56,16 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-
+Tx_Extbase_Utility_Extension::configurePlugin(
+	$_EXTKEY,
+	'ValidateEmail',
+	array(
+		'FrontendUser' => 'sendValidationEmail,validateUser'
+	),
+	array(
+		'FrontendUser' => 'sendValidationEmail,validateUser'
+	)
+);
 
 require_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
 
