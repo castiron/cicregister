@@ -2,8 +2,8 @@
 <p>Please click on the link below to confirm your email address and enable your account.</p>
 <p>
 	<f:link.action pageUid="{validatePid}" linkAccessRestrictedPages="true" absolute="true" noCache="1" noCacheHash="1"
-				   additionalParams="{tx_cicregister_create: {key: validationKey, action: 'validateUser', controller: 'FrontendUser'}}">
-		Complete {sitename} registration and validate email address
+				   additionalParams="{tx_cicregister_create: {key: validationKey, action: 'validateUser', controller: 'FrontendUser', redirect: redirect}}}">
+		Complete {sitename} registration and validate email address.
 	</f:link.action>
 </p>
 

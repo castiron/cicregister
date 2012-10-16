@@ -162,10 +162,10 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	 * @param $defaultForward
 	 * @return mixed
 	 */
-	protected function doBehaviors($frontendUser, $confKey, $defaultForward) {
+	protected function doBehaviors($frontendUser, $confKey, $defaultForward, $extraConf = array()) {
 		$behaviorsConf = $this->settings['behaviors']['frontendUser'][$confKey];
 		if(!is_array($behaviorsConf)) $behaviorsConf = array();
-		$behaviorResponse = $this->behaviorService->executeBehaviors($behaviorsConf, $frontendUser, $this->controllerContext, $defaultForward);
+		$behaviorResponse = $this->behaviorService->executeBehaviors($behaviorsConf, $frontendUser, $this->controllerContext, $defaultForward, $extraConf);
 		return $behaviorResponse;
 	}
 
