@@ -168,6 +168,7 @@ config.tx_extbase {
 						tx_cicregister_sfdc_contact_id.mapOnProperty = sfdcContactID
 						tx_cicregister_sfdc_lead_id.mapOnProperty = sfdcLeadID
 						tx_cicregister_sfdc_sync_timestamp.mapOnProperty = sfdcSyncTimestamp
+						tx_cicregister_state.mapOnProperty = state
 					}
 				}
 			}

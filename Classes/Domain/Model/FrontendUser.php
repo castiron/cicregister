@@ -90,6 +90,11 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	protected $lastName;
 
 	/**
+	 * @var string
+	 */
+	protected $state;
+
+	/**
 	 * It's important to note that in the unique validator below, we're validating against all frontend users that Extbase
 	 * knows about; we do that by using the global user repository.
 	 *
@@ -247,5 +252,22 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	public function hasUserGroup(Tx_Extbase_Domain_Model_FrontendUserGroup $group){
 		return $this->usergroup->contains($group);
 	}
+
+	/**
+	 * @param string $state
+	 */
+	public function setState($state) {
+		$this->state = $state;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getState() {
+		return $this->state;
+	}
+
+
+
 }
 ?>

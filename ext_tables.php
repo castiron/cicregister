@@ -79,11 +79,20 @@ $tempColumns = Array(
 			'eval' => 'trim'
 		),
 	),
+	'tx_cicregister_state' => array(
+		'exclude' => 0,
+		'label' => 'State',
+		'config' => array(
+			'type' => 'input',
+			'size' => 30,
+			'eval' => 'trim'
+		),
+	),
 );
 
 t3lib_div::loadTCA("fe_users");
 t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes("fe_users", "--div--;Salesforce, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
+t3lib_extMgm::addToAllTCAtypes("fe_users", "--div--;CIC Register, tx_cicregister_state, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
 
 
 // Add enrollment code to FE Groups
