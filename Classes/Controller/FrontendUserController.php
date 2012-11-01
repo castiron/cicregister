@@ -76,7 +76,12 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 			$this->frontendUserRepository->update($frontendUser);
 			$this->persistenceManager->persistAll();
 			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
-			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward), $frontendUser);
+			if($redirect) {
+				$this->doBehaviors($frontendUser, 'emailValidationSuccess', '');
+				$this->redirectToUri($redirect);
+			} else {
+				$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward), $frontendUser);
+			}
 		} else {
 			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationFailure', $forward), $frontendUser);
 		}
@@ -87,9 +92,14 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * to the validateUser action.
 	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param string $redirect
 	 */
-	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '', array('variables' => array('redirect' => 'www.redirect.here')));
+	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $redirect = '') {
+		$extraConf = array();
+		if($redirect) {
+			$extraConf = array('variables' => array('redirect' => $redirect));
+		}
+		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '', $extraConf);
 		$this->flashMessageContainer->add('An email has been sent to '.$frontendUser->getEmail().' for validation.');
 	}
 
