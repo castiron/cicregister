@@ -53,7 +53,7 @@ class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 	 * @param $default
 	 * @return mixed
 	 */
-	public function executeBehaviors(array $behaviors, $object, $controllerContext, $default) {
+	public function executeBehaviors(array $behaviors, $object, $controllerContext, $default, $extraConf = array()) {
 		$behaviorResponse = false;
 		foreach ($behaviors as $behaviorClassName => $enabled) {
 			if ($enabled == true || (is_array($enabled) && $enabled['_typoScriptNodeValue'] == true)) {
@@ -62,6 +62,7 @@ class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 				} else {
 					$conf = array();
 				}
+				$conf = array_merge_recursive($conf, $extraConf);
 				$behavior = $this->objectManager->create($behaviorClassName);
 				$behavior->setControllerContext($controllerContext);
 				$result = $behavior->execute($object, $conf);
