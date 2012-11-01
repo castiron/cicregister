@@ -64,6 +64,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 	/**
 	 * @param string $key
+	 * @param string $redirect
 	 */
 	public function validateUserAction($key, $redirect = '') {
 		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
