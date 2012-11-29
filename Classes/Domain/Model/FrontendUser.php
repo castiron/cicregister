@@ -111,6 +111,12 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	protected $disable = false;
 
 	/**
+	 * @var string
+	 */
+	protected $redirectPid;
+
+
+	/**
 	 * Called when the object is reconstituted.
 	 */
 	public function initializeObject() {
@@ -267,7 +273,41 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 		return $this->state;
 	}
 
+	/*
+	 * @return string
+	 */
+	public function getRedirectPid() {
+		return $this->redirectPid;
+	}
 
+	/*
+	 * setRedirectPid
+	 *
+	 * @param string $redirectPid
+	 * @return void
+	 *
+	 */
+	public function setRedirectPid($redirectPid) {
+		$this->redirectPid = $redirectPid;
+	}
 
+	/**
+	 *
+	 */
+	public function getLoginRedirectPageUid() {
+		// First check the user for a redirect pid
+		$redirectPid = $this->getRedirectPid();
+
+		// If not present look at the usergroups
+		// TODO: these usergroups need to be ordered as they are in the user record
+		if(!$redirectPid) {
+			foreach($this->getUsergroup() as $usergroup) {
+				if($redirectPid = $usergroup->getRedirectPid()) {
+					break;
+				}
+			}
+		}
+		return $redirectPid ? $redirectPid : false;
+	}
 }
 ?>

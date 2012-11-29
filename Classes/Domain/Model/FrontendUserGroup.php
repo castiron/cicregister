@@ -41,6 +41,11 @@ class Tx_Cicregister_Domain_Model_FrontendUserGroup extends Tx_Extbase_Domain_Mo
 	var $enrollmentCode;
 
 	/**
+	 * @var string
+	 */
+	protected $redirectPid;
+
+	/**
 	 * __construct
 	 *
 	 */
@@ -65,6 +70,26 @@ class Tx_Cicregister_Domain_Model_FrontendUserGroup extends Tx_Extbase_Domain_Mo
 	public function setEnrollmentCode($enrollmentCode) {
 		$this->enrollmentCode = $enrollmentCode;
 	}
+
+	/*
+	 * @return string
+	 */
+	public function getRedirectPid() {
+		return $this->redirectPid;
+	}
+
+	/*
+	 * setRedirectPid
+	 *
+	 * @param string $redirectPid
+	 * @return void
+	 *
+	 */
+	public function setRedirectPid($redirectPid) {
+		$this->redirectPid = $redirectPid;
+	}
+
+
 
 }
 ?>
