@@ -111,4 +111,34 @@ t3lib_div::loadTCA("fe_groups");
 t3lib_extMgm::addTCAcolumns("fe_groups", $tempColumns, 1);
 t3lib_extMgm::addToAllTCAtypes("fe_groups", "--div--;Enrollment, tx_cicregister_enrollment_code");
 
+
+t3lib_extMgm::addLLrefForTCAdescr('tx_cicregister_domain_model_invitation', 'EXT:cicregister/Resources/Private/Language/locallang_csh_tx_sjcert_domain_model_invitation.xml');
+t3lib_extMgm::allowTableOnStandardPages('tx_cicregister_domain_model_invitation');
+$TCA['tx_cicregister_domain_model_invitation'] = array(
+	'ctrl' => array(
+		'title'	=> 'LLL:EXT:cicregister/Resources/Private/Language/locallang_db.xml:tx_cicregister_domain_model_invitation',
+		'label' => 'email',
+		'tstamp' => 'tstamp',
+		'crdate' => 'crdate',
+		'cruser_id' => 'cruser_id',
+		'dividers2tabs' => TRUE,
+		'versioningWS' => 2,
+		'versioning_followPages' => TRUE,
+		'origUid' => 't3_origuid',
+		'languageField' => 'sys_language_uid',
+		'transOrigPointerField' => 'l10n_parent',
+		'transOrigDiffSourceField' => 'l10n_diffsource',
+		'delete' => 'deleted',
+		'searchFields' => 'email',
+		'enablecolumns' => array(
+			'disabled' => 'hidden',
+			'starttime' => 'starttime',
+			'endtime' => 'endtime',
+		),
+		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
+		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
+	),
+);
+
+
 ?>
