@@ -32,6 +32,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @dontvalidate $frontendUser
 	 * @return void
 	 */
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
