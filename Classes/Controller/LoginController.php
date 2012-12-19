@@ -133,11 +133,25 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 			if($redirectUrl) $foundRedirectTarget = true;
 		}
 
-		// If there isn't one, look at the user / usergroups for a redirect
+		// If there isn't one, look at the user for a redirect
 		if(!$foundRedirectTarget) {
 			$user = $this->frontendUserRepository->findOneByUid($this->userData['uid']);
-			$redirectPageUid = $user->getLoginRedirectPageUid($user);
-			if($redirectPageUid) $foundRedirectTarget = true;
+			if($user->getRedirectPid()) {
+				$redirectPageUid = $user->getRedirectPid();
+				$foundRedirectTarget = true;
+			}
+		}
+
+		// If there still isn't one, look at the groups for a redirect, but do so in the correct
+		// order of priority
+		if(!$foundRedirectTarget) {
+			if($usergroups = $user->getUsergroupsWithRedirect()) {
+				$redirectPageUid = $this->getUsergroupRedirectByPriority(
+					$usergroups,
+					$this->settings['login']['usergroupRedirectPriority']
+				);
+				if($redirectPageUid) $foundRedirectTarget = true;
+			}
 		}
 
 		// Otherwise, go to the shared post login redirect page
@@ -155,6 +169,47 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 					->build();
 		}
 		return $redirectUrl;
+	}
+
+
+	/**
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var array
+	 */
+	protected function getUsergroupRedirectByPriority(Tx_Extbase_Persistence_ObjectStorage $usergroups,$usergroupRedirectPriority = array()) {
+		// Make an array of group uids
+		$usergroupUidsArray = array();
+		foreach($usergroups as $usergroup) {
+ 			$usergroupUidsArray[] = $usergroup->getUid();
+		}
+		t3lib_utility_Debug::debug($usergroupUidsArray,'the uids iwth redirects');
+		// If there's no priority ordering specified, just go with the order we have them in
+		if(!count($usergroupRedirectPriority)) {
+			$usergroupRedirectPriority = array();
+			foreach($usergroups as $usergroup) {
+				$usergroupRedirectPriority[] = $usergroup->getUid();
+			}
+		}
+
+		$foundUid = null;
+		foreach($usergroupRedirectPriority as $priorityRow) {
+			$priorityRowUsergroupIdsArray = t3lib_div::trimExplode(',',$priorityRow);
+			foreach($priorityRowUsergroupIdsArray as $usergroupUid) {
+				if(in_array($usergroupUid,$usergroupUidsArray)) {
+					$foundUid = $usergroupUid;
+					break 2;
+				}
+			}
+		}
+
+		if($foundUid) {
+			foreach($usergroups as $usergroup) {
+				if($usergroup->getUid() == $foundUid) {
+					return $usergroup->getRedirectPid();
+				}
+			}
+		}
+		return null;
 	}
 
 	/**

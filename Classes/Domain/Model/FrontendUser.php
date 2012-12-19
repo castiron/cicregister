@@ -291,23 +291,20 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 		$this->redirectPid = $redirectPid;
 	}
 
-	/**
-	 *
-	 */
-	public function getLoginRedirectPageUid() {
-		// First check the user for a redirect pid
-		$redirectPid = $this->getRedirectPid();
 
-		// If not present look at the usergroups
-		// TODO: these usergroups need to be ordered as they are in the user record
-		if(!$redirectPid) {
-			foreach($this->getUsergroup() as $usergroup) {
-				if($redirectPid = $usergroup->getRedirectPid()) {
-					break;
-				}
+	/**
+	 * Returns a collection of this user's usergroups that have a redirect pid value pn them
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 */
+	public function getUserGroupsWithRedirect() {
+		$usergroupsWithRedirect = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+
+		foreach($this->getUsergroup() as $usergroup) {
+			if($usergroup->getRedirectPid()) {
+				$usergroupsWithRedirect->attach($usergroup);
 			}
 		}
-		return $redirectPid ? $redirectPid : false;
+		return $usergroupsWithRedirect;
 	}
 }
 ?>
