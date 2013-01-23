@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Cicbase_Domain_Repository_BaseRepository {
+class Tx_Cicregister_Domain_Repository_FrontendUserRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {
 
 	/**
 	 * Finds an object matching the given identifier.
