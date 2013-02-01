@@ -182,7 +182,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		foreach($usergroups as $usergroup) {
  			$usergroupUidsArray[] = $usergroup->getUid();
 		}
-		t3lib_utility_Debug::debug($usergroupUidsArray,'the uids iwth redirects');
+
 		// If there's no priority ordering specified, just go with the order we have them in
 		if(!count($usergroupRedirectPriority)) {
 			$usergroupRedirectPriority = array();
@@ -446,8 +446,6 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		$this->view->assign('hookScriptInclude', $hookResults['scriptInclude']);
 		$this->view->assign('postParams',$postParams);
 	}
-
-
 }
 
 ?>
