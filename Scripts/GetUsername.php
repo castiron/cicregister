@@ -11,6 +11,8 @@ if($user->user['uid'] > 0) {
     $response->foundUser = false;
 }
 
+header("Cache-Control: no-cache");
+header("Pragma: no-cache");
 header('Content-type: application/json');
 echo json_encode($response);
 die();
