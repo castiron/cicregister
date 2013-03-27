@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-class Tx_Cicregister_Service_HashValidator implements t3lib_Singleton {
+class HashValidator implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * @var string
@@ -37,17 +38,17 @@ class Tx_Cicregister_Service_HashValidator implements t3lib_Singleton {
 	private $salt = '';
 
 	/**
-	 * @var Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository
+	 * @var \CIC\Cicregister\Domain\Repository\GlobalFrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
 	 * inject the frontendUserRepository
 	 *
-	 * @param Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository frontendUserRepository
+	 * @param \CIC\Cicregister\Domain\Repository\GlobalFrontendUserRepository frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(\CIC\Cicregister\Domain\Repository\GlobalFrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
@@ -67,7 +68,7 @@ class Tx_Cicregister_Service_HashValidator implements t3lib_Singleton {
 		if($uid) {
 			$frontendUser = $this->frontendUserRepository->findByUid($uid);
 		}
-		if(($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) && $rand) {
+		if(($frontendUser instanceof \CIC\Cicregister\Domain\Model\FrontendUser) && $rand) {
 			$confirmKey = $this->generateKey($frontendUser,$rand);
 			if($confirmKey == $key) return $frontendUser;
 		} else {
@@ -77,11 +78,11 @@ class Tx_Cicregister_Service_HashValidator implements t3lib_Singleton {
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param null $rand
 	 * @return string
 	 */
-	public function generateKey(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $rand = NULL) {
+	public function generateKey(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $rand = NULL) {
 		if(!$rand) {
 			$rand = mt_rand();
 		}

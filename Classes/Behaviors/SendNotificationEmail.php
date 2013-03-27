@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -26,10 +27,10 @@
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
-class Tx_Cicregister_Behaviors_SendNotificationEmail extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class SendNotificationEmail extends AbstractBehavior implements BehaviorInterface {
 
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
-		$settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
+		$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 		$sender[$conf['senderEmail']] = $conf['senderName'];
 		$receiver[$conf['receiverEmail']] = $conf['receiverName'];
 		$this->sendTemplateEmail($sender, $receiver, $conf['subject'], $conf['template'], array('frontendUser' => $frontendUser, 'settings' => $settings));

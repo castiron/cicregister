@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-class Tx_Cicregister_Controller_FrontendUserControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FrontendUserControllerTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	protected $frontendUserRepository;
 
@@ -41,19 +42,19 @@ class Tx_Cicregister_Controller_FrontendUserControllerTest extends Tx_Extbase_Te
 	 * @test
 	 */
 	public function newActionWorks() {
-		$frontendUserRepositoryMock = $this->getMock('Tx_Cicregister_Domain_Repository_FrontendUserRepository');
-		$frontendUserMock = $this->getMock('Tx_Cicregister_Domain_Model_FrontendUser');
+		$frontendUserRepositoryMock = $this->getMock('CIC\\Cicregister\\Domain\\Repository\\FrontendUserRepository');
+		$frontendUserMock = $this->getMock('CIC\\Cicregister\\Domain\\Model\\FrontendUser');
 
 		$signalSlotDispatcherMock = $this->getMock('Tx_Extbase_SignalSlot_Dispatcher');
 
-		$requestMock = $this->getMock($this->buildAccessibleProxy('Tx_Extbase_MVC_Request'), array('dummy'), array(), '', FALSE);
+		$requestMock = $this->getMock($this->buildAccessibleProxy('TYPO3\\CMS\\Extbase\\Mvc\\Request'), array('dummy'), array(), '', FALSE);
 		$requestMock->_set('pluginName', 'tx_cicregister_create');
 		$requestMock->_set('controllerName','frontenduser');
 		$requestMock->_set('actionName','new');
 
 		$viewMock = $this->getMock('Tx_Fluid_Core_View_TemplateView', array('assign'), array(), '', FALSE);
 
-		$frontendUserControllerMock = $this->getMock($this->buildAccessibleProxy('Tx_Cicregister_Controller_FrontendUserController'), array('dummy'), array(), '', FALSE);
+		$frontendUserControllerMock = $this->getMock($this->buildAccessibleProxy('CIC\\Cicregister\\Controller\\FrontendUserController'), array('dummy'), array(), '', FALSE);
 		$frontendUserControllerMock->_set('request', $mockRequest);
 		$frontendUserControllerMock->_set('signalSlotDispatcher',$signalSlotDispatcherMock);
 		$frontendUserControllerMock->_set('frontendUserRepository',$frontendUserRepositoryMock);

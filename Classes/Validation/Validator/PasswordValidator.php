@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Validation\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,27 +30,27 @@
  *
  */
 
-class Tx_Cicregister_Validation_Validator_PasswordValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class PasswordValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * @param array $value
 	 * @return bool
-	 * @throws Tx_Extbase_Validation_Exception_InvalidValidationConfiguration
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception_InvalidValidationConfiguration
 	 */
 	public function isValid($value) {
 

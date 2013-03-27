@@ -4,10 +4,12 @@ if (!defined('TYPO3_MODE')) {
 }
 
 
+
+
 $TYPO3_CONF_VARS['FE']['eID_include']['cicregister-getUsername'] = 'EXT:cicregister/Scripts/GetUsername.php';
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'CIC.Cicregister',
 	'Create',
 	array(
 		'FrontendUser' => 'new,create,edit,update,createConfirmation,createConfirmationMustValidate,validateUser',
@@ -20,8 +22,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'CIC.Cicregister',
 	'Login',
 	array(
 		'Login' => 'dispatch, login, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
@@ -32,8 +34,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'CIC.Cicregister',
 	'Enroll',
 	array(
 		'FrontendUser' => 'enroll,saveEnrollment',
@@ -44,8 +46,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'CIC.Cicregister',
 	'Button',
 	array(
 		'FrontendUser' => 'button,create',
@@ -56,8 +58,8 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-Tx_Extbase_Utility_Extension::configurePlugin(
-	$_EXTKEY,
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+	'CIC.Cicregister',
 	'ValidateEmail',
 	array(
 		'FrontendUser' => 'sendValidationEmail,validateUser'
@@ -67,9 +69,9 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	)
 );
 
-require_once(t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Service/Authentication.php');
 
-t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'Tx_Cicregister_Service_Authentication' /* sv key */,
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService($_EXTKEY, 'auth' /* sv type */, 'CIC\\Cicregister\\Service\\Authentication' /* sv key */,
 	array(
 		'title' => 'Cicregister Authentication',
 		'description' => 'Frontend authentication service',
@@ -79,8 +81,8 @@ t3lib_extMgm::addService($_EXTKEY, 'auth' /* sv type */, 'Tx_Cicregister_Service
 		'quality' => 100,
 		'os' => '',
 		'exec' => '',
-		'classFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Service/Authentication.php',
-		'className' => 'Tx_Cicregister_Service_Authentication',
+		'classFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Classes/Service/Authentication.php',
+		'className' => 'CIC\\Cicregister\\Service\\Authentication',
 	)
 );
 

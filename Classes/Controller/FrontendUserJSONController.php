@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Controller;
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach
@@ -24,23 +24,23 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 
-class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregister_Controller_FrontendUserBaseController {
+class FrontendUserJSONController extends FrontendUserBaseController {
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $password
-	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
+	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
 	 */
-	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
+	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
 
 		$frontendUser->setPassword($password[0]);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
-		$results = new stdClass;
+		$results = new \stdClass;
 		$results->hasErrors = false;
 
 		switch(get_class($behaviorResponse)) {
-			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
-				$viewObjectName = 'Tx_Cicregister_View_FrontendUserJSON_' . $behaviorResponse->getValue();
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RenderAction':
+				$viewObjectName = 'CIC\\Cicregister\\View\\FrontendUserJSON\\' . $behaviorResponse->getValue();
 				$view = $this->objectManager->create($this->defaultViewObjectName);
 				$this->setViewConfiguration($view);
 				$view->setControllerContext($this->controllerContext);
@@ -50,7 +50,7 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 				$this->controllerContext->getRequest()->setFormat('json');
 				$results->html = $out;
 			break;
-			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectAction':
 				$uriBuilder = $this->controllerContext->getUriBuilder();
 				$uri = $uriBuilder
 						->reset()
@@ -60,7 +60,7 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 						->uriFor($behaviorResponse->getValue(), NULL, 'FrontendUser');
 				$results->redirect = $uri;
 			break;
-			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectURI':
 				$results->redirect = $behaviorResponse->getValue();
 			break;
 		}
@@ -68,29 +68,29 @@ class Tx_Cicregister_Controller_FrontendUserJSONController extends Tx_Cicregiste
 	}
 
 	public function initializeCreateAction() {
-#		t3lib_div::debug($this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK));
+#		\TYPO3\CMS\Core\Utility\GeneralUtility::debug($this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK));
 	}
 
 
 	/**
 	 */
 	protected function errorAction() {
-		$results = new stdClass;
+		$results = new \stdClass;
 		$results->hasErrors = false;
 
 		$errorResults = $this->arguments->getValidationResults();
 
-		$results->errors = new stdClass();
+		$results->errors = new \stdClass();
 		$results->errors->byProperty = array();
 		foreach($errorResults->getFlattenedErrors() as $property => $error) {
 			$errorDetails = $errorResults->forProperty($property)->getErrors();
 			foreach($errorDetails as $error) {
 				$results->hasErrors = true;
-				$errorObj = new stdClass;
+				$errorObj = new \stdClass;
 				$errorObj->code = $error->getCode();
 				$errorObj->property = $property;
 				$key = 'form-frontendUserController-' . $errorObj->property . '-' . $errorObj->code;
-				$translatedMessage = Tx_Extbase_Utility_Localization::translate($key,'cicregister');
+				$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key,'cicregister');
 				if($translatedMessage) {
 					$errorObj->message = $translatedMessage;
 				} else {

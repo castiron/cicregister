@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,20 +30,20 @@
  *
  */
 
-class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
+class Behavior implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -51,7 +52,8 @@ class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 	 * @param $object
 	 * @param $controllerContext
 	 * @param $default
-	 * @return mixed
+	 * @param array $extraConf
+	 * @return bool|object
 	 */
 	public function executeBehaviors(array $behaviors, $object, $controllerContext, $default, $extraConf = array()) {
 		$behaviorResponse = false;
@@ -73,7 +75,7 @@ class Tx_Cicregister_Service_Behavior implements t3lib_Singleton {
 		}
 
 		if ($behaviorResponse == false) {
-			$behaviorResponse = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RenderAction');
+			$behaviorResponse = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\\RenderAction');
 			$behaviorResponse->setValue($default);
 		}
 		return $behaviorResponse;

@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_AbstractEntity {
+class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var string
@@ -40,7 +40,7 @@ class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_Abs
 	protected $email;
 
 	/**
-	 * @var Tx_Cicregister_Domain_Model_FrontendUser
+	 * @var \CIC\Cicregister\Domain\Model\FrontendUser
 	 */
 	protected $invitedBy;
 
@@ -102,14 +102,14 @@ class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_Abs
 	}
 
 	/**
-	 * @param \Tx_Cicregister_Domain_Model_FrontendUser $invitedBy
+	 * @param \\CIC\Cicregister\Domain\Model\FrontendUser $invitedBy
 	 */
 	public function setInvitedBy($invitedBy) {
 		$this->invitedBy = $invitedBy;
 	}
 
 	/**
-	 * @return \Tx_Cicregister_Domain_Model_FrontendUser
+	 * @return \\CIC\Cicregister\Domain\Model\FrontendUser
 	 */
 	public function getInvitedBy() {
 		return $this->invitedBy;

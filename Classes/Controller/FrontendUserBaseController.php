@@ -1,4 +1,6 @@
 <?php
+namespace CIC\Cicregister\Controller;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  *
  */
 
-abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_Extbase_MVC_Controller_ActionController {
+abstract class FrontendUserBaseController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * @var bool
@@ -42,107 +44,107 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	protected $user = array();
 
 	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserRepository
+	 * @var \CIC\Cicregister\Domain\Repository\FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 
 	/**
-	 * @var Tx_Cicregister_Service_Decorator
+	 * @var \CIC\Cicregister\Service\Decorator
 	 */
 	protected $decoratorService;
 
 	/**
-	 * @var Tx_Extbase_Property_PropertyMapper
+	 * @var \TYPO3\CMS\Extbase\Property\PropertyMapper
 	 */
 	protected $propertyMapper;
 
 	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository
+	 * @var \CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository
 	 */
 	protected $frontendUserGroupRepository;
 
 	/**
-	 * @var Tx_Cicregister_Service_Behavior
+	 * @var \CIC\Cicregister\Service\Behavior
 	 */
 	protected $behaviorService;
 
 	/**
-	 * @var Tx_Extbase_Persistence_Manager
+	 * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
 	 */
 	protected $persistenceManager;
 
 	/**
 	 * inject the persistenceManager
 	 *
-	 * @param Tx_Extbase_Persistence_Manager persistenceManager
+	 * @param \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager persistenceManager
 	 * @return void
 	 */
-	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+	public function injectPersistenceManager(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager $persistenceManager) {
 		$this->persistenceManager = $persistenceManager;
 	}
 
 	/**
 	 * inject the behaviorService
 	 *
-	 * @param Tx_Cicregister_Service_Behavior behaviorService
+	 * @param \CIC\Cicregister\Service\Behavior behaviorService
 	 * @return void
 	 */
-	public function injectBehaviorService(Tx_Cicregister_Service_Behavior $behaviorService) {
+	public function injectBehaviorService(\CIC\Cicregister\Service\Behavior $behaviorService) {
 		$this->behaviorService = $behaviorService;
 	}
 
 	/**
 	 * inject the frontendUserGroupRepository
 	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository frontendUserGroupRepository
+	 * @param \CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository frontendUserGroupRepository
 	 * @return void
 	 */
-	public function injectFrontendUserGroupRepository(Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+	public function injectFrontendUserGroupRepository(\CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository) {
 		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
 
 	/**
 	 * inject the propertyMapper
 	 *
-	 * @param Tx_Extbase_Property_PropertyMapper propertyMapper
+	 * @param \TYPO3\CMS\Extbase\Property\PropertyMapper propertyMapper
 	 * @return void
 	 */
-	public function injectPropertyMapper(Tx_Extbase_Property_PropertyMapper $propertyMapper) {
+	public function injectPropertyMapper(\TYPO3\CMS\Extbase\Property\PropertyMapper $propertyMapper) {
 		$this->propertyMapper = $propertyMapper;
 	}
 
 	/**
 	 * inject the decoratorService
 	 *
-	 * @param Tx_Cicregister_Service_Decorator decoratorService
+	 * @param \CIC\Cicregister\Service\Decorator decoratorService
 	 * @return void
 	 */
-	public function injectDecoratorService(Tx_Cicregister_Service_Decorator $decoratorService) {
+	public function injectDecoratorService(\CIC\Cicregister\Service\Decorator $decoratorService) {
 		$this->decoratorService = $decoratorService;
 	}
 
 	/**
 	 * Inject the signalSlotDispatcher
 	 *
-	 * @param Tx_Extbase_SignalSlot_Dispatcher signalSlotDispatcher
+	 * @param \TYPO3\CMS\Extbase\SignalSlot\Dispatcher signalSlotDispatcher
 	 * @return void
 	 */
-	public function injectSignalSlotDispatcher(Tx_Extbase_SignalSlot_Dispatcher $signalSlotDispatcher) {
+	public function injectSignalSlotDispatcher(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher) {
 		$this->signalSlotDispatcher = $signalSlotDispatcher;
 	}
 
 	/**
 	 * Inject the frontendUserRepository
 	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserRepository $frontendUserRepository
+	 * @param \CIC\Cicregister\Domain\Repository\FrontendUserRepository $frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Cicregister_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(\CIC\Cicregister\Domain\Repository\FrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
@@ -160,7 +162,8 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	 * @param $frontendUser
 	 * @param $confKey
 	 * @param $defaultForward
-	 * @return mixed
+	 * @param array $extraConf
+	 * @return bool|object
 	 */
 	protected function doBehaviors($frontendUser, $confKey, $defaultForward, $extraConf = array()) {
 		$behaviorsConf = $this->settings['behaviors']['frontendUser'][$confKey];
@@ -170,36 +173,36 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 	}
 
 	/**
-	 * @param Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Behaviors\Response\ResponseInterface $behaviorResponse
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 */
-	public function handleBehaviorResponse(Tx_Cicregister_Behaviors_Response_ResponseInterface $behaviorResponse, Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function handleBehaviorResponse(\CIC\Cicregister\Behaviors\Response\ResponseInterface $behaviorResponse, \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 		// Behaviors can return one of three types of actions, which determine what happens after the user is created.
 
 		switch (get_class($behaviorResponse)) {
-			case 'Tx_Cicregister_Behaviors_Response_RenderAction':
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RenderAction':
 				$this->redirect($behaviorResponse->getValue(), NULL, NULL, array('frontendUser' => $frontendUser));
 				break;
 
-			case 'Tx_Cicregister_Behaviors_Response_RedirectAction':
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectAction':
 				$this->redirect($behaviorResponse->getValue());
 				break;
 
-			case 'Tx_Cicregister_Behaviors_Response_RedirectURI':
+			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectURI':
 				$this->redirectToUri($behaviorResponse->getValue());
 				break;
 		}
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @return mixed
 	 */
-	protected function createAndPersistUser(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	protected function createAndPersistUser(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 
 		// add the user to the default group
 		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['globalGroupId']);
-		if ($defaultGroup instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
+		if ($defaultGroup instanceof \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
 
 		$this->decorateUser($frontendUser, 'created');
 
@@ -219,13 +222,13 @@ abstract class Tx_Cicregister_Controller_FrontendUserBaseController extends Tx_E
 			$this->userIsAuthenticated = true;
 		}
 
-		// If a developer has told extbase to use another object instead of Tx_Cicregister_Domain_Model_FrontendUser, then we
+		// If a developer has told extbase to use another object instead of \CIC\Cicregister\Domain\Model\FrontendUser, then we
 		// want to make sure that the replacement object is validated instead of the default cicregister object. Whereas the
 		// object manager does look at Extbase's objects Typoscript section, the argument validator does not.
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$replacementFrontendUserObject = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$replacementFrontendUserObject = $frameworkConfiguration['objects']['\\CIC\\Cicregister\\Domain\\Model\\FrontendUser']['className'];
 		if ($replacementFrontendUserObject) {
-			$frontendUserClass = $frameworkConfiguration['objects']['Tx_Cicregister_Domain_Model_FrontendUser']['className'];
+			$frontendUserClass = $frameworkConfiguration['objects']['\\CIC\\Cicregister\\Domain\Model\\FrontendUser']['className'];
 			if ($this->arguments->offsetExists('frontendUser')) {
 				$required = FALSE;
 				if ($this->arguments->getArgument('frontendUser')->isRequired() === TRUE) $required = TRUE;

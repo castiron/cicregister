@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Decorators;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,32 +30,32 @@
  *
  */
 
-class Tx_Cicregister_Decorators_RemoveFromGroup implements Tx_Cicregister_Decorators_DecoratorInterface {
+class RemoveFromGroup implements DecoratorInterface {
 
 	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository
+	 * @var \CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository
 	 */
 	protected $frontendUserGroupRepository;
 
 	/**
 	 * inject the frontendUserGroupRepository
 	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository frontendUserGroupRepository
+	 * @param \CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository frontendUserGroupRepository
 	 * @return void
 	 */
-	public function injectFrontendUserGroupRepository(Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository $frontendUserGroupRepository) {
+	public function injectFrontendUserGroupRepository(\CIC\Cicregister\Domain\Repository\FrontendUserGroupRepository $frontendUserGroupRepository) {
 		$this->frontendUserGroupRepository = $frontendUserGroupRepository;
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
+	public function decorate(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $conf = array()) {
 		$groupUid = $conf['groupUid'];
 		if($groupUid) {
 			$group = $this->frontendUserGroupRepository->findByUid($groupUid);
-			if ($group instanceof Tx_Extbase_Domain_Model_FrontendUserGroup) $frontendUser->removeUsergroup($group);
+			if ($group instanceof \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup) $frontendUser->removeUsergroup($group);
 		}
 	}
 

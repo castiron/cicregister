@@ -1,4 +1,6 @@
 <?php
+namespace CIC\Cicregister\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +31,7 @@
  *
  */
 
-class Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository extends Tx_Extbase_Persistence_Repository {
+class GlobalFrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
 	/**
 	 * Returns the class name of this class.
@@ -38,10 +40,10 @@ class Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository extends Tx_E
 	 */
 	protected function getRepositoryClassName() {
 		// we want to be able to build out this repository without changing the extbase core feuser repository.
-		// Because we tell the persistence layer that the classname is Tx_Extbase_Domain_Repository_FrontendUserRepository,
+		// Because we tell the persistence layer that the classname is \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository,
 		// it understands this repository as handling all objects handled by that repository. A bit of a hack, but
 		// it seems to work.
-		return 'Tx_Extbase_Domain_Repository_FrontendUserRepository';
+		return '\\TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository';
 	}
 
 	public function findByUid($uid) {

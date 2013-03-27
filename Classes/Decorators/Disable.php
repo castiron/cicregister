@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Decorators;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,13 +30,13 @@
  *
  */
 
-class Tx_Cicregister_Decorators_Disable implements Tx_Cicregister_Decorators_DecoratorInterface {
+class Disable implements DecoratorInterface {
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array()) {
+	public function decorate(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $conf = array()) {
 		$frontendUser->setDisable(true);
 	}
 

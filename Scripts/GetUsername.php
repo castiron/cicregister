@@ -2,7 +2,7 @@
 
 $user = tslib_eidtools::initFeUser();
 
-$response = new stdClass;
+$response = new \stdClass;
 
 if($user->user['uid'] > 0) {
     $response->foundUser = true;

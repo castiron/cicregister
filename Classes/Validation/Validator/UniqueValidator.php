@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Validation\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,27 +30,27 @@
  *
  */
 
-class Tx_Cicregister_Validation_Validator_UniqueValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class UniqueValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * @param string $value
 	 * @return bool
-	 * @throws Tx_Extbase_Validation_Exception_InvalidValidationConfiguration
+	 * @throws \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException
 	 */
 	public function isValid($value) {
 		if($this->options['repository'] && $this->options['property']) {
@@ -60,13 +61,13 @@ class Tx_Cicregister_Validation_Validator_UniqueValidator extends Tx_Extbase_Val
 				if($count == 0) {
 					return TRUE;
 				} else {
-					$error = new Tx_Extbase_Validation_Error('Email address is not available', 1325202490);
+					$error = new \TYPO3\CMS\Extbase\Validation\Error('Email address is not available', 1325202490);
 					$this->result->addError($error);
 					return FALSE;
 				}
 			}
 		}
-		throw new Tx_Extbase_Validation_Exception_InvalidValidationConfiguration('Invalid configuration for the CICRegister Unique Validator. Annotation should include a valid repository name and a property name', 1325114848);
+		throw new \TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationConfigurationException('Invalid configuration for the CICRegister Unique Validator. Annotation should include a valid repository name and a property name', 1325114848);
 	}
 
 }

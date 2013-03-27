@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach
@@ -21,9 +22,9 @@
 /**
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-require_once(t3lib_extMgm::extPath('cicregister') . 'Lib/SFDC/SoapClient/SforcePartnerClient.php');
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('cicregister') . 'Lib/SFDC/SoapClient/SforcePartnerClient.php');
 
-class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class SyncToSalesforce extends AbstractBehavior implements BehaviorInterface {
 
 	/**
 	 * @var array
@@ -33,14 +34,14 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 	protected $SFConnection;
 
 	public function initializeObject() {
-		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	protected function initSFConnection() {
 		if ($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['cicregister']) {
 			$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['cicregister']);
 			if ($extConf['SFDCUsername'] && $extConf['SFDCPassword'] && $extConf['SFDCToken'] && $extConf['SFDCWSDL']) {
-				$wsdlPath = t3lib_div::getFileAbsFileName($extConf['SFDCWSDL']);
+				$wsdlPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extConf['SFDCWSDL']);
 				$this->SFConnection = new SforcePartnerClient;
 				$this->SFConnection->createConnection($wsdlPath);
 				$SFLoginResults = $this->SFConnection->login($extConf['SFDCUsername'], $extConf['SFDCPassword'] . $extConf['SFDCToken']);
@@ -70,11 +71,11 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
 
 		// 1. Decide whether we're creating a lead or a contact based on the SFDC Ids stored on the user record.
 		if($frontendUser->getSfdcLeadID()) {
@@ -162,17 +163,17 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 			$res = $this->SFConnection->upsert($externalIdField, array($SFObject));
 		} catch (Exception $e) {
 			// TODO: Better error handling
-			// t3lib_utility_Debug::debug($e->getMessage(), __FILE__ . " " . __LINE__);
+			// \TYPO3\CMS\Core\Utility\DebugUtility::debug($e->getMessage(), __FILE__ . " " . __LINE__);
 		}
 		$SFObjId = $res[0]->id;
 		return $SFObjId;
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @return sObject
 	 */
-	protected function createSfLead(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	protected function createSfLead(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 		$SFObj = new sObject();
 		$SFObj->type = 'Lead';
 		$SFObj->fields['FirstName'] = $frontendUser->getFirstName();
@@ -197,10 +198,10 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @return sObject
 	 */
-	protected function createSfContact(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	protected function createSfContact(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 		$SFObj = new sObject();
 		$SFObj->type = 'Contact';
 		$SFObj->fields['FirstName'] = $frontendUser->getFirstName();
@@ -219,16 +220,16 @@ class Tx_Cicregister_Behaviors_SyncToSalesforce extends Tx_Cicregister_Behaviors
 	/**
 	 * Implement this in your child class
 	 * @param sObject $SFLead
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 */
-	protected function createSfLeadChild(sObject $SFLead, Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	protected function createSfLeadChild(sObject $SFLead, \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 	}
 
 	/**
 	 * Implement this in your child class
 	 * @param sObject $SFContact
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 */
-	protected function createSfContactChild(sObject $SFContact, Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	protected function createSfContactChild(sObject $SFContact, \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 	}
 }

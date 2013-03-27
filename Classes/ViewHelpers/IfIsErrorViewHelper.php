@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\ViewHelpers;
 
 /*                                                                        *
  * This script belongs to the FLOW3 package "Cicregister".                      *
@@ -25,7 +26,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
-class Tx_Cicregister_ViewHelpers_IfIsErrorViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractConditionViewHelper {
+class IfIsErrorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.

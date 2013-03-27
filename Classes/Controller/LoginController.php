@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Controller;
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach
@@ -25,7 +25,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 
-class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controller_ActionController {
+class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
 	 * @var array
@@ -38,47 +38,47 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	protected $userIsAuthenticated = false;
 
 	/**
-	 * @var Tx_Cicregister_Service_UrlValidator
+	 * @var \CIC\Cicregister\Service\UrlValidator
 	 */
 	protected $urlValidator;
 
 	/**
-	 * @var Tx_Cicregister_Domain_Repository_FrontendUserRepository
+	 * @var \CIC\Cicregister\Domain\Repository\FrontendUserRepository
 	 */
 	protected $frontendUserRepository;
 
 	/**
-	 * @var Tx_Cicregister_Service_Behavior
+	 * @var \CIC\Cicregister\Service\Behavior
 	 */
 	protected $behaviorService;
 
 	/**
 	 * inject the behaviorService
 	 *
-	 * @param Tx_Cicregister_Service_Behavior behaviorService
+	 * @param \CIC\Cicregister\Service\Behavior behaviorService
 	 * @return void
 	 */
-	public function injectBehaviorService(Tx_Cicregister_Service_Behavior $behaviorService) {
+	public function injectBehaviorService(\CIC\Cicregister\Service\Behavior $behaviorService) {
 		$this->behaviorService = $behaviorService;
 	}
 
 	/**
 	 * inject the frontendUserRepository
 	 *
-	 * @param Tx_Cicregister_Domain_Repository_FrontendUserRepository frontendUserRepository
+	 * @param \CIC\Cicregister\Domain\Repository\FrontendUserRepository frontendUserRepository
 	 * @return void
 	 */
-	public function injectFrontendUserRepository(Tx_Cicregister_Domain_Repository_FrontendUserRepository $frontendUserRepository) {
+	public function injectFrontendUserRepository(\CIC\Cicregister\Domain\Repository\FrontendUserRepository $frontendUserRepository) {
 		$this->frontendUserRepository = $frontendUserRepository;
 	}
 
 	/**
 	 * inject the urlValidator
 	 *
-	 * @param Tx_Cicregister_Service_UrlValidator urlValidator
+	 * @param \CIC\Cicregister\Service\UrlValidator urlValidator
 	 * @return void
 	 */
-	public function injectUrlValidator(Tx_Cicregister_Service_UrlValidator $urlValidator) {
+	public function injectUrlValidator(\CIC\Cicregister\Service\UrlValidator $urlValidator) {
 		$this->urlValidator = $urlValidator;
 	}
 
@@ -100,7 +100,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $loginType
 	 */
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
-		$loginHash = t3lib_div::_GP('loginHash');
+		$loginHash = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginHash');
 		if($this->userIsAuthenticated) {
 			if($loginAttempt || $loginHash) {
 				$redirectUrl = $this->getLoginRedirectUrl();
@@ -173,10 +173,10 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
 	 * @var array
 	 */
-	protected function getUsergroupRedirectByPriority(Tx_Extbase_Persistence_ObjectStorage $usergroups,$usergroupRedirectPriority = array()) {
+	protected function getUsergroupRedirectByPriority(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroups,$usergroupRedirectPriority = array()) {
 		// Make an array of group uids
 		$usergroupUidsArray = array();
 		foreach($usergroups as $usergroup) {
@@ -193,7 +193,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 
 		$foundUid = null;
 		foreach($usergroupRedirectPriority as $priorityRow) {
-			$priorityRowUsergroupIdsArray = t3lib_div::trimExplode(',',$priorityRow);
+			$priorityRowUsergroupIdsArray = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$priorityRow);
 			foreach($priorityRowUsergroupIdsArray as $usergroupUid) {
 				if(in_array($usergroupUid,$usergroupUidsArray)) {
 					$foundUid = $usergroupUid;
@@ -240,7 +240,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'])) {
 			$_params = array();
 			foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['felogin']['loginFormOnSubmitFuncs'] as $funcRef) {
-				list($onSub, $hid) = t3lib_div::callUserFunction($funcRef, $_params, $this);
+				list($onSub, $hid) = \TYPO3\CMS\Core\Utility\GeneralUtility::callUserFunction($funcRef, $_params, $this);
 				$res = array(
 					'onSubmit' => $onSub,
 					'scriptInclude' => $hid
@@ -258,7 +258,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @return string
 	 */
 	public function getValidReturnUrl() {
-		$returnUrl = t3lib_div::_GP('return_url');
+		$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('return_url');
 		$out = $this->urlValidator->validateReturnUrl($returnUrl);
 		return $out;
 	}
@@ -271,7 +271,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 */
 	public function forgotPasswordAction($requestProcessed = FALSE, $requestSuccessful = FALSE) {
 		// handle flash messages
-		$messages = $this->flashMessageContainer->getAll();
+		$messages = $this->flashMessageContainer->getAllMessages();
 		if(count($messages) > 0) {
 			$this->view->assign('hasMessages',true);
 			$this->view->assign('messages',$messages);
@@ -296,7 +296,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @param string $key
 	 */
 	public function resetPasswordAction($key) {
-		$hashValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
+		$hashValidatorService = $this->objectManager->get('CIC\\Cicregister\\Service\\HashValidator');
 		$frontendUser = $hashValidatorService->validateKey($key);
 
 		if($frontendUser) {
@@ -315,10 +315,10 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 *
 	 * @param string $key
 	 * @param array $password
-	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
+	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
 	 */
 	public function handleResetPasswordAction($key, array $password) {
-		$hashValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
+		$hashValidatorService = $this->objectManager->get('CIC\\Cicregister\\Service\\HashValidator');
 		$frontendUser = $hashValidatorService->validateKey($key);
 
 		// we validate the hash again, just be safe.
@@ -327,7 +327,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		if ($password != NULL && is_array($password) && $password[0] != false) {
 			$frontendUser->setPassword($password[0]);
 		}
-		$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('controller-login-pwChanged', 'cicregister'));
+		$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-pwChanged', 'cicregister'));
 		$this->forward('login');
 	}
 
@@ -335,7 +335,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * Insert a flash message in cases where the key was invalid
 	 */
 	public function invalidResetRequestAction() {
-		$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('controller-login-invalidHash', 'cicregister'));
+		$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-invalidHash', 'cicregister'));
 		$this->forward('forgotPassword');
 	}
 
@@ -372,7 +372,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @return string
 	 */
 	protected function getErrorFlashMessage() {
-		$msg = Tx_Extbase_Utility_Localization::translate('controller-login-genericActionMessage-'. $this->actionMethodName, 'cicregister');
+		$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-genericActionMessage-'. $this->actionMethodName, 'cicregister');
 		return $msg;
 	}
 
@@ -385,7 +385,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 * @return integer
 	 */
 	protected function determineStoragePid() {
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$out = $frameworkConfiguration['persistence']['storagePid'];
 		return $out;
 	}
@@ -431,7 +431,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 		}
 
 		// insert a return message from typoscript, if requested.
-		$returnMsgKey = t3lib_div::_GP('return_msg');
+		$returnMsgKey = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('return_msg');
 		if(array_key_exists($returnMsgKey,$this->settings['login']['returnMessages'])) {
 			$this->view->assign('returnMessage',$this->settings['login']['returnMessages'][$returnMsgKey]);
 		}

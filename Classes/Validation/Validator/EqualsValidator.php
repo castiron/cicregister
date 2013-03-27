@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Validation\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-class Tx_Cicregister_Validation_Validator_EqualsValidator extends Tx_Extbase_MVC_Controller_ArgumentsValidator {
+class EqualsValidator extends \TYPO3\CMS\Extbase\Mvc\Controller\ArgumentsValidator {
 
 	/**
 	 * Checks if $a equals $b

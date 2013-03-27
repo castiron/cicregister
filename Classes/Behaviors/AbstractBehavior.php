@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,47 +30,47 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_AbstractBehavior {
+class AbstractBehavior {
 
 	/**
-	 * @var Tx_Extbase_Configuration_ConfigurationManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManagerInterface
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_ControllerContext
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext
 	 */
 	protected $controllerContext;
 
 	/**
 	 * inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManagerInterface objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManagerInterface $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
 	 * inject the configurationManager
 	 *
-	 * @param Tx_Extbase_Configuration_ConfigurationManagerInterface configurationManager
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface configurationManager
 	 * @return void
 	 */
-	public function injectConfigurationManager(Tx_Extbase_Configuration_ConfigurationManagerInterface $configurationManager) {
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
 		$this->configurationManager = $configurationManager;
 	}
 
 	/**
-	 * @param Tx_Extbase_MVC_Controller_ControllerContext $controllerContext
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext
 	 */
-	public function setControllerContext(Tx_Extbase_MVC_Controller_ControllerContext $controllerContext) {
+	public function setControllerContext(\TYPO3\CMS\Extbase\Mvc\Controller\ControllerContext $controllerContext) {
 		$this->controllerContext = $controllerContext;
 	}
 
@@ -82,16 +83,16 @@ class Tx_Cicregister_Behaviors_AbstractBehavior {
 	 * @return boolean TRUE on success, otherwise false
 	 */
 	protected function sendTemplateEmail(array $recipient, array $sender, $subject, $templateName, array $variables = array()) {
-		$emailView = $this->objectManager->create('Tx_Fluid_View_StandaloneView');
+		$emailView = $this->objectManager->create('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 		$emailView->setFormat('html');
-		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$templateRootPath = t3lib_div::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
+		$extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$templateRootPath = \TYPO3\CMS\Core\Utility\GeneralUtility::getFileAbsFileName($extbaseFrameworkConfiguration['view']['templateRootPath']);
 		$templatePathAndFilename = $templateRootPath . '/Email/' . $templateName;
 		$emailView->setTemplatePathAndFilename($templatePathAndFilename);
 		$emailView->assignMultiple($variables);
 		$emailBody = $emailView->render();
 
-		$message = t3lib_div::makeInstance('t3lib_mail_Message');
+		$message = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_mail_Message');
 		$message->setTo($recipient)
 				->setFrom($sender)
 				->setSubject($subject);

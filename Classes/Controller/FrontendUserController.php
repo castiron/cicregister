@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Controller;
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach
@@ -24,18 +24,18 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  */
 
-class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Controller_FrontendUserBaseController {
+class FrontendUserController extends FrontendUserBaseController {
 
 	protected $actionSuccess = false;
 
 	/**
 	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @dontvalidate $frontendUser
 	 * @return void
 	 */
-	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
+	public function newAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser = NULL) {
 		if($this->userIsAuthenticated) {
 			$this->forward('edit');
 		} else {
@@ -49,11 +49,11 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	/**
 	 * After the new form is submitted, the user is passed to this method so it can be created.
 	 *
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $password
-	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator
+	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
 	 */
-	public function createAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $password) {
+	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
 
 		// The password is passed separately so that it can be easily validated using the PasswordValidator
 		$frontendUser->setPassword($password[0]);
@@ -68,10 +68,10 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * @param string $redirect
 	 */
 	public function validateUserAction($key, $redirect = '') {
-		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
+		$emailValidatorService = $this->objectManager->get('CIC\\Cicregister\\Service\\HashValidator');
 		$frontendUser = $emailValidatorService->validateKey($key);
 		$forward = 'new'; // logged in users will get forward from new to edit; otherwise, users will be asked to signup.
-		if ($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
+		if ($frontendUser instanceof \CIC\Cicregister\Domain\Model\FrontendUser) {
 			// Decorate and persist the user.
 			$this->decorateUser($frontendUser, 'emailValidated');
 			$this->frontendUserRepository->update($frontendUser);
@@ -92,10 +92,10 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * This action sends a validation email to $user which contains a link
 	 * to the validateUser action.
 	 *
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param string $redirect
 	 */
-	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $redirect = '') {
+	public function sendValidationEmailAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $redirect = '') {
 		$extraConf = array();
 		if($redirect) {
 			$extraConf = array('variables' => array('redirect' => $redirect));
@@ -106,16 +106,16 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 */
-	public function createConfirmationAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function createConfirmationAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 		$this->view->assign('frontendUser', $frontendUser);
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 */
-	public function createConfirmationMustValidateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
+	public function createConfirmationMustValidateAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser) {
 		$this->view->assign('frontendUser',$frontendUser);
 	}
 
@@ -137,12 +137,12 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $otherData
 	 * @param array $password
-	 * @validate $password Tx_Cicregister_Validation_Validator_PasswordValidator(allowEmpty = true)
+	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator(allowEmpty = true)
 	 */
-	public function updateAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $otherData = array(), array $password = NULL) {
+	public function updateAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $otherData = array(), array $password = NULL) {
 
 		if ($password != NULL && is_array($password) && $password[0] != false) {
 			$frontendUser->setPassword($password[0]);
@@ -174,20 +174,20 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	public function saveEnrollmentAction($enrollmentCode = NULL) {
 		// TODO: Abstract these labels into locallang.
 		if(!$enrollmentCode) {
-			$this->flashMessageContainer->add('Please enter an enrollment code.','',t3lib_FlashMessage::ERROR);
+			$this->flashMessageContainer->add('Please enter an enrollment code.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} else {
 			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
-			if($group instanceof Tx_Cicregister_Domain_Model_FrontendUserGroup) {
+			if($group instanceof \CIC\Cicregister\Domain\Model\FrontendUserGroup) {
 				if($this->userIsAuthenticated) {
 					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 					$frontendUser->addUserGroup($group);
 					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
 					$this->view->assign('success',true);
 				} else {
-					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',t3lib_FlashMessage::ERROR);
+					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 			} else {
-				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',t3lib_FlashMessage::ERROR);
+				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 		}
 	}
@@ -206,7 +206,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	protected function getErrorFlashMessage() {
 		switch ($this->actionMethodName) {
 			default:
-				$msg = Tx_Extbase_Utility_Localization::translate('flash-frontendUserController-' . $this->actionMethodName . '-default', 'cicregister');
+				$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-default', 'cicregister');
 				break;
 		}
 		if ($msg == false) {

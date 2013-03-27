@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors\Response;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-interface Tx_Cicregister_Behaviors_Response_ResponseInterface {
+interface ResponseInterface {
 
 	/**
 	 * @abstract

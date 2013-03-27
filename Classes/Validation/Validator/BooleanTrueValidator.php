@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Validation\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-class Tx_Cicregister_Validation_Validator_BooleanTrueValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class BooleanTrueValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * @param bool $value
@@ -39,7 +40,7 @@ class Tx_Cicregister_Validation_Validator_BooleanTrueValidator extends Tx_Extbas
 		if ($value === TRUE) {
 			return TRUE;
 		} else {
-			$error = new Tx_Extbase_Validation_Error('Boolean Value is not true', 1327519111);
+			$error = new \TYPO3\CMS\Extbase\Validation\Error('Boolean Value is not true', 1327519111);
 			$this->result->addError($error);
 			return FALSE;
 		}

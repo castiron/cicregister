@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Domain\Repository;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,10 +32,10 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Repository_FrontendUserGroupRepository extends Tx_Extbase_Domain_Repository_FrontendUserGroupRepository {
+class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository {
 
 	public function initializeObject() {
-		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$querySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$querySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($querySettings);
 	}

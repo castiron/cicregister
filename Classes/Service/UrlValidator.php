@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Service;
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach@castironcoding.com>, Cast Iron Coding, Inc
@@ -22,7 +23,7 @@
 
  */
 
-class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
+class UrlValidator implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Returns a valid and XSS cleaned url for redirect, checked against configuration "allowedRedirectHosts"
@@ -37,10 +38,10 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 		}
 
 		$decodedUrl = rawurldecode($url);
-		$sanitizedUrl = t3lib_div::removeXSS($decodedUrl);
+		$sanitizedUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($decodedUrl);
 
 		if ($decodedUrl !== $sanitizedUrl || preg_match('#["<>\\\]+#', $url)) {
-			t3lib_div::sysLog(sprintf(Tx_Extbase_Utility_Localization::translate('service-URLValidator-xssAttackDetected', 'cicregister'), $url), 'cicregister', t3lib_div::SYSLOG_SEVERITY_WARNING);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('service-URLValidator-xssAttackDetected', 'cicregister'), $url), 'cicregister', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '';
 		}
 
@@ -50,7 +51,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 		}
 
 		// URL is not allowed
-		t3lib_div::sysLog(sprintf(Tx_Extbase_Utility_Localization::translate('service-URLValidator-noValidRedirectUrl', 'cicregister'), $url), 'felogin', t3lib_div::SYSLOG_SEVERITY_WARNING);
+		\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('service-URLValidator-noValidRedirectUrl', 'cicregister'), $url), 'felogin', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 		return '';
 	}
 
@@ -62,7 +63,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 	 * @return boolean Whether the URL belongs to the current TYPO3 installation
 	 */
 	protected function isInCurrentDomain($url) {
-		return (t3lib_div::isOnCurrentHost($url) && t3lib_div::isFirstPartOfStr($url, t3lib_div::getIndpEnv('TYPO3_SITE_URL')));
+		return (\TYPO3\CMS\Core\Utility\GeneralUtility::isOnCurrentHost($url) && \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($url, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL')));
 	}
 
 	/**
@@ -75,7 +76,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 	protected function isInLocalDomain($url) {
 		$result = FALSE;
 
-		if (t3lib_div::isValidUrl($url)) {
+		if (\TYPO3\CMS\Core\Utility\GeneralUtility::isValidUrl($url)) {
 			$parsedUrl = parse_url($url);
 			if ($parsedUrl['scheme'] === 'http' || $parsedUrl['scheme'] === 'https') {
 				$host = $parsedUrl['host'];
@@ -93,7 +94,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 					foreach ($localDomains as $localDomain) {
 						// strip trailing slashes (if given)
 						$domainName = rtrim($localDomain['domainName'], '/');
-						if (t3lib_div::isFirstPartOfStr($host . $path . '/', $domainName . '/')) {
+						if (\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($host . $path . '/', $domainName . '/')) {
 							$result = TRUE;
 							break;
 						}
@@ -115,7 +116,7 @@ class Tx_Cicregister_Service_UrlValidator implements t3lib_Singleton {
 		$parsedUrl = @parse_url($url);
 		if ($parsedUrl !== FALSE && !isset($parsedUrl['scheme']) && !isset($parsedUrl['host'])) {
 			// If the relative URL starts with a slash, we need to check if it's within the current site path
-			return (!t3lib_div::isFirstPartOfStr($parsedUrl['path'], '/') || t3lib_div::isFirstPartOfStr($parsedUrl['path'], t3lib_div::getIndpEnv('TYPO3_SITE_PATH')));
+			return (!\TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($parsedUrl['path'], '/') || \TYPO3\CMS\Core\Utility\GeneralUtility::isFirstPartOfStr($parsedUrl['path'], \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH')));
 		}
 		return FALSE;
 	}

@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,11 +30,11 @@
  *
  */
 
-require_once(PATH_t3lib . 'class.t3lib_svbase.php');
-require_once(PATH_typo3 . 'sysext/sv/class.tx_sv_authbase.php');
-require_once(PATH_typo3 . 'sysext/sv/class.tx_sv_auth.php');
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('core') . 'Classes/Service/AbstractService.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'Classes/AbstractAuthenticationService.php';
+require_once \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('sv') . 'Classes/AuthenticationService.php';
 
-class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
+class Authentication extends \TYPO3\CMS\Sv\AuthenticationService {
 
 	/**
 	 * Only try to authenticate the user if a login has was returned in the URL.
@@ -42,7 +43,7 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 	 */
 	public function init() {
 		$available = FALSE;
-		$key = t3lib_div::_GP('loginHash');
+		$key = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginHash');
 		if($key) $available = TRUE;
 		return $key;
 	}
@@ -54,9 +55,9 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 	 */
 	function getUser() {
 
-		$key = t3lib_div::_GP('loginHash');
+		$key = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginHash');
 
-		$validator = t3lib_div::makeInstance('Tx_Cicregister_Service_HashValidator');
+		$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('CIC\\Cicregister\\Service\\HashValidator');
 		$uid = $validator->validateShortLivedKey($key);
 		if ($uid) {
 			$this->cicregisterHashLoginUid = $uid;
@@ -81,13 +82,13 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 				$this->writelog(255, 3, 3, 2,
 					"Login-attempt from %s (%s), username '%s' not found!!",
 					Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname'])); // Logout written to log
-				t3lib_div::sysLog(
+				\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
 					sprintf("Login-attempt from %s (%s), username '%s' not found!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']),
 					'Core',
 					0
 				);
 			} else {
-				if ($this->writeDevLog) t3lib_div::devLog('User found: ' . t3lib_div::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), 'tx_sv_auth');
+				if ($this->writeDevLog) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('User found: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::arrayToLogString($user, array($this->db_user['userid_column'], $this->db_user['username_column'])), 'tx_sv_auth');
 			}
 		}
 
@@ -124,13 +125,13 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 					$this->writelog(255, 3, 3, 1,
 						"Login-attempt from %s (%s), username '%s', password not accepted!",
 						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']));
-					t3lib_div::sysLog(
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
 						sprintf("Login-attempt from %s (%s), username '%s', password not accepted!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $this->login['uname']),
 						'Core',
 						0
 					);
 				}
-				if ($this->writeDevLog) t3lib_div::devLog('Password not accepted: ' . $this->login['uident'], 'tx_sv_auth', 2);
+				if ($this->writeDevLog) \TYPO3\CMS\Core\Utility\GeneralUtility::devLog('Password not accepted: ' . $this->login['uident'], 'tx_sv_auth', 2);
 			}
 
 			// Checking the domain (lockToDomain)
@@ -140,7 +141,7 @@ class Tx_Cicregister_Service_Authentication extends tx_sv_auth {
 					$this->writelog(255, 3, 3, 1,
 						"Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!",
 						Array($this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']));
-					t3lib_div::sysLog(
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(
 						sprintf("Login-attempt from %s (%s), username '%s', locked domain '%s' did not match '%s'!", $this->authInfo['REMOTE_ADDR'], $this->authInfo['REMOTE_HOST'], $user[$this->db_user['username_column']], $user['lockToDomain'], $this->authInfo['HTTP_HOST']),
 						'Core',
 						0

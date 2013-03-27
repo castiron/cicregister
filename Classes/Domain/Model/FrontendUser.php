@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -32,7 +32,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_FrontendUser {
+class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 
 	/**
 	 * sfdcContactID
@@ -68,7 +68,7 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	protected $password;
 
 	/**
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
 	 */
 	protected $usergroup;
 
@@ -252,10 +252,10 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	/**
 	 * Determines if the user is part of the given group
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUserGroup $group
+	 * @param \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup $group
 	 * @return bool
 	 */
-	public function hasUserGroup(Tx_Extbase_Domain_Model_FrontendUserGroup $group){
+	public function hasUserGroup(\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup $group){
 		return $this->usergroup->contains($group);
 	}
 
@@ -294,10 +294,10 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 
 	/**
 	 * Returns a collection of this user's usergroups that have a redirect pid value pn them
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
 	 */
 	public function getUserGroupsWithRedirect() {
-		$usergroupsWithRedirect = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+		$usergroupsWithRedirect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');
 
 		foreach($this->getUsergroup() as $usergroup) {
 			if($usergroup->getRedirectPid()) {

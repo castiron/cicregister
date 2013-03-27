@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\ViewHelpers;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,20 +30,20 @@
  *
  */
 
-class Tx_Cicregister_ViewHelpers_IncludeStylesheetViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractViewHelper {
+class IncludeStylesheetViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 
 	/**
-	 * @var t3lib_PageRenderer
+	 * @var \TYPO3\CMS\Core\Page\PageRenderer
 	 */
 	protected $pageRenderer;
 
 	/**
 	 * Inject the pageRenderer
 	 *
-	 * @param t3lib_PageRenderer pageRenderer
+	 * @param \TYPO3\CMS\Core\Page\PageRenderer pageRenderer
 	 * @return void
 	 */
-	public function injectPageRenderer(t3lib_PageRenderer $pageRenderer) {
+	public function injectPageRenderer(\TYPO3\CMS\Core\Page\PageRenderer $pageRenderer) {
 		$this->pageRenderer = $pageRenderer;
 	}
 

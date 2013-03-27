@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,15 +30,15 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_ForwardToEdit extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class ForwardToEdit extends AbstractBehavior implements BehaviorInterface {
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
-		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RedirectAction');
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
+		$response = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\RedirectAction');
 		$response->setValue('edit');
 		return $response;
 

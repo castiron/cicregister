@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Domain\Model;
 
 /***************************************************************
  *  Copyright notice
@@ -25,7 +26,7 @@
  ***************************************************************/
 
 /**
- * Test case for class Tx_Cicregister_Domain_Model_FEUser.
+ * Test case for class CIC\\Cicregister\\Domain\\Model\\FEUser.
  *
  * @version $Id$
  * @copyright Copyright belongs to the respective authors
@@ -36,10 +37,10 @@
  *
  * @author Zachary Davis <zach@castironcoding.com>
  */
-class Tx_Cicregister_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class FrontendUserTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
-	 * @var Tx_Cicregister_Domain_Model_FrontendUser
+	 * @var CIC\\Cicregister\\Domain\\Model\\FrontendUser
 	 */
 	protected $fixture;
 
@@ -47,7 +48,7 @@ class Tx_Cicregister_Domain_Model_FrontendUserTest extends Tx_Extbase_Tests_Unit
 	 *
 	 */
 	public function setUp() {
-		$this->fixture = new Tx_Cicregister_Domain_Model_FrontendUser();
+		$this->fixture = new CIC\Cicregister\Domain\Model\FrontendUser();
 	}
 
 	/**

@@ -1,5 +1,5 @@
 <?php
-
+namespace CIC\Cicregister\ViewHelpers;
 /*                                                                        *
  * This script belongs to the FLOW3 package "Fluid".                      *
  *                                                                        *
@@ -24,7 +24,7 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  * @api
  */
-class Tx_Cicregister_ViewHelpers_RadioViewHelper extends Tx_Fluid_ViewHelpers_Form_CheckboxViewHelper {
+class RadioViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\CheckboxViewHelper {
 
 	// TODO: Remove this viewhelper and rely on FLUID checkbox viewhelper once this patch is added to FLUID:
 	// https://review.typo3.org/#/c/4413/4/Classes/ViewHelpers/Form/CheckboxViewHelper.php
@@ -45,7 +45,7 @@ class Tx_Cicregister_ViewHelpers_RadioViewHelper extends Tx_Fluid_ViewHelpers_Fo
 		if ($checked === NULL && $this->isObjectAccessorMode()) {
 			try {
 				$propertyValue = $this->getPropertyValue();
-			} catch (Tx_Fluid_Core_ViewHelper_Exception_InvalidVariableException $exception) {
+			} catch (\TYPO3\CMS\Fluid\Core\ViewHelper\Exception_InvalidVariableException $exception) {
 				$propertyValue = FALSE;
 			}
 			// no type-safe comparisation by intention

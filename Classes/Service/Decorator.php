@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Service;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,20 +30,20 @@
  *
  */
 
-class Tx_Cicregister_Service_Decorator implements t3lib_Singleton {
+class Decorator implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 

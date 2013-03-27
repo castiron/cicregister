@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Decorators;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,12 +30,12 @@
  *
  */
 
-interface Tx_Cicregister_Decorators_DecoratorInterface {
+interface DecoratorInterface {
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 */
-	public function decorate(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $conf = array());
+	public function decorate(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $conf = array());
 
 }

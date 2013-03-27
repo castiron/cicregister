@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,31 +30,28 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_AddFlashMessage extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class AddFlashMessage extends AbstractBehavior implements BehaviorInterface {
 
 	/**
-	 * @var Tx_Extbase_MVC_Controller_FlashMessages
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessages
 	 */
 	protected $flashMessageContainer;
 
 	/**
-	 * inject the flashMessageContainer
-	 *
-	 * @param Tx_Extbase_MVC_Controller_FlashMessages flashMessageContainer
-	 * @return void
+	 * @param \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
 	 */
-	public function injectFlashMessageContainer(Tx_Extbase_MVC_Controller_FlashMessages $flashMessageContainer) {
+	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
 		$severity = $conf['severity'];
-		if(!$severity) $severity = t3lib_FlashMessage::OK;
+		if(!$severity) $severity = \TYPO3\CMS\Core\Messaging\FlashMessage::OK;
 		$message = $conf['message'];
 		$title = $conf['title'];
 		if($message) {

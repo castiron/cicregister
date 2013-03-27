@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Validator;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,30 +30,30 @@
  *
  */
 
-class Tx_Cicregister_Domain_Validator_FrontendUserValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class FrontendUserValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
-	 * @var Tx_Extbase_Object_ObjectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * Inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_ObjectManager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_ObjectManager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	public function isValid($frontendUser) {
 		$valid = true;
-		$repository = $this->objectManager->get('Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository');
+		$repository = $this->objectManager->get('CIC\\Cicregister\\Domain\\Repository\\GlobalFrontendUserRepository');
 		$matches = $repository->findByEmail($frontendUser->getEmail());
 		foreach($matches as $match) {
 			if($match->getUid() != $frontendUser->getUid()) {
-				$error = new Tx_Extbase_Validation_Error('Email address is not available', 1325202490);
+				$error = new \TYPO3\CMS\Extbase\Validation\Error('Email address is not available', 1325202490);
 				$this->result->forProperty('email')->addError($error);
 				$valid = false;
 				break;
@@ -61,7 +62,7 @@ class Tx_Cicregister_Domain_Validator_FrontendUserValidator extends Tx_Extbase_V
 		$matches = $repository->findByUsername($frontendUser->getUsername());
 		foreach($matches as $match) {
 			if($match->getUid() != $frontendUser->getUid()) {
-				$error = new Tx_Extbase_Validation_Error('Username is not available', 1325202492);
+				$error = new \TYPO3\CMS\Extbase\Validation\Error('Username is not available', 1325202492);
 				$this->result->forProperty('username')->addError($error);
 				$valid = false;
 				break;

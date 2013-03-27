@@ -3,32 +3,32 @@ if (!defined('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-Tx_Extbase_Utility_Extension::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Create',
 	'CICRegister: Create/Edit Account'
 );
 
-Tx_Extbase_Utility_Extension::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Enroll',
 	'CICRegister: Group Enrollment'
 );
 
-Tx_Extbase_Utility_Extension::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Login',
 	'CICRegister: Login'
 );
 
 
-Tx_Extbase_Utility_Extension::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'Button',
 	'CICRegister: Create Account Button'
 );
 
-Tx_Extbase_Utility_Extension::registerPlugin(
+\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
 	$_EXTKEY,
 	'ValidateEmail',
 	'CICRegister: Email Validation'
@@ -36,20 +36,20 @@ Tx_Extbase_Utility_Extension::registerPlugin(
 
 $pluginSignature = str_replace('_','',$_EXTKEY) . '_' . 'create';
 $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/CreateFlexform.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue($pluginSignature, 'FILE:EXT:' . $_EXTKEY . '/Configuration/FlexForms/CreateFlexform.xml');
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'CIC User Registration');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'CIC User Registration');
 
 // Add the type to fe_users!
-t3lib_div::loadTCA('fe_users');
-$TCA['fe_users']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register User', 'Tx_Cicregister_Domain_Model_FrontendUser');
-$TCA['fe_users']['types']['Tx_Cicregister_Domain_Model_FrontendUser'] = $TCA['fe_users']['types']['0'];
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
+$TCA['fe_users']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register User', 'CIC\\Cicregister\\Domain\\Model\\FrontendUser');
+$TCA['fe_users']['types']['CIC\\Cicregister\\Domain\\Model\\FrontendUser'] = $TCA['fe_users']['types']['0'];
 
 // Add the type to fe_groups!
-t3lib_div::loadTCA('fe_groups');
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_groups');
 $TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'] = array();
-$TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register Usergroup', 'Tx_Cicregister_Domain_Model_FrontendUserGroup');
-$TCA['fe_groups']['types']['Tx_Cicregister_Domain_Model_FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
+$TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register Usergroup', 'CIC\\Cicregister\\Domain\\Model\\FrontendUserGroup');
+$TCA['fe_groups']['types']['CIC\\Cicregister\\Domain\\Model\\FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
 
 $tempColumns = Array(
 	'tx_cicregister_sfdc_contact_id' => array(
@@ -90,9 +90,9 @@ $tempColumns = Array(
 	),
 );
 
-t3lib_div::loadTCA("fe_users");
-t3lib_extMgm::addTCAcolumns("fe_users", $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes("fe_users", "--div--;CIC Register, tx_cicregister_state, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("fe_users");
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("fe_users", $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes("fe_users", "--div--;CIC Register, tx_cicregister_state, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
 
 
 // Add enrollment code to FE Groups
@@ -107,13 +107,13 @@ $tempColumns = array(
 		),
 	),
 );
-t3lib_div::loadTCA("fe_groups");
-t3lib_extMgm::addTCAcolumns("fe_groups", $tempColumns, 1);
-t3lib_extMgm::addToAllTCAtypes("fe_groups", "--div--;Enrollment, tx_cicregister_enrollment_code");
+\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("fe_groups");
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("fe_groups", $tempColumns, 1);
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes("fe_groups", "--div--;Enrollment, tx_cicregister_enrollment_code");
 
 
-t3lib_extMgm::addLLrefForTCAdescr('tx_cicregister_domain_model_invitation', 'EXT:cicregister/Resources/Private/Language/locallang_csh_tx_sjcert_domain_model_invitation.xml');
-t3lib_extMgm::allowTableOnStandardPages('tx_cicregister_domain_model_invitation');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_cicregister_domain_model_invitation', 'EXT:cicregister/Resources/Private/Language/locallang_csh_tx_sjcert_domain_model_invitation.xml');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_cicregister_domain_model_invitation');
 $TCA['tx_cicregister_domain_model_invitation'] = array(
 	'ctrl' => array(
 		'title'	=> 'LLL:EXT:cicregister/Resources/Private/Language/locallang_db.xml:tx_cicregister_domain_model_invitation',
@@ -135,8 +135,8 @@ $TCA['tx_cicregister_domain_model_invitation'] = array(
 			'starttime' => 'starttime',
 			'endtime' => 'endtime',
 		),
-		'dynamicConfigFile' => t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
-		'iconfile' => t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
+		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
+		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
 	),
 );
 

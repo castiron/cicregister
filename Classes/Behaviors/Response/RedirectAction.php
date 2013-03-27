@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors\Response;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,6 +30,6 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_Response_RedirectAction extends Tx_Cicregister_Behaviors_Response_ResponseBase implements Tx_Cicregister_Behaviors_Response_ResponseInterface {
+class RedirectAction extends ResponseBase implements ResponseInterface {
 
 }

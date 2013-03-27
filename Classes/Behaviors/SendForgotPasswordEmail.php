@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,7 +30,7 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_SendForgotPasswordEmail extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class SendForgotPasswordEmail extends AbstractBehavior implements BehaviorInterface {
 
 	/**
 	 * @var array
@@ -37,27 +38,27 @@ class Tx_Cicregister_Behaviors_SendForgotPasswordEmail extends Tx_Cicregister_Be
 	protected $settings;
 
 	/**
-	 * @var Tx_Cicregister_Service_HashValidator
+	 * @var \CIC\Cicregister\Service\HashValidator
 	 */
 	protected $emailValidator;
 
 	/**
-	 * @param Tx_Cicregister_Service_HashValidator $emailValidator
+	 * @param \CIC\Cicregister\Service\HashValidator $emailValidator
 	 */
-	public function injectEmailValidator(Tx_Cicregister_Service_HashValidator $emailValidator) {
+	public function injectEmailValidator(\CIC\Cicregister\Service\HashValidator $emailValidator) {
 		$this->emailValidator = $emailValidator;
 	}
 
 	public function initializeObject() {
-		$this->settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
+		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
 		$recipients = array($frontendUser->getEmail() => $frontendUser->getName());
 		$sender = array($conf['senderEmail'] => $conf['senderName']);
 		$subject = $conf['validateSubject'];

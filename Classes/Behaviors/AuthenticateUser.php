@@ -1,4 +1,5 @@
 <?php
+namespace CIC\Cicregister\Behaviors;
 /***************************************************************
  *  Copyright notice
  *
@@ -29,38 +30,38 @@
  *
  */
 
-class Tx_Cicregister_Behaviors_AuthenticateUser extends Tx_Cicregister_Behaviors_AbstractBehavior implements Tx_Cicregister_Behaviors_BehaviorInterface {
+class AuthenticateUser extends AbstractBehavior implements BehaviorInterface {
 
 	/**
-	 * @var Tx_Extbase_Object_Manager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManager
 	 */
 	protected $objectManager;
 
 	/**
 	 * inject the objectManager
 	 *
-	 * @param Tx_Extbase_Object_Manager objectManager
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManager objectManager
 	 * @return void
 	 */
-	public function injectObjectManager(Tx_Extbase_Object_Manager $objectManager) {
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManager $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
 	/**
-	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $conf
 	 * @return string
 	 */
-	public function execute(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, array $conf) {
+	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
 
 		// This method generates a login hash, which gets validated in the authentication service.
 		// The login hash is part of a query string that the user is redirected to.
-		$hashValidator = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
+		$hashValidator = $this->objectManager->get('CIC\\Cicregister\\Service\\HashValidator');
 		$loginHash = $hashValidator->generateShortLivedKey($frontendUser->getUid());
 
 		$uriBuilder = $this->controllerContext->getUriBuilder();
 
-		$returnUrl = t3lib_div::_GP('return_url');
+		$returnUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('return_url');
 
 		$uri = $uriBuilder
 				->reset()
@@ -74,7 +75,7 @@ class Tx_Cicregister_Behaviors_AuthenticateUser extends Tx_Cicregister_Behaviors
 					'pid' => $conf['feuserPid'],
 					'loginHash' => $loginHash
 				))->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
-		$response = $this->objectManager->create('Tx_Cicregister_Behaviors_Response_RedirectURI');
+		$response = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\RedirectURI');
 		$response->setValue($uri);
 		return $response;
 

@@ -30,8 +30,8 @@ plugin.tx_cicregister {
 		behaviors {
 			login {
 				forgotPassword {
-					Tx_Cicregister_Behaviors_SendForgotPasswordEmail = 1
-					Tx_Cicregister_Behaviors_SendForgotPasswordEmail {
+					CIC\Cicregister\Behaviors\SendForgotPasswordEmail = 1
+					CIC\Cicregister\Behaviors\SendForgotPasswordEmail {
 						senderEmail = {$plugin.tx_cicregister.settings.email.senderEmail}
 						senderName = {$plugin.tx_cicregister.settings.email.senderName}
 						validateSubject = {$plugin.tx_cicregister.settings.email.subjects.forgotPassword}
@@ -44,8 +44,8 @@ plugin.tx_cicregister {
 			}
 			frontendUser {
 				validationEmailSend {
-					Tx_Cicregister_Behaviors_SendValidationEmail = 1
-					Tx_Cicregister_Behaviors_SendValidationEmail {
+					CIC\Cicregister\Behaviors\SendValidationEmail = 1
+					CIC\Cicregister\Behaviors\SendValidationEmail {
 						senderEmail = {$plugin.tx_cicregister.settings.email.senderEmail}
 						senderName = {$plugin.tx_cicregister.settings.email.senderName}
 						validateSubject = {$plugin.tx_cicregister.settings.email.subjects.validateAccount}
@@ -57,16 +57,16 @@ plugin.tx_cicregister {
 					}
 				}
 				emailValidationSuccess {
-					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
+					CIC\Cicregister\Behaviors\SyncToSalesforce = 0
 				}
 				emailValidationFailure {
 				}
 				updated {
-					Tx_Cicregister_Behaviors_SyncToSalesforce = 0
+					CIC\Cicregister\Behaviors\SyncToSalesforce = 0
 				}
 				created {
-					Tx_Cicregister_Behaviors_SendValidationEmail = 1
-					Tx_Cicregister_Behaviors_SendValidationEmail {
+					CIC\Cicregister\Behaviors\SendValidationEmail = 1
+					CIC\Cicregister\Behaviors\SendValidationEmail {
 						senderEmail = {$plugin.tx_cicregister.settings.email.senderEmail}
 						senderName = {$plugin.tx_cicregister.settings.email.senderName}
 						validateSubject = {$plugin.tx_cicregister.settings.email.subjects.validateAccount}
@@ -76,14 +76,14 @@ plugin.tx_cicregister {
 							validatePid = {$plugin.tx_cicregister.settings.pids.editView}
 						}
 					}
-					Tx_Cicregister_Behaviors_AddFlashMessage = 0
-					Tx_Cicregister_Behaviors_AddFlashMessage {
+					CIC\Cicregister\Behaviors\AddFlashMessage = 0
+					CIC\Cicregister\Behaviors\AddFlashMessage {
 						severity =
 						title = Sign-up Successful!
 						message = Thank you for signing up with {$plugin.tx_cicregister.settings.strings.siteName}
 					}
-					Tx_Cicregister_Behaviors_AuthenticateUser = 1
-					Tx_Cicregister_Behaviors_AuthenticateUser {
+					CIC\Cicregister\Behaviors\AuthenticateUser = 1
+					CIC\Cicregister\Behaviors\AuthenticateUser {
 						forwardAction =
 						forwardPid = {$plugin.tx_cicregister.settings.pids.logoutView}
 						feuserPid =  {$plugin.tx_cicregister.settings.pids.storagePid}
@@ -94,19 +94,19 @@ plugin.tx_cicregister {
 		decorators {
 			frontendUser {
 				created {
-					Tx_Cicregister_Decorators_Disable = 0
-					Tx_Cicregister_Decorators_AddToGroup = 1
-					Tx_Cicregister_Decorators_AddToGroup {
+					CIC\Cicregister\Decorators\Disable = 0
+					CIC\Cicregister\Decorators\AddToGroup = 1
+					CIC\Cicregister\Decorators\AddToGroup {
 						groupUid = {$plugin.tx_cicregister.settings.uids.unvalidatedGroupId}
 					}
 				}
 				emailValidated {
-					Tx_Cicregister_Decorators_Enable = 1
-					Tx_Cicregister_Decorators_AddToGroup {
+					CIC\Cicregister\Decorators\Enable = 1
+					CIC\Cicregister\Decorators\AddToGroup {
 						groupUid = {$plugin.tx_cicregister.settings.uids.validatedGroupId}
 					}
-					Tx_Cicregister_Decorators_RemoveFromGroup = 1
-					Tx_Cicregister_Decorators_RemoveFromGroup {
+					CIC\Cicregister\Decorators\RemoveFromGroup = 1
+					CIC\Cicregister\Decorators\RemoveFromGroup {
 						groupUid = {$plugin.tx_cicregister.settings.uids.unvalidatedGroupId}
 					}
 				}
@@ -125,47 +125,47 @@ plugin.tx_cicregister {
 
 config.tx_extbase {
 	objects {
-		Tx_Extbase_Domain_Repository_FrontendUserRepository {
-			className = Tx_Cicregister_Domain_Repository_GlobalFrontendUserRepository
+		TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
+			className = CIC\Cicregister\Domain\Repository\GlobalFrontendUserRepository
 		}
 	}
 	persistence {
 		classes {
-			Tx_Extbase_Domain_Model_FrontendUserGroup {
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup {
 				mapping {
 					tableName = fe_groups
-					recordType = Tx_Extbase_Domain_Model_FrontendUserGroup
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup
 				}
 				subclasses {
-					Tx_Cicregister_Domain_Model_FrontendUserGroup = Tx_Cicregister_Domain_Model_FrontendUserGroup
+					CIC\Cicregister\Domain\Model\FrontendUserGroup = CIC\Cicregister\Domain\Model\FrontendUserGroup
 				}
 			}
-			Tx_Extbase_Domain_Model_FrontendUser {
+			TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 				mapping {
 					tableName = fe_users
-					recordType = Tx_Extbase_Domain_Model_FrontendUser
+					recordType = TYPO3\CMS\Extbase\Domain\Model\FrontendUser
 					columns {
 						lockToDomain.mapOnProperty = lockToDomain
 					}
 				}
 				subclasses {
-					Tx_Cicregister_Domain_Model_FrontendUser = Tx_Cicregister_Domain_Model_FrontendUser
+					CIC\Cicregister\Domain\Model\FrontendUser = CIC\Cicregister\Domain\Model\FrontendUser
 				}
 			}
-			Tx_Cicregister_Domain_Model_FrontendUserGroup {
+			CIC\Cicregister\Domain\Model\FrontendUserGroup {
 				mapping {
 					tableName = fe_groups
-					recordType = Tx_Cicregister_Domain_Model_FrontendUserGroup
+					recordType = CIC\Cicregister\Domain\Model\FrontendUserGroup
 					columns {
 						tx_cicregister_enrollment_code.mapOnProperty = enrollmentCode
 						felogin_redirectPid.mapOnProperty = redirectPid
 					}
 				}
 			}
-			Tx_Cicregister_Domain_Model_FrontendUser {
+			CIC\Cicregister\Domain\Model\FrontendUser {
 				mapping {
 					tableName = fe_users
-					recordType = Tx_Cicregister_Domain_Model_FrontendUser
+					recordType = CIC\Cicregister\Domain\Model\FrontendUser
 					columns {
 						tx_cicregister_sfdc_contact_id.mapOnProperty = sfdcContactID
 						tx_cicregister_sfdc_lead_id.mapOnProperty = sfdcLeadID
@@ -192,8 +192,9 @@ Tx_Cicregister_JSON_RequestPage {
     }
 	10 = USER_INT
 	10 {
-		userFunc = tx_extbase_core_bootstrap->run
+		userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 		extensionName = Cicregister
+		vendorName = CIC
 		pluginName = Create
 		switchableControllerActions {
 			FrontendUserJSON {
