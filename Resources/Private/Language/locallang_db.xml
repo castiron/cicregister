@@ -6,6 +6,12 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+            <label index="tx_cicregister_domain_model_invitation">Registration Invitation</label>
+            <label index="tx_cicregister_domain_model_invitation.email">Email</label>
+            <label index="tx_cicregister_domain_model_invitation.accepted">Invitation Accepted</label>
+            <label index="tx_cicregister_domain_model_invitation.expires_on">Expiration</label>
+            <label index="tx_cicregister_domain_model_invitation.on_acceptance">On Acceptance Data</label>
+            <label index="tx_cicregister_domain_model_invitation.invited_by">Invited By</label>
 		</languageKey>
 	</data>
 </T3locallang>

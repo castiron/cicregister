@@ -32,61 +32,15 @@
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
  *
  */
-class Tx_Cicregister_Domain_Model_FrontendUserGroup extends Tx_Extbase_Domain_Model_FrontendUserGroup {
-
-
-	/**
-	 * @var string
-	 */
-	var $enrollmentCode;
+class Tx_Cicregister_Domain_Repository_InvitationRepository extends Tx_Extbase_Persistence_Repository {
 
 	/**
-	 * @var string
-	 */
-	protected $redirectPid;
-
-	/**
-	 * __construct
 	 *
 	 */
-	public function __construct() {
-
-	}
-
-	/*
-	 * @return string
-	 */
-	public function getEnrollmentCode() {
-		return $this->enrollmentCode;
-	}
-
-	/*
-	 * setEnrollmentCode
-	 *
-	 * @param string $enrollmentCode
-	 * @return void
-	 *
-	 */
-	public function setEnrollmentCode($enrollmentCode) {
-		$this->enrollmentCode = $enrollmentCode;
-	}
-
-	/*
-	 * @return string
-	 */
-	public function getRedirectPid() {
-		return $this->redirectPid;
-	}
-
-	/*
-	 * setRedirectPid
-	 *
-	 * @param string $redirectPid
-	 * @return void
-	 *
-	 */
-	public function setRedirectPid($redirectPid) {
-		$this->redirectPid = $redirectPid;
+	public function initializeObject() {
+		$querySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$querySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($querySettings);
 	}
 
 

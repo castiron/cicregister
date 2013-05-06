@@ -157,6 +157,7 @@ config.tx_extbase {
 					recordType = Tx_Cicregister_Domain_Model_FrontendUserGroup
 					columns {
 						tx_cicregister_enrollment_code.mapOnProperty = enrollmentCode
+						felogin_redirectPid.mapOnProperty = redirectPid
 					}
 				}
 			}
@@ -168,6 +169,8 @@ config.tx_extbase {
 						tx_cicregister_sfdc_contact_id.mapOnProperty = sfdcContactID
 						tx_cicregister_sfdc_lead_id.mapOnProperty = sfdcLeadID
 						tx_cicregister_sfdc_sync_timestamp.mapOnProperty = sfdcSyncTimestamp
+						tx_cicregister_state.mapOnProperty = state
+						felogin_redirectPid.mapOnProperty = redirectPid
 					}
 				}
 			}

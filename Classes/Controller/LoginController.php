@@ -94,7 +94,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 
 	/**
 	 * The default entry point. The login form also posts to the dispatch method
-	 * so that it can decide what do display after login.
+	 * so that it can decide what to display after login.
 	 *
 	 * @param boolean $loginAttempt
 	 * @param string $loginType
@@ -102,27 +102,13 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
 		$loginHash = t3lib_div::_GP('loginHash');
 		if($this->userIsAuthenticated) {
-			// handle redirect
-			$returnUrl = $this->getValidReturnUrl();
-			// we need to check for the presence, but not the validity, of the login
-			// hash, so that we can pick up redirects that follow account creation.
-			if (
-				(bool)$this->settings['login']['honorRedirectUrlArgument'] == true
-				&& ($loginAttempt == true || $loginHash)
-				&& $returnUrl
-			) {
-				// redirect to return url
-				$this->doRedirect($returnUrl);
-			} elseif($this->settings['login']['postLoginRedirectPid'] && $loginAttempt) {
-
-				// redirect to the url generated from the postLoginRedirectPid
-				$pid = $this->settings['login']['postLoginRedirectPid'];
-				$uriBuilder = $this->controllerContext->getUriBuilder();
-				$uri = $uriBuilder
-						->reset()
-						->setTargetPageUid($pageUid)
-						->build();
-				$this->doRedirect($uri);
+			if($loginAttempt || $loginHash) {
+				$redirectUrl = $this->getLoginRedirectUrl();
+				if($redirectUrl) {
+					$this->doRedirect($redirectUrl);
+				} else {
+					$this->forward('logout');
+				}
 			} else {
 				$this->forward('logout');
 			}
@@ -132,9 +118,104 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	}
 
 	/**
+	 * Returns the appropriate login URL for the logged in user, first by checking the
+	 * returnUrl arg, then by checking the user / usergroup, then checking the configuration
+	 * @return null|string
+	 */
+	protected function getLoginRedirectUrl() {
+		$redirectUrl = null;
+		$redirectPageUid = null;
+		$foundRedirectTarget = false;
+
+		// First look for redirect specified in GP vars
+		if($this->settings['login']['honorRedirectUrlArgument']) {
+			$redirectUrl = $this->getValidReturnUrl();
+			if($redirectUrl) $foundRedirectTarget = true;
+		}
+
+		// If there isn't one, look at the user for a redirect
+		if(!$foundRedirectTarget) {
+			$user = $this->frontendUserRepository->findOneByUid($this->userData['uid']);
+			if($user->getRedirectPid()) {
+				$redirectPageUid = $user->getRedirectPid();
+				$foundRedirectTarget = true;
+			}
+		}
+
+		// If there still isn't one, look at the groups for a redirect, but do so in the correct
+		// order of priority
+		if(!$foundRedirectTarget) {
+			if($usergroups = $user->getUsergroupsWithRedirect()) {
+				$redirectPageUid = $this->getUsergroupRedirectByPriority(
+					$usergroups,
+					$this->settings['login']['usergroupRedirectPriority']
+				);
+				if($redirectPageUid) $foundRedirectTarget = true;
+			}
+		}
+
+		// Otherwise, go to the shared post login redirect page
+		if(!$foundRedirectTarget && $this->settings['login']['postLoginRedirectPid']) {
+			$redirectPageUid = $this->settings['login']['postLoginRedirectPid'];
+			if($redirectPageUid) $foundRedirectTarget = true;
+		}
+
+		// If we don't have a URL, but do have a pid, make a URL of it!
+		if($foundRedirectTarget && !$redirectUrl && $redirectPageUid) {
+			$uriBuilder = $this->controllerContext->getUriBuilder();
+			$redirectUrl = $uriBuilder
+					->reset()
+					->setTargetPageUid($redirectPageUid)
+					->build();
+		}
+		return $redirectUrl;
+	}
+
+
+	/**
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 * @var array
+	 */
+	protected function getUsergroupRedirectByPriority(Tx_Extbase_Persistence_ObjectStorage $usergroups,$usergroupRedirectPriority = array()) {
+		// Make an array of group uids
+		$usergroupUidsArray = array();
+		foreach($usergroups as $usergroup) {
+ 			$usergroupUidsArray[] = $usergroup->getUid();
+		}
+		t3lib_utility_Debug::debug($usergroupUidsArray,'the uids iwth redirects');
+		// If there's no priority ordering specified, just go with the order we have them in
+		if(!count($usergroupRedirectPriority)) {
+			$usergroupRedirectPriority = array();
+			foreach($usergroups as $usergroup) {
+				$usergroupRedirectPriority[] = $usergroup->getUid();
+			}
+		}
+
+		$foundUid = null;
+		foreach($usergroupRedirectPriority as $priorityRow) {
+			$priorityRowUsergroupIdsArray = t3lib_div::trimExplode(',',$priorityRow);
+			foreach($priorityRowUsergroupIdsArray as $usergroupUid) {
+				if(in_array($usergroupUid,$usergroupUidsArray)) {
+					$foundUid = $usergroupUid;
+					break 2;
+				}
+			}
+		}
+
+		if($foundUid) {
+			foreach($usergroups as $usergroup) {
+				if($usergroup->getUid() == $foundUid) {
+					return $usergroup->getRedirectPid();
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Show the logout view
 	 */
-	public function logoutAction() {
+	protected function logoutAction() {
 		$this->view->assign('editPid', $this->settings);
 
 		// A fella's gotta be logged in before he can logout.

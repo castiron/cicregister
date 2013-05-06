@@ -32,6 +32,7 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @dontvalidate $frontendUser
 	 * @return void
 	 */
 	public function newAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser = NULL) {
@@ -64,11 +65,11 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 
 	/**
 	 * @param string $key
+	 * @param string $redirect
 	 */
-	public function validateUserAction($key) {
+	public function validateUserAction($key, $redirect = '') {
 		$emailValidatorService = $this->objectManager->get('Tx_Cicregister_Service_HashValidator');
 		$frontendUser = $emailValidatorService->validateKey($key);
-		// TODO: Handle an internal login redirect.
 		$forward = 'new'; // logged in users will get forward from new to edit; otherwise, users will be asked to signup.
 		if ($frontendUser instanceof Tx_Cicregister_Domain_Model_FrontendUser) {
 			// Decorate and persist the user.
@@ -76,7 +77,12 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 			$this->frontendUserRepository->update($frontendUser);
 			$this->persistenceManager->persistAll();
 			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
-			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward), $frontendUser);
+			if($redirect) {
+				$this->doBehaviors($frontendUser, 'emailValidationSuccess', '');
+				$this->redirectToUri($redirect);
+			} else {
+				$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationSuccess', $forward), $frontendUser);
+			}
 		} else {
 			$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'emailValidationFailure', $forward), $frontendUser);
 		}
@@ -87,9 +93,14 @@ class Tx_Cicregister_Controller_FrontendUserController extends Tx_Cicregister_Co
 	 * to the validateUser action.
 	 *
 	 * @param Tx_Cicregister_Domain_Model_FrontendUser $frontendUser
+	 * @param string $redirect
 	 */
-	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser) {
-		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '');
+	public function sendValidationEmailAction(Tx_Cicregister_Domain_Model_FrontendUser $frontendUser, $redirect = '') {
+		$extraConf = array();
+		if($redirect) {
+			$extraConf = array('variables' => array('redirect' => $redirect));
+		}
+		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '', $extraConf);
 		$this->flashMessageContainer->add('An email has been sent to '.$frontendUser->getEmail().' for validation.');
 	}
 

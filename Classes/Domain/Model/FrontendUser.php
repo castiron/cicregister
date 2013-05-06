@@ -90,6 +90,11 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	protected $lastName;
 
 	/**
+	 * @var string
+	 */
+	protected $state;
+
+	/**
 	 * It's important to note that in the unique validator below, we're validating against all frontend users that Extbase
 	 * knows about; we do that by using the global user repository.
 	 *
@@ -104,6 +109,12 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 * @var bool
 	 */
 	protected $disable = false;
+
+	/**
+	 * @var string
+	 */
+	protected $redirectPid;
+
 
 	/**
 	 * Called when the object is reconstituted.
@@ -246,6 +257,54 @@ class Tx_Cicregister_Domain_Model_FrontendUser extends Tx_Extbase_Domain_Model_F
 	 */
 	public function hasUserGroup(Tx_Extbase_Domain_Model_FrontendUserGroup $group){
 		return $this->usergroup->contains($group);
+	}
+
+	/**
+	 * @param string $state
+	 */
+	public function setState($state) {
+		$this->state = $state;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getState() {
+		return $this->state;
+	}
+
+	/*
+	 * @return string
+	 */
+	public function getRedirectPid() {
+		return $this->redirectPid;
+	}
+
+	/*
+	 * setRedirectPid
+	 *
+	 * @param string $redirectPid
+	 * @return void
+	 *
+	 */
+	public function setRedirectPid($redirectPid) {
+		$this->redirectPid = $redirectPid;
+	}
+
+
+	/**
+	 * Returns a collection of this user's usergroups that have a redirect pid value pn them
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_Extbase_Domain_Model_FrontendUserGroup>
+	 */
+	public function getUserGroupsWithRedirect() {
+		$usergroupsWithRedirect = t3lib_div::makeInstance('Tx_Extbase_Persistence_ObjectStorage');
+
+		foreach($this->getUsergroup() as $usergroup) {
+			if($usergroup->getRedirectPid()) {
+				$usergroupsWithRedirect->attach($usergroup);
+			}
+		}
+		return $usergroupsWithRedirect;
 	}
 }
 ?>
