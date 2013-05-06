@@ -17,6 +17,7 @@ plugin.tx_cicregister {
 		pids {
 			editView = {$plugin.tx_cicregister.settings.pids.editView}
 			loginView = {$plugin.tx_cicregister.settings.pids.loginView}
+			newView = {$plugin.tx_cicregister.settings.pids.newView}
 		}
 		login {
 			returnMessages {

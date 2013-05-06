@@ -11,6 +11,9 @@ if($user->user['uid'] > 0) {
     $response->foundUser = false;
 }
 
+header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
+header('Pragma: no-cache'); // HTTP 1.0.
+header('Expires: 0'); // Proxies.
 header('Content-type: application/json');
 echo json_encode($response);
 die();

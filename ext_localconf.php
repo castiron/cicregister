@@ -28,7 +28,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 	),
 	// non-cacheable actions
 	array(
-		'Login' => 'login, logout, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
+		'Login' => 'dispatch, login, logout, forgotPassword, handleForgotPassword, resetPassword, handleResetPassword',
 	)
 );
 
