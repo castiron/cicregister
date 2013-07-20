@@ -32,7 +32,7 @@ class Tx_Cicregister_Behaviors_SendNotificationEmail extends Tx_Cicregister_Beha
 		$settings = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS);
 		$sender[$conf['senderEmail']] = $conf['senderName'];
 		$receiver[$conf['receiverEmail']] = $conf['receiverName'];
-		$this->sendTemplateEmail($sender, $receiver, $conf['subject'], $conf['template'], array('frontendUser' => $frontendUser, 'settings' => $settings));
+		$this->sendTemplateEmail($receiver, $sender, $conf['subject'], $conf['template'], array('frontendUser' => $frontendUser, 'settings' => $settings));
 	}
 }
 
