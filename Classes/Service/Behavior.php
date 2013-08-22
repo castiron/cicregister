@@ -58,7 +58,7 @@ class Behavior implements \TYPO3\CMS\Core\SingletonInterface {
 	public function executeBehaviors(array $behaviors, $object, $controllerContext, $default, $extraConf = array()) {
 		$behaviorResponse = false;
 		foreach ($behaviors as $behaviorClassName => $enabled) {
-			if (is_array($enabled) && $enabled['_typoScriptNodeValue'] == true) {
+			if ((is_array($enabled) && $enabled['_typoscriptNodeValue'] == true) || !is_array($enabled) && $enabled == true) {
 				if (is_array($enabled)) {
 					$conf = $enabled;
 				} else {
