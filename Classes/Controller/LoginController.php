@@ -171,10 +171,10 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		return $redirectUrl;
 	}
 
-
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
-	 * @var array
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroups
+	 * @param array $usergroupRedirectPriority
+	 * @return null
 	 */
 	protected function getUsergroupRedirectByPriority(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $usergroups,$usergroupRedirectPriority = array()) {
 		// Make an array of group uids

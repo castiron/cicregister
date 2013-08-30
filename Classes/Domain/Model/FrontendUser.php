@@ -68,7 +68,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	protected $password;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
 	 */
 	protected $usergroup;
 
@@ -252,10 +252,10 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	/**
 	 * Determines if the user is part of the given group
 	 *
-	 * @param \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup $group
+	 * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group
 	 * @return bool
 	 */
-	public function hasUserGroup(\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup $group){
+	public function hasUserGroup(\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup $group){
 		return $this->usergroup->contains($group);
 	}
 
@@ -294,7 +294,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 
 	/**
 	 * Returns a collection of this user's usergroups that have a redirect pid value pn them
-	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
 	 */
 	public function getUserGroupsWithRedirect() {
 		$usergroupsWithRedirect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage');

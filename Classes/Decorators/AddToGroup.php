@@ -55,7 +55,7 @@ class AddToGroup implements DecoratorInterface {
 		$groupUid = $conf['groupUid'];
 		if($groupUid) {
 			$group = $this->frontendUserGroupRepository->findByUid($groupUid);
-			if ($group instanceof \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup) $frontendUser->addUsergroup($group);
+			if ($group instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup) $frontendUser->addUsergroup($group);
 		}
 	}
 

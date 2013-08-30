@@ -202,7 +202,7 @@ abstract class FrontendUserBaseController extends \TYPO3\CMS\Extbase\Mvc\Control
 
 		// add the user to the default group
 		$defaultGroup = $this->frontendUserGroupRepository->findByUid($this->settings['defaults']['globalGroupId']);
-		if ($defaultGroup instanceof \TYPO3\CMS\Extbase\Mvc\Domain\Model\FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
+		if ($defaultGroup instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup) $frontendUser->addUsergroup($defaultGroup);
 
 		$this->decorateUser($frontendUser, 'created');
 
