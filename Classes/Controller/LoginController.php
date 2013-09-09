@@ -373,6 +373,9 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	 */
 	protected function getErrorFlashMessage() {
 		$msg = Tx_Extbase_Utility_Localization::translate('controller-login-genericActionMessage-'. $this->actionMethodName, 'cicregister');
+		if(!$msg) {
+			return parent::getErrorFlashMessage();
+		}
 		return $msg;
 	}
 
