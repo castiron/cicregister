@@ -44,7 +44,7 @@
 			<label index="service-URLValidator-noValidRedirectUrl">Url "%s" for redirect was not accepted!</label>
 			<label index="service-URLValidator-xssAttackDetected">Url "%s" contained an XSS attack and was cleaned!</label>
 			<label index="controller-login-invalidHash">The reset password link you clicked on is invalid.</label>
-			<label index="controller-login-pwChanged">Your pasword has been updated. Please sign-in below.</label>
+			<label index="controller-login-pwChanged">Your password has been updated. Please sign-in below.</label>
 			<label index="form-loginController-resetPassword-header">Reset Password</label>
 			<label index="form-loginController-resetPassword-instructions">Please enter a new password below. Passwords must be at least six characters long.</label>
 			<label index="controller-login-genericActionMessage-handleForgotPasswordAction">The email address you entered was invalid.</label>
