@@ -373,6 +373,9 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	protected function getErrorFlashMessage() {
 		$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-genericActionMessage-'. $this->actionMethodName, 'cicregister');
+		if(!$msg) {
+			return parent::getErrorFlashMessage();
+		}
 		return $msg;
 	}
 
