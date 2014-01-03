@@ -326,6 +326,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		if ($password != NULL && is_array($password) && $password[0] != false) {
 			$frontendUser->setPassword($password[0]);
+			$this->frontendUserRepository->update($frontendUser);
 		}
 		$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-pwChanged', 'cicregister'));
 		$this->forward('login');

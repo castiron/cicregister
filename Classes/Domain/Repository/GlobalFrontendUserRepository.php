@@ -43,7 +43,7 @@ class GlobalFrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 		// Because we tell the persistence layer that the classname is \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository,
 		// it understands this repository as handling all objects handled by that repository. A bit of a hack, but
 		// it seems to work.
-		return '\\TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository';
+		return 'TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository';
 	}
 
 	public function findByUid($uid) {
