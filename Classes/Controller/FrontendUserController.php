@@ -183,6 +183,7 @@ class FrontendUserController extends FrontendUserBaseController {
 					$frontendUser->addUserGroup($group);
 					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
 					$this->view->assign('success',true);
+					$this->frontendUserRepository->update($frontendUser);
 				} else {
 					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
