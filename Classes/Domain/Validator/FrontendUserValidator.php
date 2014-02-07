@@ -1,5 +1,5 @@
 <?php
-namespace CIC\Cicregister\Validator;
+namespace CIC\Cicregister\Domain\Validator;
 /***************************************************************
  *  Copyright notice
  *
