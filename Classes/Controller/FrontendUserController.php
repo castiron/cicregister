@@ -172,24 +172,27 @@ class FrontendUserController extends FrontendUserBaseController {
 	 * @param string $enrollmentCode
 	 */
 	public function saveEnrollmentAction($enrollmentCode = NULL) {
-		// TODO: Abstract these labels into locallang.
 		if(!$enrollmentCode) {
-			$this->flashMessageContainer->add('Please enter an enrollment code.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-enterCode','cicregister');
+			$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} else {
 			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
 			if($group instanceof \CIC\Cicregister\Domain\Model\FrontendUserGroup) {
 				if($this->userIsAuthenticated) {
 					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 					$frontendUser->addUserGroup($group);
-					$this->flashMessageContainer->add('Your account has been successfully added to the "'.htmlspecialchars($group->getTitle()).'" group.');
+					$msg = sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-success', 'cicregister'), $group->getTitle());
+					$this->flashMessageContainer->add($msg,'');
 					$this->view->assign('success',true);
 					$this->frontendUserRepository->update($frontendUser);
 					$ignoreResponse = $this->doBehaviors($frontendUser, 'enrolled', '', array('enrolledGroup' => $group));
 				} else {
-					$this->flashMessageContainer->add('Please log into the site before entering an enrollment code.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController' . $this-actionMethodName . '-noLogin','cicregister');
+					$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 			} else {
-				$this->flashMessageContainer->add('The group enrollment code that you entered was invalid. Please check your code and try again.','',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-invalidCode','cicregister');
+				$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 		}
 	}
