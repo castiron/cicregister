@@ -35,6 +35,12 @@
 class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
+	 * Defines how long a user must wait before resending an invitation
+	 */
+	const WAIT_PERIOD = 'PT3M';
+	const WAIT_PERIOD_ENGLISH = 'three minutes';
+
+	/**
 	 * @var string
 	 */
 	protected $email;
@@ -58,6 +64,11 @@ class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_Abs
 	 * @var string
 	 */
 	protected $onAcceptance;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $lastModified;
 
 	/**
 	 * @param boolean $accepted
@@ -129,6 +140,28 @@ class Tx_Cicregister_Domain_Model_Invitation extends Tx_Extbase_DomainObject_Abs
 		return $this->onAcceptance;
 	}
 
+	/**
+	 * @param \DateTime $lastModified
+	 */
+	public function setLastModified($lastModified) {
+		$this->lastModified = $lastModified;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastModified() {
+		return $this->lastModified;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function canResend() {
+		$waitPeriodEnd = new DateTime();
+		$waitPeriodEnd->sub(new DateInterval(self::WAIT_PERIOD));
+		return $this->lastModified < $waitPeriodEnd;
+	}
 
 
 }

@@ -175,6 +175,13 @@ config.tx_extbase {
 					}
 				}
 			}
+			Tx_Cicregister_Domain_Model_Invitation {
+				mapping {
+					columns {
+						tstamp.mapOnProperty = lastModified
+					}
+				}
+			}
 		}
 	}
 }
