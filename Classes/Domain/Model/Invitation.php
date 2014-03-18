@@ -39,6 +39,12 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	const WAIT_PERIOD = 'PT3M';
 	const WAIT_PERIOD_ENGLISH = 'three minutes';
 	/**
+	 * Defines how long a user must wait before resending an invitation
+	 */
+	const WAIT_PERIOD = 'PT3M';
+	const WAIT_PERIOD_ENGLISH = 'three minutes';
+
+	/**
 	 * @var string
 	 */
 	protected $email;
@@ -159,6 +165,28 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 
+	/**
+	 * @param \DateTime $lastModified
+	 */
+	public function setLastModified($lastModified) {
+		$this->lastModified = $lastModified;
+	}
+
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastModified() {
+		return $this->lastModified;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function canResend() {
+		$waitPeriodEnd = new DateTime();
+		$waitPeriodEnd->sub(new DateInterval(self::WAIT_PERIOD));
+		return $this->lastModified < $waitPeriodEnd;
+	}
 
 
 }
