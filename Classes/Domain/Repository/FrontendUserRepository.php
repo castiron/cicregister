@@ -46,7 +46,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
 			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
 		} else {
 			$query = $this->createQuery();
-			$query->getQuerySettings()->setRespectEnableFields(FALSE);
+			$query->getQuerySettings()->setIgnoreEnableFields(TRUE);
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 			$object = $query
