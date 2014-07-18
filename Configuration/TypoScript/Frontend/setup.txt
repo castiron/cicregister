@@ -1,0 +1,17 @@
+page.includeCSS {
+	89179817291 = EXT:cicregister/Resources/Public/Stylesheet/Cicregister.css
+}
+
+page.includeJSFooterlibs {
+	jquery = //ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js
+	jquery.external = 1
+}
+
+page.includeJSFooter {
+	colorbox = EXT:cicregister/Resources/Public/Javascript/Jquery-Colorbox-min.js
+	bootstrap-button = EXT:cicregister/Resources/Public/Javascript/bootstrap-button.js
+	cicregister = EXT:cicregister/Resources/Public/Javascript/Cicregister.js
+}
+
+plugin.tx_cicregister._CSS_DEFAULT_STYLE (
+)
