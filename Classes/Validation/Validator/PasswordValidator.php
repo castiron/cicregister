@@ -48,6 +48,13 @@ class PasswordValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 	}
 
 	/**
+	 * This contains the supported options, their default values, types and descriptions.
+	 *
+	 * @var array
+	 */
+	protected $supportedOptions = array('allowEmpty' => array(NULL, 'Boolean value', 'boolean|string|integer'));
+
+	/**
 	 * @param array $value
 	 * @return bool
 	 * @throws \TYPO3\CMS\Extbase\Validation\Exception_InvalidValidationConfiguration
