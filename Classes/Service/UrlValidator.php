@@ -17,6 +17,7 @@ namespace CIC\Cicregister\Service;
  *  GNU General Public License for more details.
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -83,7 +84,7 @@ class UrlValidator implements \TYPO3\CMS\Core\SingletonInterface {
 				// Removes the last path segment and slash sequences like /// (if given):
 				$path = preg_replace('#/+[^/]*$#', '', $parsedUrl['path']);
 
-				$cObj = new tslib_cObj();
+				$cObj = new ContentObjectRenderer();
 
 				$localDomains = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows(
 					'domainName',
