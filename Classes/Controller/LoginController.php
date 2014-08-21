@@ -136,7 +136,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		// If there isn't one, look at the user for a redirect
 		if(!$foundRedirectTarget) {
 			$user = $this->frontendUserRepository->findOneByUid($this->userData['uid']);
-			if($user->getRedirectPid()) {
+			if($user && $user->getRedirectPid()) {
 				$redirectPageUid = $user->getRedirectPid();
 				$foundRedirectTarget = true;
 			}
