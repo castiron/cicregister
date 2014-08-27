@@ -102,7 +102,7 @@ class Tx_Cicregister_Controller_LoginController extends Tx_Extbase_MVC_Controlle
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
 		$loginHash = t3lib_div::_GP('loginHash');
 		if($this->userIsAuthenticated) {
-			if($loginAttempt || $loginHash) {
+			if($loginAttempt || $loginHash || $this->settings['login']['autoRedirectIfAuthenticated']) {
 				$redirectUrl = $this->getLoginRedirectUrl();
 				if($redirectUrl) {
 					$this->doRedirect($redirectUrl);

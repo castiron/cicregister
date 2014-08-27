@@ -26,6 +26,7 @@ plugin.tx_cicregister {
 			allowForgotPassword = 1
 			honorRedirectUrlArgument = 1
 			postLoginRedirectPid = {$plugin.tx_cicregister.settings.pids.logoutView}
+			autoRedirectIfAuthenticated = 0
 		}
 		behaviors {
 			login {
