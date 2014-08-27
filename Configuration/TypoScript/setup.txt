@@ -34,6 +34,7 @@ plugin.tx_cicregister {
 			honorRedirectUrlArgument = 1
 			postLoginRedirectPid = {$plugin.tx_cicregister.settings.pids.logoutView}
 			allowedRedirectSourceDomains =
+			autoRedirectIfAuthenticated = 0
 		}
 		behaviors {
 			login {

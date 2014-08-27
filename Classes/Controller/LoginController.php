@@ -102,7 +102,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	public function dispatchAction($loginAttempt = false, $loginType = '') {
 		$loginHash = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('loginHash');
 		if($this->userIsAuthenticated) {
-			if($loginAttempt || $loginHash) {
+			if($loginAttempt || $loginHash || $this->settings['login']['autoRedirectIfAuthenticated']) {
 				$redirectUrl = $this->getLoginRedirectUrl();
 				if($redirectUrl) {
 					$this->doRedirect($redirectUrl);
