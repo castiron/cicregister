@@ -144,6 +144,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
 		// If there still isn't one, look at the groups for a redirect, but do so in the correct
 		// order of priority
+
 		if(!$foundRedirectTarget) {
 			if($usergroups = $user->getUsergroupsWithRedirect()) {
 				$redirectPageUid = $this->getUsergroupRedirectByPriority(
@@ -168,6 +169,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					->setTargetPageUid($redirectPageUid)
 					->build();
 		}
+
 		return $redirectUrl;
 	}
 
@@ -200,6 +202,11 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 					break 2;
 				}
 			}
+		}
+
+		// Didn't find anything, but maybe the ones in our groups aren't in the priority list. In that case, just use the first one.
+		if(!$foundUid && count($usergroupUidsArray) && $usergroupUidsArray[0]) {
+			$foundUid = $usergroupUidsArray[0];
 		}
 
 		if($foundUid) {
