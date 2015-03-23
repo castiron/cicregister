@@ -32,7 +32,7 @@ class FrontendUserController extends FrontendUserBaseController {
 	 * Method renders the "new" view, which is, by default, the AJAX new form.
 	 *
 	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
-	 * @dontvalidate $frontendUser
+	 * @ignorevalidation $frontendUser
 	 * @return void
 	 */
 	public function newAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser = NULL) {
@@ -93,6 +93,7 @@ class FrontendUserController extends FrontendUserBaseController {
 	 * to the validateUser action.
 	 *
 	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
+     * @ignorevalidation $frontendUser
 	 * @param string $redirect
 	 */
 	public function sendValidationEmailAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $redirect = '') {
