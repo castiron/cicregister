@@ -183,6 +183,14 @@ config.tx_extbase {
 					}
 				}
 			}
+
+			CIC\Cicregister\Domain\Model\Invitation {
+				mapping {
+					columns {
+						tstamp.mapOnProperty = lastModified
+					}
+				}
+			}
 		}
 	}
 }

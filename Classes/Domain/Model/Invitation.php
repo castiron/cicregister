@@ -33,7 +33,11 @@ namespace CIC\Cicregister\Domain\Model;
  *
  */
 class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
-
+	/**
+	 * Defines how long a user must wait before resending an invitation
+	 */
+	const WAIT_PERIOD = 'PT3M';
+	const WAIT_PERIOD_ENGLISH = 'three minutes';
 	/**
 	 * @var string
 	 */
@@ -58,6 +62,11 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var string
 	 */
 	protected $onAcceptance;
+
+	/**
+	 * @var DateTime
+	 */
+	protected $lastModified;
 
 	/**
 	 * @param boolean $accepted
@@ -128,6 +137,27 @@ class Invitation extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getOnAcceptance() {
 		return $this->onAcceptance;
 	}
+	/**
+	 * @param \DateTime $lastModified
+	 */
+	public function setLastModified($lastModified) {
+		$this->lastModified = $lastModified;
+	}
+	/**
+	 * @return \DateTime
+	 */
+	public function getLastModified() {
+		return $this->lastModified;
+	}
+	/**
+	 * @return bool
+	 */
+	public function canResend() {
+		$waitPeriodEnd = new \DateTime();
+		$waitPeriodEnd->sub(new \DateInterval(self::WAIT_PERIOD));
+		return $this->lastModified < $waitPeriodEnd;
+	}
+
 
 
 
