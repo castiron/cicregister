@@ -42,12 +42,10 @@ $TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile($_EXTKEY, 'Configuration/TypoScript/Frontend', 'CIC User Registration Frontend Styles / JS');
 
 // Add the type to fe_users!
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_users');
 $TCA['fe_users']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register User', 'CIC\\Cicregister\\Domain\\Model\\FrontendUser');
 $TCA['fe_users']['types']['CIC\\Cicregister\\Domain\\Model\\FrontendUser'] = $TCA['fe_users']['types']['0'];
 
 // Add the type to fe_groups!
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA('fe_groups');
 $TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'] = array();
 $TCA['fe_groups']['columns']['tx_extbase_type']['config']['items'][] = array('CIC Register Usergroup', 'CIC\\Cicregister\\Domain\\Model\\FrontendUserGroup');
 $TCA['fe_groups']['types']['CIC\\Cicregister\\Domain\\Model\\FrontendUserGroup'] = $TCA['fe_groups']['types']['0'];
@@ -91,7 +89,6 @@ $tempColumns = Array(
 	),
 );
 
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("fe_users");
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("fe_users", $tempColumns, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes("fe_users", "--div--;CIC Register, tx_cicregister_state, tx_cicregister_sfdc_contact_id, tx_cicregister_sfdc_lead_id, tx_cicregister_sfdc_sync_timestamp");
 
@@ -108,7 +105,7 @@ $tempColumns = array(
 		),
 	),
 );
-\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA("fe_groups");
+
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("fe_groups", $tempColumns, 1);
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes("fe_groups", "--div--;Enrollment, tx_cicregister_enrollment_code");
 
