@@ -1,9 +1,14 @@
 {
-	"name": "castiron/cicregister",
-	"type": "typo3-cms-extension",
-	"description": "TYPO3 Front-end User Registration and Login (ExtBase/Fluid).",
-	"homepage": "https://github.com/castiron/cicregister.git",
-	"license": ["GPL-2.0+"],
-	"keywords": ["TYPO3 CMS"]
+  "name": "castiron/cicregister",
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 Front-end User Registration and Login (ExtBase/Fluid).",
+  "homepage": "https://github.com/castiron/cicregister.git",
+  "license": ["GPL-2.0+"],
+  "keywords": ["TYPO3 CMS"],
+  "autoload": {
+    "psr-4": {
+      "CIC\\Cicregister\\": "Classes"
+    }
+  }
 }
 
