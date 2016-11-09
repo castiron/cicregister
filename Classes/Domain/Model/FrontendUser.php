@@ -127,6 +127,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 * @param $email
 	 */
 	public function setEmail($email) {
+		$email = trim($email); // It's validated in CIC\Cicbase\Validation\Validator\EmailAddressValidator as a trimmed string; that's useful, let's do it here too
 		$this->email = $email;
 		$this->username = $email;
 	}
