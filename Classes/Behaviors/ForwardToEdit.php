@@ -38,7 +38,7 @@ class ForwardToEdit extends AbstractBehavior implements BehaviorInterface {
 	 * @return string
 	 */
 	public function execute(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $conf) {
-		$response = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\RedirectAction');
+		$response = $this->objectManager->get('CIC\\Cicregister\\Behaviors\\Response\RedirectAction');
 		$response->setValue('edit');
 		return $response;
 

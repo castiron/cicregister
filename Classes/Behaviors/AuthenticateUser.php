@@ -75,7 +75,7 @@ class AuthenticateUser extends AbstractBehavior implements BehaviorInterface {
 					'pid' => $conf['feuserPid'],
 					'loginHash' => $loginHash
 				))->uriFor($conf['forwardAction'], NULL, 'FrontendUser');
-		$response = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\RedirectURI');
+		$response = $this->objectManager->get('CIC\\Cicregister\\Behaviors\\Response\RedirectURI');
 		$response->setValue($uri);
 		return $response;
 

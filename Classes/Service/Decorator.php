@@ -60,7 +60,7 @@ class Decorator implements \TYPO3\CMS\Core\SingletonInterface {
 				} else {
 					$conf = array();
 				}
-				$decorator = $this->objectManager->create($decoratorClassName);
+				$decorator = $this->objectManager->get($decoratorClassName);
 				$decorator->decorate($object, $conf);
 			}
 		}

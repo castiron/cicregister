@@ -41,7 +41,7 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 		switch(get_class($behaviorResponse)) {
 			case 'CIC\\Cicregister\\Behaviors\\Response\\RenderAction':
 				$viewObjectName = 'CIC\\Cicregister\\View\\FrontendUserJSON\\' . $behaviorResponse->getValue();
-				$view = $this->objectManager->create($this->defaultViewObjectName);
+				$view = $this->objectManager->get($this->defaultViewObjectName);
 				$this->setViewConfiguration($view);
 				$view->setControllerContext($this->controllerContext);
 				$view->assign('settings', $this->settings); // same with settings injection.

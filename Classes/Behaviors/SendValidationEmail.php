@@ -68,7 +68,7 @@ class SendValidationEmail extends AbstractBehavior implements BehaviorInterface 
 		$variables['validationKey'] = $this->emailValidator->generateKey($frontendUser);
 		$this->sendTemplateEmail($recipients, $sender, $subject, $templateName, $variables);
 
-		$response = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\RenderAction');
+		$response = $this->objectManager->get('CIC\\Cicregister\\Behaviors\\Response\RenderAction');
 		$response->setValue('createConfirmationMustValidate');
 		return $response;
 	}

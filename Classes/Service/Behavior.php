@@ -65,7 +65,7 @@ class Behavior implements \TYPO3\CMS\Core\SingletonInterface {
 					$conf = array();
 				}
 				$conf = array_merge_recursive($conf, $extraConf);
-				$behavior = $this->objectManager->create($behaviorClassName);
+				$behavior = $this->objectManager->get($behaviorClassName);
 				$behavior->setControllerContext($controllerContext);
 				$result = $behavior->execute($object, $conf);
 				if ($result) {
@@ -75,7 +75,7 @@ class Behavior implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 
 		if ($behaviorResponse == false) {
-			$behaviorResponse = $this->objectManager->create('CIC\\Cicregister\\Behaviors\\Response\\RenderAction');
+			$behaviorResponse = $this->objectManager->get('CIC\\Cicregister\\Behaviors\\Response\\RenderAction');
 			$behaviorResponse->setValue($default);
 		}
 		return $behaviorResponse;
