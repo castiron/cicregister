@@ -228,7 +228,7 @@ abstract class FrontendUserBaseController extends \TYPO3\CMS\Extbase\Mvc\Control
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$frontendUserClass = $frameworkConfiguration['objects']['CIC\Cicregister\Domain\Model\FrontendUser']['className'];
 		if ($frontendUserClass && $this->arguments->hasArgument('frontendUser')) {
-			$this->arguments->getArgument('frontendUser')->setDataType($frontendUserClass);
+//			$this->arguments->getArgument('frontendUser')->setDataType($frontendUserClass);
 			// perhaps there's a better way here, than to re-initialize all arguments
 			$this->initializeActionMethodValidators();
 
