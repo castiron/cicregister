@@ -1,6 +1,8 @@
 <?php
 
-$user = tslib_eidtools::initFeUser();
+$TSFE = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController', $GLOBALS['TYPO3_CONF_VARS'], 0, 0);
+
+$user = $TSFE->initFEuser();
 
 $response = new \stdClass;
 
