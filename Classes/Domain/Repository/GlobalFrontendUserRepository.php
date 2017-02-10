@@ -33,6 +33,12 @@ namespace CIC\Cicregister\Domain\Repository;
 
 class GlobalFrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+     * @inject
+     */
+    var $session;
+
 	/**
 	 * Returns the class name of this class.
 	 *
@@ -47,8 +53,8 @@ class GlobalFrontendUserRepository extends \TYPO3\CMS\Extbase\Persistence\Reposi
 	}
 
 	public function findByUid($uid) {
-		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
-			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
+		if ($this->session->hasIdentifier($uid, $this->objectType)) {
+			$object = $this->session->getObjectByIdentifier($uid, $this->objectType);
 		} else {
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setRespectSysLanguage(FALSE);

@@ -34,6 +34,12 @@ namespace CIC\Cicregister\Domain\Repository;
  */
 class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {
 
+    /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Session
+     * @inject
+     */
+    var $session;
+
 	/**
 	 * Finds an object matching the given identifier.
 	 *
@@ -42,8 +48,8 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
 	 * @api
 	 */
 	public function findByUid($uid) {
-		if ($this->identityMap->hasIdentifier($uid, $this->objectType)) {
-			$object = $this->identityMap->getObjectByIdentifier($uid, $this->objectType);
+		if ($this->session->hasIdentifier($uid, $this->objectType)) {
+			$object = $this->session->getObjectByIdentifier($uid, $this->objectType);
 		} else {
 			$query = $this->createQuery();
 			$query->getQuerySettings()->setIgnoreEnableFields(TRUE);
