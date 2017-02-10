@@ -76,7 +76,7 @@ class FrontendUserController extends FrontendUserBaseController {
 			$this->decorateUser($frontendUser, 'emailValidated');
 			$this->frontendUserRepository->update($frontendUser);
 			$this->persistenceManager->persistAll();
-			$this->flashMessageContainer->add('You have successfully validated your email address. Thank you!.');
+			$this->addFlashMessage('You have successfully validated your email address. Thank you!.');
 			if($redirect) {
 				$this->doBehaviors($frontendUser, 'emailValidationSuccess', '');
 				$this->redirectToUri($redirect);
@@ -102,7 +102,7 @@ class FrontendUserController extends FrontendUserBaseController {
 			$extraConf = array('variables' => array('redirect' => $redirect));
 		}
 		$ignoreResponse = $this->doBehaviors($frontendUser, 'validationEmailSend', '', $extraConf);
-		$this->flashMessageContainer->add('An email has been sent to '.$frontendUser->getEmail().' for validation.');
+		$this->addFlashMessage('An email has been sent to '.$frontendUser->getEmail().' for validation.');
 	}
 
 
@@ -155,7 +155,7 @@ class FrontendUserController extends FrontendUserBaseController {
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'updateAction', array('frontendUser' => $frontendUser, $otherData));
 
 		$this->frontendUserRepository->update($frontendUser);
-		$this->flashMessageContainer->add('Your profile has been updated.');
+		$this->addFlashMessage('Your profile has been updated.');
 		$this->handleBehaviorResponse($this->doBehaviors($frontendUser, 'updated', 'edit'), $frontendUser);
 	}
 
@@ -175,7 +175,7 @@ class FrontendUserController extends FrontendUserBaseController {
 	public function saveEnrollmentAction($enrollmentCode = NULL) {
 		if(!$enrollmentCode) {
 			$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-enterCode','cicregister');
-			$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+			$this->addFlashMessage($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} else {
 			$group = $this->frontendUserGroupRepository->findOneByEnrollmentCode($enrollmentCode);
 			if($group instanceof \CIC\Cicregister\Domain\Model\FrontendUserGroup) {
@@ -183,17 +183,17 @@ class FrontendUserController extends FrontendUserBaseController {
 					$frontendUser = $this->frontendUserRepository->findByUid($this->userData['uid']);
 					$frontendUser->addUserGroup($group);
 					$msg = sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-success', 'cicregister'), $group->getTitle());
-					$this->flashMessageContainer->add($msg,'');
+					$this->addFlashMessage($msg,'');
 					$this->view->assign('success',true);
 					$this->frontendUserRepository->update($frontendUser);
 					$ignoreResponse = $this->doBehaviors($frontendUser, 'enrolled', '', array('enrolledGroup' => $group));
 				} else {
 					$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController' . $this-actionMethodName . '-noLogin','cicregister');
-					$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+					$this->addFlashMessage($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				}
 			} else {
 				$msg = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash-frontendUserController-' . $this->actionMethodName . '-invalidCode','cicregister');
-				$this->flashMessageContainer->add($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				$this->addFlashMessage($msg,'',\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 		}
 	}

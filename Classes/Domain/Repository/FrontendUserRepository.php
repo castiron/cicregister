@@ -59,5 +59,7 @@ class FrontendUserRepository extends \TYPO3\CMS\Extbase\Domain\Repository\Fronte
 		return $object;
 	}
 
+
+
 }
 ?>

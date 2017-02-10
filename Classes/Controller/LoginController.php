@@ -278,11 +278,11 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 */
 	public function forgotPasswordAction($requestProcessed = FALSE, $requestSuccessful = FALSE) {
 		// handle flash messages
-		$messages = $this->flashMessageContainer->getAllMessages();
+		$messages = $this->controllerContext->getFlashMessageQueue()->getAllMessages();
 		if(count($messages) > 0) {
 			$this->view->assign('hasMessages',true);
 			$this->view->assign('messages',$messages);
-			$this->flashMessageContainer->flush();
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 		}
 
 		if($requestProcessed === TRUE) {
@@ -309,7 +309,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if($frontendUser) {
 			// the controller adds errors when there is a validation error; we're not going to display them,
 			// so we just flush them instead.
-			$this->flashMessageContainer->flush();
+            $this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush();
 			$this->view->assign('key',$key);
 		} else {
 			$this->forward('invalidResetRequest');
@@ -335,7 +335,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			$frontendUser->setPassword($password[0]);
 			$this->frontendUserRepository->update($frontendUser);
 		}
-		$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-pwChanged', 'cicregister'));
+		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-pwChanged', 'cicregister'));
 		$this->forward('login');
 	}
 
@@ -343,7 +343,7 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * Insert a flash message in cases where the key was invalid
 	 */
 	public function invalidResetRequestAction() {
-		$this->flashMessageContainer->add(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-invalidHash', 'cicregister'));
+		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-invalidHash', 'cicregister'));
 		$this->forward('forgotPassword');
 	}
 

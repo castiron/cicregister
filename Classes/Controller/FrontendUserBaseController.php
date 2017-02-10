@@ -208,7 +208,7 @@ abstract class FrontendUserBaseController extends \TYPO3\CMS\Extbase\Mvc\Control
 
 		// add the user to the repository
 		$this->frontendUserRepository->add($frontendUser);
-		$this->flashMessageContainer->add('Your account has been created.');
+		$this->addFlashMessage('Your account has been created.');
 
 		// persist the user
 		$this->persistenceManager->persistAll();
