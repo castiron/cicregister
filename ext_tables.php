@@ -134,7 +134,7 @@ $TCA['tx_cicregister_domain_model_invitation'] = array(
 			'endtime' => 'endtime',
 		),
 		'dynamicConfigFile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKEY) . 'Configuration/TCA/Invitation.php',
-		'iconfile' => \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
+		'iconfile' => 'EXT:cicregister/Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
 	),
 );
 
