@@ -19,6 +19,8 @@ namespace CIC\Cicregister\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Extbase\Mvc\View\JsonView;
+
 /**
  * @package cicregister
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -26,7 +28,17 @@ namespace CIC\Cicregister\Controller;
 
 class FrontendUserJSONController extends FrontendUserBaseController {
 
-	/**
+    /**
+     * @var JsonView
+     */
+    protected $view;
+
+    /**
+     * @var string
+     */
+    protected $defaultViewObjectName = JsonView::class;
+
+    /**
 	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $password
 	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
@@ -35,8 +47,9 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 
 		$frontendUser->setPassword($password[0]);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
-		$results = new \stdClass;
-		$results->hasErrors = false;
+        $results = [
+            'hasErrors' => false,
+        ];
 
 		switch(get_class($behaviorResponse)) {
 			case 'CIC\\Cicregister\\Behaviors\\Response\\RenderAction':
@@ -48,7 +61,7 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 				$this->controllerContext->getRequest()->setFormat('html');
 				$out = $view->render($behaviorResponse->getValue() . '');
 				$this->controllerContext->getRequest()->setFormat('json');
-				$results->html = $out;
+				$results['html'] = $out;
 			break;
 			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectAction':
 				$uriBuilder = $this->controllerContext->getUriBuilder();
@@ -58,13 +71,15 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 						->setNoCache(false)
 						->setUseCacheHash(false)
 						->uriFor($behaviorResponse->getValue(), NULL, 'FrontendUser');
-				$results->redirect = $uri;
+				$results['redirect'] = $uri;
 			break;
 			case 'CIC\\Cicregister\\Behaviors\\Response\\RedirectURI':
-				$results->redirect = $behaviorResponse->getValue();
+				$results['redirect'] = $behaviorResponse->getValue();
 			break;
 		}
-		$this->view->assign('results',json_encode($results));
+
+        $this->view->setVariablesToRender(['results']);
+        $this->view->assign('results', $results);
 	}
 
 	public function initializeCreateAction() {
@@ -75,33 +90,35 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 	/**
 	 */
 	protected function errorAction() {
-		$results = new \stdClass;
-		$results->hasErrors = false;
+		$results = [
+            'hasErrors' => false,
+            'errors' => [
+                'byProperty' => [],
+            ],
+        ];
 
 		$errorResults = $this->arguments->getValidationResults();
-
-		$results->errors = new \stdClass();
-		$results->errors->byProperty = array();
 		foreach($errorResults->getFlattenedErrors() as $property => $error) {
 			$errorDetails = $errorResults->forProperty($property)->getErrors();
 			foreach($errorDetails as $error) {
-				$results->hasErrors = true;
-				$errorObj = new \stdClass;
-				$errorObj->code = $error->getCode();
-				$errorObj->property = $property;
+				$results['hasErrors'] = true;
+                $errorObj = [
+                    'code' => $error->getCode(),
+                    'property' => $property,
+                ];
 				$key = 'form-frontendUserController-' . $errorObj->property . '-' . $errorObj->code;
 				$translatedMessage = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($key,'cicregister');
 				if($translatedMessage) {
-					$errorObj->message = $translatedMessage;
+					$errorObj['message'] = $translatedMessage;
 				} else {
-					$errorObj->message = $error->getMessage();
+					$errorObj['message'] = $error->getMessage();
 				}
-				$results->errors->byProperty[str_replace('.','-',$property)][] = $errorObj;
+				$results['errors']['byProperty'][str_replace('.','-',$property)][] = $errorObj;
 			}
 		}
-		$this->view->assign('results',json_encode($results));
+
+        $this->view->setVariablesToRender(['results']);
+        $this->view->assign('results', $results);
 	}
 
 }
-
-?>
