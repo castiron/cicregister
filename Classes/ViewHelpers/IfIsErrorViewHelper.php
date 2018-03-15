@@ -28,14 +28,19 @@ namespace CIC\Cicregister\ViewHelpers;
  */
 class IfIsErrorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractConditionViewHelper {
 
+    public function initializeArguments() {
+        $this->registerArgument('key', 'string', 'Key', true);
+        parent::initializeArguments();
+    }
+
 	/**
 	 * renders <f:then> child if $condition is true, otherwise renders <f:else> child.
 	 *
-	 * @param string $key Error key to look up
 	 * @return string the rendered string
 	 * @author Zach Davis <zach@castironcoding.com>
 	 */
-	public function render($key) {
+	public function render() {
+        $key = $this->arguments['key'];
 		$results = $this->controllerContext->getRequest()->getOriginalRequestMappingResults()->forProperty($key);
 		if($results->hasErrors()) {
 			return $this->renderThenChild();
