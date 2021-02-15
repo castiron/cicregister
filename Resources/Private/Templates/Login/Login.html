@@ -78,6 +78,6 @@
 		<f:form.hidden name="loginType" value="{postParams.loginType}"/>
 		<f:form.hidden name="loginAttempt" value="1"/>
 		<!-- For RSA Auth support -->
-		<cb:raw value="{hookScriptInclude}" />
+		<f:format.raw>{hookScriptInclude}</f:format.raw>
 	</f:form>
 </f:section>
