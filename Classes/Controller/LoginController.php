@@ -356,7 +356,6 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 	 * @validate $emailAddress emailAddress
 	 */
 	public function handleForgotPasswordAction($emailAddress) {
-
 		// If the extension is configured to not allow forgot password, this action is not allowed.
 		if(!$this->settings['login']['allowForgotPassword']) {
 			$GLOBALS['TSFE']->pageNotFoundAndExit();

@@ -68,5 +68,4 @@ class SendForgotPasswordEmail extends AbstractBehavior implements BehaviorInterf
 		$variables['validationKey'] = $this->emailValidator->generateKey($frontendUser);
 		$this->sendTemplateEmail($recipients, $sender, $subject, $templateName, $variables);
 	}
-
 }

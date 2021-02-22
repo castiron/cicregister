@@ -41,7 +41,7 @@ class IfIsErrorViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractCondi
 	 */
 	public function render() {
         $key = $this->arguments['key'];
-		$results = $this->controllerContext->getRequest()->getOriginalRequestMappingResults()->forProperty($key);
+		$results = $this->renderingContext->getControllerContext()->getRequest()->getOriginalRequestMappingResults()->forProperty($key);
 		if($results->hasErrors()) {
 			return $this->renderThenChild();
 		} else {
