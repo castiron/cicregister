@@ -30,6 +30,8 @@ class UrlValidator implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Returns a valid and XSS cleaned url for redirect, checked against configuration "allowedRedirectHosts"
+	 * NOTE: in TYPO3 v9 there is not currently a way to check / remove XSS, so we're going to rely on the chash to
+	 * ensure that we're using a system generated value.
 	 *
 	 * @param string $url
 	 * @return string cleaned referer or empty string if not valid
@@ -37,14 +39,6 @@ class UrlValidator implements \TYPO3\CMS\Core\SingletonInterface {
 	public function validateReturnUrl($url) {
 		$url = strval($url);
 		if ($url === '') {
-			return '';
-		}
-
-		$decodedUrl = rawurldecode($url);
-		$sanitizedUrl = \TYPO3\CMS\Core\Utility\GeneralUtility::removeXSS($decodedUrl);
-
-		if ($decodedUrl !== $sanitizedUrl || preg_match('#["<>\\\]+#', $url)) {
-			\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog(sprintf(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('service-URLValidator-xssAttackDetected', 'cicregister'), $url), 'cicregister', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_WARNING);
 			return '';
 		}
 

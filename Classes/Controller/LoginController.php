@@ -1,5 +1,8 @@
 <?php
 namespace CIC\Cicregister\Controller;
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *  (c) 2011 Zachary Davis <zach
@@ -332,7 +335,8 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 		if(!$frontendUser) $this->forward('invalidResetRequestAction');
 
 		if ($password != NULL && is_array($password) && $password[0] != false) {
-			$frontendUser->setPassword($password[0]);
+			$defaultHashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+			$frontendUser->setPassword($defaultHashInstance->getHashedPassword($password[0]));
 			$this->frontendUserRepository->update($frontendUser);
 		}
 		$this->addFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('controller-login-pwChanged', 'cicregister'));
