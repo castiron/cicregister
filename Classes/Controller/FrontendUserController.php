@@ -19,6 +19,9 @@ namespace CIC\Cicregister\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * @package cicregister
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License, version 3 or later
@@ -54,9 +57,8 @@ class FrontendUserController extends FrontendUserBaseController {
 	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
 	 */
 	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
-
-		// The password is passed separately so that it can be easily validated using the PasswordValidator
-		$frontendUser->setPassword($password[0]);
+		$defaultHashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+		$frontendUser->setPassword($defaultHashInstance->getHashedPassword($password[0]));
 
 		// We have an inherited method for creating and persisting the user.
 		$this->handleBehaviorResponse($this->createAndPersistUser($frontendUser), $frontendUser);
@@ -144,9 +146,9 @@ class FrontendUserController extends FrontendUserBaseController {
 	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator(allowEmpty = true)
 	 */
 	public function updateAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, $otherData = array(), array $password = NULL) {
-
 		if ($password != NULL && is_array($password) && $password[0] != false) {
-			$frontendUser->setPassword($password[0]);
+			$defaultHashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+			$frontendUser->setPassword($defaultHashInstance->getHashedPassword($password[0]));
 		}
 
 		$this->decorateUser($frontendUser, 'updated');

@@ -19,6 +19,8 @@ namespace CIC\Cicregister\Controller;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 
 /**
@@ -44,8 +46,8 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
 	 */
 	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
-
-		$frontendUser->setPassword($password[0]);
+		$defaultHashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
+		$frontendUser->setPassword($defaultHashInstance->getHashedPassword($password[0]));
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
         $results = [
             'hasErrors' => false,
