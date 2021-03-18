@@ -152,8 +152,9 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  display: block;
-  color: #444; }
+  background: none;
+  height: 2px;
+  display: block; }
 
 /*
   The following fixes a problem where IE7 and IE8 replace a PNG's alpha transparency with a black fill
