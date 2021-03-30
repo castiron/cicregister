@@ -87,6 +87,13 @@ $tempColumns = Array(
 			'eval' => 'trim'
 		),
 	),
+	'tx_cicregister_used_honeypot' => [
+		'exclude' => 0,
+		'label' => 'Used Honeypot?',
+		'config' => array(
+			'type' => 'check',
+		),
+	]
 );
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns("fe_users", $tempColumns, 1);

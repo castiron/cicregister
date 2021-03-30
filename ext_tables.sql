@@ -2,13 +2,13 @@ CREATE TABLE fe_users (
 	tx_cicregister_sfdc_contact_id varchar(255) DEFAULT '' NOT NULL,
 	tx_cicregister_sfdc_lead_id varchar(255) DEFAULT '' NOT NULL,
 	tx_cicregister_sfdc_sync_timestamp varchar(255) DEFAULT '' NOT NULL,
-	tx_cicregister_state varchar(255) DEFAULT '' NOT NULL
+	tx_cicregister_state varchar(255) DEFAULT '' NOT NULL,
+	tx_cicregister_used_honeypot tinyint(4) unsigned DEFAULT '0' NOT NULL,
 );
 
 CREATE TABLE fe_groups (
 	tx_cicregister_enrollment_code varchar(255) DEFAULT '' NOT NULL
 );
-
 
 #
 # Ta6ble structure for table 'tx_cicregister_domain_model_invitation'
