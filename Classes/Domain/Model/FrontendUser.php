@@ -115,6 +115,11 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 */
 	protected $redirectPid;
 
+	/**
+	 * Did the user use the honeypot during registration?
+	 * @var bool
+	 */
+	protected $usedHoneypot;
 
 	/**
 	 * Called when the object is reconstituted.
@@ -247,6 +252,20 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 */
 	public function getSfdcLeadID() {
 		return $this->sfdcLeadID;
+	}
+
+	/**
+	 * @param $usedHoneypot bool
+	 */
+	public function setUsedHoneypot($usedHoneypot) {
+		$this->usedHoneypot = $usedHoneypot;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getUsedHoneypot() {
+		return $this->usedHoneypot;
 	}
 
 	/**
