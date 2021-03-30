@@ -36,9 +36,20 @@ class FrontendUserJSONController extends FrontendUserBaseController {
     protected $view;
 
     /**
+     * @var bool
+     */
+    protected $usedHoneypot = false;
+
+    /**
      * @var string
      */
     protected $defaultViewObjectName = JsonView::class;
+
+    public function initializeCreateAction() {
+        if($this->request->getArgument('number') != '') {
+            $this->usedHoneypot = true;
+        }
+    }
 
     /**
 	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
@@ -48,6 +59,7 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
 		$defaultHashInstance = GeneralUtility::makeInstance(PasswordHashFactory::class)->getDefaultHashInstance('FE');
 		$frontendUser->setPassword($defaultHashInstance->getHashedPassword($password[0]));
+		$frontendUser->setUsedHoneypot($this->usedHoneypot);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
         $results = [
             'hasErrors' => false,
@@ -83,11 +95,6 @@ class FrontendUserJSONController extends FrontendUserBaseController {
         $this->view->setVariablesToRender(['results']);
         $this->view->assign('results', $results);
 	}
-
-	public function initializeCreateAction() {
-#		\TYPO3\CMS\Core\Utility\GeneralUtility::debug($this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK));
-	}
-
 
 	/**
 	 */
