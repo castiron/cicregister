@@ -85,5 +85,3 @@ $TYPO3_CONF_VARS['FE']['eID_include']['cicregister-getUsername'] = 'EXT:cicregis
 		'className' => 'CIC\\Cicregister\\Service\\Authentication',
 	)
 );
-
-?>
