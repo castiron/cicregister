@@ -85,5 +85,3 @@ require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($_EXTKE
 		'className' => 'CIC\\Cicregister\\Service\\Authentication',
 	)
 );
-
-?>

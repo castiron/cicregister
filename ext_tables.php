@@ -145,5 +145,11 @@ $TCA['tx_cicregister_domain_model_invitation'] = array(
 	),
 );
 
-
-?>
+// Override these values in localconf_context
+if(!isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cicregister']['recaptcha'])) {
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cicregister']['recaptcha'] = [
+        'site_key' => 'site key goes here',
+        'secret_key' => 'secret key goes here',
+        'enabled' => false
+    ];
+}

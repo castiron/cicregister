@@ -52,9 +52,11 @@ class FrontendUserJSONController extends FrontendUserBaseController {
     /**
 	 * @param \CIC\Cicregister\Domain\Model\FrontendUser $frontendUser
 	 * @param array $password
+     * @param string $recaptchaResponse
 	 * @validate $password \CIC\Cicregister\Validation\Validator\PasswordValidator
+     * @validate $recaptchaResponse \CIC\Cicregister\Validation\Validator\RecaptchaValidator
 	 */
-	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password) {
+	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password, string $recaptchaResponse) {
 		$frontendUser->setPassword($password[0]);
 		$frontendUser->setUsedHoneypot($this->usedHoneypot);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
@@ -126,5 +128,4 @@ class FrontendUserJSONController extends FrontendUserBaseController {
         $this->view->setVariablesToRender(['results']);
         $this->view->assign('results', $results);
 	}
-
 }

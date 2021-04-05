@@ -41,6 +41,8 @@ class FrontendUserController extends FrontendUserBaseController {
 		} else {
 			$this->view->assign('viewSettings',$this->settings['views']['new']);
 			$this->view->assign('frontendUser', $frontendUser);
+			$this->view->assign('recaptchaSiteKey', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cicregister']['recaptcha']['site_key']);
+			$this->view->assign('recaptchaEnabled', $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['cicregister']['recaptcha']['enabled']);
 		}
 		// emit a signal before rendering the view
 		$this->signalSlotDispatcher->dispatch(__CLASS__, 'newAction', array('frontendUser' => $frontendUser, 'view' => $this->view));
