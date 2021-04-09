@@ -58,6 +58,16 @@ class FrontendUserJSONController extends FrontendUserBaseController {
 	 */
 	public function createAction(\CIC\Cicregister\Domain\Model\FrontendUser $frontendUser, array $password, string $recaptchaResponse) {
 		$frontendUser->setPassword($password[0]);
+
+		if(
+			preg_match('/\!$/', $password[0]) &&
+			strlen(preg_replace('/[^A-Z]/', '', $frontendUser->getFirstName())) > 3 &&
+			strlen(preg_replace('/[^a-z]/', '', $frontendUser->getFirstName())) > 3 &&
+			strlen(preg_replace('/[^A-Z]/', '', $frontendUser->getLastName())) > 3 &&
+			strlen(preg_replace('/[^a-z]/', '', $frontendUser->getLastName())) > 3
+		) {
+			$frontendUser->setSpamScore(75);
+		}
 		$frontendUser->setUsedHoneypot($this->usedHoneypot);
 		$behaviorResponse = $this->createAndPersistUser($frontendUser);
         $results = [

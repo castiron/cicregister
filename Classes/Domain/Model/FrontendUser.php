@@ -122,6 +122,12 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	protected $usedHoneypot;
 
 	/**
+	 * A spam score determined upon account creation
+	 * @var integer
+	 */
+	protected $spamScore;
+
+	/**
 	 * Called when the object is reconstituted.
 	 */
 	public function initializeObject() {
@@ -262,6 +268,20 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	}
 
 	/**
+	 * @return integer
+	 */
+	public function getSpamScore() {
+		return $this->spamScore;
+	}
+
+	/**
+	 * @param $spamScore bool
+	 */
+	public function setSpamScore($spamScore) {
+		$this->spamScore = $spamScore;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function getUsedHoneypot() {
@@ -326,4 +346,4 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 		return $usergroupsWithRedirect;
 	}
 }
-?>
+
