@@ -69,6 +69,7 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\TYPO3\CMS\Extbase\Domain\Model\FrontendUserGroup>
+	 * @TYPO3\CMS\Extbase\Annotation\ORM\Lazy
 	 */
 	protected $usergroup;
 
