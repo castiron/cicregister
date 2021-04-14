@@ -127,7 +127,6 @@ plugin.tx_cicregister {
 		storagePid = {$plugin.tx_cicregister.settings.pids.storagePid}
 	}
 	features {
-		rewrittenPropertyMapper = 1
 		requireCHashArgumentForActionArguments = 0
 	}
 }
