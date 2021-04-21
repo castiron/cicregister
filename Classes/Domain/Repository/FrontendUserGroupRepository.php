@@ -1,5 +1,5 @@
-<?php
-namespace CIC\Cicregister\Domain\Repository;
+<?php namespace CIC\Cicregister\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -33,18 +33,10 @@ namespace CIC\Cicregister\Domain\Repository;
  *
  */
 class FrontendUserGroupRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserGroupRepository {
-
-	public function initializeObject() {
-		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$querySettings->setRespectStoragePage(FALSE);
-		$this->setDefaultQuerySettings($querySettings);
-	}
-//	/**
-//	 * @param int $uid
-//	 */
-//	public function findOneByUid($uid) {
-//		var_dump($this->querySettings);
-//	}
+		public function initializeObject() {
+				$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+				$querySettings->setRespectStoragePage(FALSE);
+				$this->setDefaultQuerySettings($querySettings);
+		}
 }
 
-?>
