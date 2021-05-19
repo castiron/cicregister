@@ -62,7 +62,7 @@ class Behavior implements \TYPO3\CMS\Core\SingletonInterface {
 				if (is_array($enabled)) {
 					$conf = $enabled;
 				} else {
-					$conf = array();
+					$conf = [];
 				}
 				$conf = array_merge_recursive($conf, $extraConf);
 				$behavior = $this->objectManager->get($behaviorClassName);
