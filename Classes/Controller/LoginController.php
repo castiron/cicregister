@@ -167,6 +167,14 @@ class LoginController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 			}
 		}
 
+		// Check if the form should redirect to the referrer
+		if(!$foundRedirectTarget) {
+			if ($this->settings['login']['redirectToReferrer']) {
+				$redirectUrl = $_SERVER['HTTP_REFERER'];
+				if($redirectUrl) $foundRedirectTarget = true;
+			}
+		}
+
 		// Otherwise, go to the shared post login redirect page
 		if (!$foundRedirectTarget && $this->settings['login']['postLoginRedirectPid']) {
 			$redirectPageUid = $this->settings['login']['postLoginRedirectPid'];
