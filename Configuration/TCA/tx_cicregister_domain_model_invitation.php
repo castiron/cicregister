@@ -3,8 +3,29 @@ if (!defined ('TYPO3_MODE')) {
 	die ('Access denied.');
 }
 
-$TCA['tx_cicregister_domain_model_invitation'] = array(
-	'ctrl' => $TCA['tx_cicregister_domain_model_invitation']['ctrl'],
+return [
+    'ctrl' => array(
+        'title'	=> 'LLL:EXT:cicregister/Resources/Private/Language/locallang_db.xml:tx_cicregister_domain_model_invitation',
+        'label' => 'email',
+        'tstamp' => 'tstamp',
+        'crdate' => 'crdate',
+        'cruser_id' => 'cruser_id',
+        'dividers2tabs' => TRUE,
+        'versioningWS' => 2,
+        'versioning_followPages' => TRUE,
+        'origUid' => 't3_origuid',
+        'languageField' => 'sys_language_uid',
+        'transOrigPointerField' => 'l10n_parent',
+        'transOrigDiffSourceField' => 'l10n_diffsource',
+        'delete' => 'deleted',
+        'searchFields' => 'email',
+        'enablecolumns' => array(
+            'disabled' => 'hidden',
+            'starttime' => 'starttime',
+            'endtime' => 'endtime',
+        ),
+        'iconfile' => 'EXT:cicregister/Resources/Public/Icons/tx_cicregister_domain_model_invitation.gif'
+    ),
 	'interface' => array(
 		'showRecordFieldList' => 'sys_language_uid, l10n_parent, l10n_diffsource, hidden, email, accepted, invited_by, expires_on, on_acceptance',
 	),
@@ -144,7 +165,5 @@ $TCA['tx_cicregister_domain_model_invitation'] = array(
 				'rows' => 40,
 			),
 		),
-	),
-);
-
-?>
+	)
+];
