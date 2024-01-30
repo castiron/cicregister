@@ -132,8 +132,8 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 * @param $email
 	 */
 	public function setEmail($email) {
-		$this->email = $email;
-		$this->username = $email;
+		$this->email = trim($email);
+		$this->username = trim($email);
 	}
 
 	/**
