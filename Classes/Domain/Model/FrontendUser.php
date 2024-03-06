@@ -122,6 +122,13 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	protected $usedHoneypot;
 
 	/**
+	 * User's spam score
+	 *
+	 * @var int
+	 */
+	protected $spamScore;
+
+	/**
 	 * Called when the object is reconstituted.
 	 */
 	public function initializeObject() {
@@ -266,6 +273,20 @@ class FrontendUser extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 	 */
 	public function getUsedHoneypot() {
 		return $this->usedHoneypot;
+	}
+
+		/**
+	 * @param $spamScore int
+	 */
+	public function setSpamScore($spamScore) {
+		$this->spamScore = $spamScore;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function getSpamScore() {
+		return $this->spamScore;
 	}
 
 	/**
